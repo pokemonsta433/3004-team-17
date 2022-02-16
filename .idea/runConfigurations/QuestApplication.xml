@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="QuestApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+    <module name="Quest" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="com.team17.quest.QuestApplication" />
+    <option name="ALTERNATIVE_JRE_PATH" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
