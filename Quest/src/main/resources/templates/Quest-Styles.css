@@ -1,7 +1,8 @@
 body {
     background-color: #bfa70b ;
-    font-size: 40%;
+    font-size: 150%;
 }
+
 div#banner{
     float: left;
     width: 100%;
@@ -39,4 +40,43 @@ ul#horizontal-list li a{
     text-align: center;
     padding: 48px 16px;
     text-decoration: none;
+}
+
+div#welcome{
+    text-align: center;
+    padding-top: 150px;
+    font-size: 400%;
+    font-family: Candara;
+}
+
+
+input[type=text]{
+    width : 30%;
+    margin-left: 35%;
+    height: 40px;
+    font-size: 100%;
+    vertical-align: center;
+    font-family: Candara;
+}
+
+button#join{
+    width: 12%;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    font-size: 125%;
+    font-family: Candara;
+    color : forestgreen;
+    background-color: white;
+    border-color: black;
+    border-width: 1px;
+}
+
+button#join:hover{
+    background-color: forestgreen;
+    color: white;
+}
+
+div#button{
+    padding-top: 50px;
+    padding-left: 46.5%;
 }
