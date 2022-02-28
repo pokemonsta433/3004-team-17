@@ -25,7 +25,6 @@ ul#horizontal-list{
     padding: 0;
     overflow: hidden;
     padding-top: 20px;
-    background-color: #a67500
 }
 
 ul#horizontal-list li{
@@ -79,4 +78,31 @@ button#join:hover{
 div#button{
     padding-top: 50px;
     padding-left: 46.5%;
+}
+.two-equal-columns {
+    display: flex;
+}
+
+.two-equal-columns .columnLeft{
+    width: 43%;
+    margin-right: auto;
+    margin-left: 5%;
+    float: left;
+}
+
+.two-equal-columns .columnRight {
+    width: 43%;
+    margin-right: 5%;
+    margin-left: auto;
+    float: left;
+}
+
+.two-equal-columns:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+#player2{
+    margin: auto
 }
