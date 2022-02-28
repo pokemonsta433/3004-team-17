@@ -1,7 +1,7 @@
 body {
     background-color: #bfa70b ;
-    font-size: 40%;
 }
+
 div#banner{
     float: left;
     width: 100%;
@@ -24,7 +24,6 @@ ul#horizontal-list{
     padding: 0;
     overflow: hidden;
     padding-top: 20px;
-    background-color: #a67500
 }
 
 ul#horizontal-list li{
@@ -39,4 +38,32 @@ ul#horizontal-list li a{
     text-align: center;
     padding: 48px 16px;
     text-decoration: none;
+}
+
+.two-equal-columns {
+    display: flex;
+}
+
+.two-equal-columns .columnLeft{
+    width: 43%;
+    margin-right: auto;
+    margin-left: 5%;
+    float: left;
+}
+
+.two-equal-columns .columnRight {
+    width: 43%;
+    margin-right: 5%;
+    margin-left: auto;
+    float: left;
+}
+
+.two-equal-columns:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+#player2{
+    margin: auto
 }
