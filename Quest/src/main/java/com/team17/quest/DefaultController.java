@@ -1,18 +1,29 @@
 package com.team17.quest;
 
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RestController;
+import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 
 // this will be automatically pulled in by the application!
 
-@RestController
+@Controller
 public class DefaultController {
 
-    @GetMapping("/")
-    public String index() {
-        return "This is the app!";
+    @GetMapping(value = "/")
+    public String index(Model model) {
+        return Join(model);
+    }
+
+    @GetMapping(value = "/Join")
+    @ResponseBody
+    public String Join(Model model) {
+        model.addAttribute("name", "Isaac");
+        return "Join";
     }
 
     @GetMapping("/hello") //This line tells the app to map this function to our website (http://localhost:8080)'s /hello GET request.
