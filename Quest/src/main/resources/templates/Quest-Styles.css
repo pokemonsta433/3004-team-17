@@ -1,0 +1,42 @@
+body {
+    background-color: #bfa70b ;
+    font-size: 40%;
+}
+div#banner{
+    float: left;
+    width: 100%;
+
+}
+
+.table{
+    display: table;
+    position:absolute;
+    text-align: left;
+}
+
+ul{
+    list-style: none;
+}
+
+ul#horizontal-list{
+    list-style:none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    padding-top: 20px;
+    background-color: #a67500
+}
+
+ul#horizontal-list li{
+    float: left;
+    display:inline;
+    margin-left: 2px;
+}
+
+ul#horizontal-list li a{
+    display:block;
+    color: white;
+    text-align: center;
+    padding: 48px 16px;
+    text-decoration: none;
+}
