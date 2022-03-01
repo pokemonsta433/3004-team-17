@@ -36,8 +36,8 @@ public class DefaultController {
 
     @GetMapping(value = "/Lobby")
     @ResponseBody
-    public String Game(@RequestParam(value="name", defaultValue = "AnonymousPlayer") Model model) {
-        model.addAttribute("name", "Isaac");
+    public String Game(@RequestParam(value="name", defaultValue = "AnonymousPlayer") String name, Model model) {
+        model.addAttribute("name", name);
         return "Lobby";
     }
 
