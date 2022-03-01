@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 // this will be automatically pulled in by the application!
 
@@ -28,7 +29,7 @@ public class DefaultController {
 
     @PostMapping(value = "/lobby")
     public String Lobby(@ModelAttribute("Player") Player p, Model model) {
-        if(p.name == ""){
+        if(Objects.equals(p.name, "")){
             return "redirect:/join";
         }
         if(players.size() >= MAX_PLAYERS){
@@ -50,9 +51,9 @@ public class DefaultController {
         return "Quest-Styles.css";
     }
 
-    @GetMapping("/hello") //This line tells the app to map this function to our website (http://localhost:8080)'s /hello GET request.
+    @GetMapping("/card") //This line tells the app to map this function to our website (http://localhost:8080)'s /hello GET request.
     //Click the little world icon next to "hello" and click "Generate request" to visit the site and try it yourself
-    public String hello(@RequestParam(value = "name", defaultValue = "World") String name){
-        return String.format("Hello %s!", name); //functions can go in here, for the application.
+    public String hello(@RequestParam(value = "cardName", defaultValue = "defaultCard") String cardName){
+        return String.format("I'm giving you %s!", cardName); //functions can go in here, for the application.
     }
 }

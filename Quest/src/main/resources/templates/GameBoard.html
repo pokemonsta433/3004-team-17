@@ -1,3 +1,13 @@
+
+<!-- TODO: make the cards refer to a perspective model that exists -->
+<!-- TODO: make the cards values a seperate thing and a nice border-->
+<!-- TODO: make play-areas for each player -->
+<!-- TODO: player cards need to become buttons (or draggables, I found a page on that) -->
+<!-- TODO: after interacting with player cards, the discard-card function needs to happen -->
+<!-- TODO: discard-piles need to have a container and update with cards in the pile -->
+<!-- TODO: player cards need to load pictures, eventually -->
+<!-- TODO: display decks! -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,42 +29,48 @@
 
 <div id="gameboard">
 
-    <div id="topRow">
-        <div id="player2">
-            <a style="text-align:center ; margin: auto">
-                playerTwo (cards)
-            </a>
-        </div>
+    <div id="player2">
+        <p class="player-name" style="text-align: center">
+            playerTwo (cards)
+        </p>
     </div>
 
     <div class="two-equal-columns">
         <div id="player3" class="columnLeft">
-            <a>
+            <p class="player-name" style="text-align: left">
                 playerThree (cards)
-            </a>
+            </p>
 
         </div>
         <div id="player4" class="columnRight">
-            <a style="float: right">
+            <p class="player-name" style="text-align: right">
                 playerFour (cards)
-            </a>
+            </p>
         </div>
     </div>
 
     <div id = "bottomRow">
-        <div id="active-player">
             <div id="player-hand">
-                <ul id = "horizontal-list">
+                <ul id = "hand-list">
                     <li>
-                        your cards here
+                        <div class="card">
+                            card
+                        </div>
                     </li>
                     <li>
-                        more cards
+                        <div class="card">
+                            card
+                        </div>
+
+                    </li>
+                    <li>
+                        <div class="card">
+                            card
+                        </div>
+
                     </li>
                 </ul>
             </div>
-
-        </div>
     </div>
 
 </div>

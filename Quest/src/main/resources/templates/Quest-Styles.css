@@ -30,7 +30,7 @@ ul#horizontal-list{
 ul#horizontal-list li{
     float: left;
     display:inline;
-    margin-left: 2px;
+    margin-left: 30px;
 }
 
 ul#horizontal-list li a{
@@ -142,3 +142,57 @@ div#button{
     margin: auto
 }
 
+#gameboard{
+    background-color: green;
+    min-height: 700px;
+    height: 90%;
+    width: 80%;
+    border-radius: 5%;
+    margin-top: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    border: 1em solid black;
+
+}
+
+.player-name{
+    font-size: 30px;
+    margin: 0;
+    padding: 0;
+}
+
+#player2{
+    margin-top: 30px;
+    height: 300px;
+}
+
+#bottomRow{
+    position:absolute;
+    width: 80%; /*TODO: make this width just relative to the parent, somehow*/
+    bottom: 0;
+    margin: 0;
+    padding: 0;
+}
+
+#player-hand{/* TODO: make this always centered no matter how many cards are in the hand*/
+    position: relative;
+    left: 30%;
+}
+
+.card{
+    border: .2em solid black;
+    border-radius: 10%;
+    height: 80px;
+    width: 56px; /*70% of height*/
+    margin-right: 5px;
+    float: left;
+    background-color: white;
+}
+
+#hand-list{
+    list-style:none;
+    margin: auto;
+    overflow: hidden;
+    padding: 20px;
+
+}

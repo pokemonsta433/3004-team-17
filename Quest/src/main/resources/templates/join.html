@@ -11,7 +11,7 @@
     </div>
     <div>
         <form method="post" th:action="@{/lobby}" th:object="${Player}">
-            <input type = "text" placeholder="Name" id="name" th:field="*{name}">
+            <label for="name"></label><input type = "text" placeholder="Name" id="name" th:field="*{name}">
             <div id = "button">
                 <button id = "join" type = "submit">
                     JOIN!
