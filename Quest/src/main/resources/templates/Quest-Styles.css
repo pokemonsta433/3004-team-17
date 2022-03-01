@@ -101,13 +101,14 @@ div#lobby_list{
 
 th#head{
     padding-bottom: 25px;
-    font-size: 200%;
+    font-size: 180%;
 }
 
-th#names{
+td#names{
     padding-bottom: 50px;
-    font-size: 150%;
+    font-size: 140%;
 }
+
 
 div#button{
     padding-top: 50px;

@@ -9,7 +9,7 @@ public class Game {
     ArrayList<Player> players;
     ArrayList<Card> discardPile;
 
-    public Game(ArrayList<String> pNames){ playGame(pNames); }
+    public Game(ArrayList<Player> players){ playGame(players); }
 
     public void generateDeck(){
         deck = new Stack<>();
@@ -20,10 +20,8 @@ public class Game {
 
     public void shuffleDeck(){ Collections.shuffle(deck); }
 
-    public void createPlayers(ArrayList<String> names){
-        for(String name: names){
-            players.add(new Player(name));
-        }
+    public void createPlayers(ArrayList<Player> ps){
+        players = ps;
     }
 
     public void dealHands(){
@@ -49,11 +47,11 @@ public class Game {
         }
     }
 
-    public void playGame(ArrayList<String> pNames){
+    public void playGame(ArrayList<Player> players){
         //one time game set up
         generateDeck();
         shuffleDeck();
-        createPlayers(pNames);
+        createPlayers(players);
         dealHands();
         //game begins
         gameStart();

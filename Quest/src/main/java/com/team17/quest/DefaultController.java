@@ -3,12 +3,18 @@ package com.team17.quest;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.ArrayList;
 
 // this will be automatically pulled in by the application!
 
 @Controller
 @ControllerAdvice
 public class DefaultController {
+
+    ArrayList<Player> players = new ArrayList<>();
+    int MAX_PLAYERS = 4;
 
     @GetMapping(value = "/")
     public String index(Model model){
@@ -22,7 +28,19 @@ public class DefaultController {
 
     @PostMapping(value = "/lobby")
     public String Lobby(@ModelAttribute("Player") Player p, Model model) {
-        model.addAttribute("name", p.name);
+        if(p.name == ""){
+            return "redirect:/join";
+        }
+        if(players.size() >= MAX_PLAYERS){
+            return "redirect:/join";
+        }
+        for(Player play : players){
+            if(p.name.equals(play.name)){
+                return "redirect:/join";
+            }
+        }
+        players.add(p);
+        model.addAttribute("PlayerList", players);
         return "lobby";
     }
 
