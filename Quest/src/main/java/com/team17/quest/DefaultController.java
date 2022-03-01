@@ -5,22 +5,25 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Description;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RestController;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import javax.servlet.ServletContext;
+import java.util.ArrayList;
 
 // this will be automatically pulled in by the application!
 
 @Controller
+@ControllerAdvice
 public class DefaultController {
+
+    private ArrayList<String> names = new ArrayList<>();
 
     @GetMapping(value = "/")
     public String index(Model model) {
@@ -30,14 +33,12 @@ public class DefaultController {
     @GetMapping(value = "/Join")
     @ResponseBody
     public String Join(Model model) {
-        model.addAttribute("name", "Isaac");
         return "Join";
     }
 
-    @GetMapping(value = "/Lobby")
-    @ResponseBody
-    public String Game(@RequestParam(value="name", defaultValue = "AnonymousPlayer") Model model) {
-        model.addAttribute("name", "Isaac");
+    @RequestMapping(value = "/Lobby", method = RequestMethod.POST)
+    public String Lobby(@ModelAttribute("name") String name, Model model) {
+        model.addAttribute("name", name);
         return "Lobby";
     }
 

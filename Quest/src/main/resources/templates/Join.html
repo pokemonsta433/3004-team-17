@@ -10,8 +10,8 @@
         <h3>Quest of the Round Table</h3>
     </div>
     <div>
-        <form th:onsubmit = "/Game">
-            <label for="name"></label><input type = "text" id = "name" name = "name" placeholder="Name">
+        <form method="post" action="/Lobby" modelAttribute = "name">
+            <input type = "text" placeholder="Name">
             <div id = "button">
                 <button id = "join" type = "submit">
                     JOIN!

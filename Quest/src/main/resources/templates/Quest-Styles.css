@@ -75,6 +75,23 @@ button#join:hover{
     color: white;
 }
 
+button#start{
+    width: 12%;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    font-size: 125%;
+    font-family: Candara;
+    color : firebrick;
+    background-color: white;
+    border-color: black;
+    border-width: 1px;
+}
+
+button#start:hover{
+    background-color: firebrick;
+    color: white;
+}
+
 div#button{
     padding-top: 50px;
     padding-left: 46.5%;
