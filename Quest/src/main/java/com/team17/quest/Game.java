@@ -2,16 +2,17 @@ package com.team17.quest;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Stack;
 
 public class Game {
-    ArrayList<Card> deck;
+    Stack<Card> deck;
     ArrayList<Player> players;
     ArrayList<Card> discardPile;
 
     public Game(ArrayList<String> pNames){ playGame(pNames); }
 
     public void generateDeck(){
-        deck = new ArrayList<>();
+        deck = new Stack<>();
         for(int i = 0; i < 99; i++){
             deck.add(new Card("card"));
         }
