@@ -34,11 +34,11 @@ public class DefaultController {
         return "Join";
     }
 
-    @GetMapping(value = "/Game")
+    @GetMapping(value = "/Lobby")
     @ResponseBody
-    public String Game(Model model) {
+    public String Game(@RequestParam(value="name", defaultValue = "AnonymousPlayer") Model model) {
         model.addAttribute("name", "Isaac");
-        return "GameBoard";
+        return "Lobby";
     }
 
     @GetMapping(value = "/templates/Quest-Styles.css")
