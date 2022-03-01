@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Quest of The Round Table</title>
@@ -10,8 +10,8 @@
         <h3>Quest of the Round Table</h3>
     </div>
     <div>
-        <form method="post" action="/Lobby" modelAttribute = "name">
-            <input type = "text" placeholder="Name">
+        <form method="post" th:action="@{/lobby}" th:object="${Player}">
+            <input type = "text" placeholder="Name" id="name" th:field="*{name}">
             <div id = "button">
                 <button id = "join" type = "submit">
                     JOIN!

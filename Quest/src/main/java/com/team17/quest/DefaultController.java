@@ -1,21 +1,8 @@
 package com.team17.quest;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Description;
-import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.spring5.SpringTemplateEngine;
-import org.thymeleaf.spring5.view.ThymeleafViewResolver;
-import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
-
-import javax.servlet.ServletContext;
-import java.util.ArrayList;
 
 // this will be automatically pulled in by the application!
 
@@ -23,23 +10,20 @@ import java.util.ArrayList;
 @ControllerAdvice
 public class DefaultController {
 
-    private ArrayList<String> names = new ArrayList<>();
-
     @GetMapping(value = "/")
-    public String index(Model model) {
-        return Join(model);
+    public String index(Model model){
+        return "redirect:/join";
     }
-
-    @GetMapping(value = "/Join")
-    @ResponseBody
+    @GetMapping(value = "/join")
     public String Join(Model model) {
-        return "Join";
+        model.addAttribute("Player", new Player());
+        return "join";
     }
 
-    @RequestMapping(value = "/Lobby", method = RequestMethod.POST)
-    public String Lobby(@ModelAttribute("name") String name, Model model) {
-        model.addAttribute("name", name);
-        return "Lobby";
+    @PostMapping(value = "/lobby")
+    public String Lobby(@ModelAttribute("Player") Player p, Model model) {
+        model.addAttribute("name", p.name);
+        return "lobby";
     }
 
     @GetMapping(value = "/templates/Quest-Styles.css")

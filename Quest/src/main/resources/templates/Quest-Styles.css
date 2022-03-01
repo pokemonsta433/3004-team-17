@@ -92,6 +92,23 @@ button#start:hover{
     color: white;
 }
 
+div#lobby_list{
+    font-family: Candara;
+    text-align: left;
+    padding-top: 25px;
+    padding-left: 50px;
+}
+
+th#head{
+    padding-bottom: 25px;
+    font-size: 200%;
+}
+
+th#names{
+    padding-bottom: 50px;
+    font-size: 150%;
+}
+
 div#button{
     padding-top: 50px;
     padding-left: 46.5%;
@@ -123,3 +140,4 @@ div#button{
 #player2{
     margin: auto
 }
+

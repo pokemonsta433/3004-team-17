@@ -8,11 +8,26 @@ public class Player {
     ArrayList<Card> hand;
     int shields;
 
+    public Player(){
+        name = "";
+        shields = 0;
+        hand = new ArrayList<>();
+    }
+
     public Player(String n){
         name = n;
         shields = 0;
         hand = new ArrayList<>();
     }
+
+    public String getName(){
+        return name;
+    }
+
+    public void setName(String n){
+        name = n;
+    }
+
 
     public void discardCard(Card c){
         hand.remove(c);
