@@ -132,15 +132,17 @@ div#button{
     float: left;
 }
 
+.cards-shields-container {
+    display: flex;
+    justify-content: center;
+}
+
 .two-equal-columns:after {
     content: "";
     display: table;
     clear: both;
 }
 
-#player2{
-    margin: auto
-}
 
 #gameboard{
     background-color: green;
@@ -162,8 +164,8 @@ div#button{
 }
 
 #player2{
-    margin-top: 30px;
-    height: 300px;
+    margin: 30px auto auto;
+    height: 180px;
 }
 
 #bottomRow{
@@ -189,10 +191,48 @@ div#button{
     background-color: white;
 }
 
+.cardCount{
+    border: .2em solid black;
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+    background: #a67500;
+}
+
+.cardCount p{
+    margin-left: 30%;
+    margin-top: 5%;
+    font-size: 40px;
+}
+
+.shield p{
+    margin-left: 30%;
+    margin-top: 5%;
+    font-size: 40px;
+}
+
 #hand-list{
     list-style:none;
     margin: auto;
     overflow: hidden;
     padding: 20px;
 
+}
+
+:root {
+    --shield-border-color: #111; <!-- I think this is necessary -->
+    --shield-background-color: #1e90ff;
+    --darker-shield-background-color: #198cd3;
+}
+
+.shield {
+    margin-left: 10px;
+    height: 50px;
+    width: 50px;
+    border: .2em solid var(--shield-border-color);
+    background-color: dodgerblue;
+    border-radius: 50% 50% 50% 50% / 12% 12% 88% 88%;
+    background-image: linear-gradient(90deg,
+    var(--shield-background-color) 50%
+    var(--darker-shield-background-color) 100%);
 }
