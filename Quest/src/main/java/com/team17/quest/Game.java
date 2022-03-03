@@ -16,6 +16,9 @@ public class Game {
         playGame();
     }
 
+    public ArrayList<Player> getPlayers(){
+        return players;
+    }
     public Player getPlayer(int i){
         return players.get(i);
     }

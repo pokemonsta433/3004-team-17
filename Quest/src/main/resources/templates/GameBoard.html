@@ -29,7 +29,8 @@
 
 <div id="gameboard">
 
-    <div id="player2">
+
+    <div id="player2" th:if="${game.players.size() % 2 == 0}">
         <div class="cards-shields-container" style="Justify-Content: Center">
             <div class="cardCount">
                 <p th:text="${game.getPlayer(1).hand.size()}">
@@ -57,35 +58,35 @@
     </div>
 
 
-    <div class="two-equal-columns">
+    <div class="two-equal-columns" th:if="${game.players.size() > 2}">
         <div id="player3" class="columnLeft">
             <div class="cards-shields-container" style="width: 50%">
                 <div class="cardCount">
-                    <p th:text="${game.getPlayer(2).hand.size()}">
+                    <p th:text="${game.getPlayer(game.players.size() - 2).hand.size()}">
                     </p>
                 </div>
                 <div class="shield">
-                    <p th:text="${game.getPlayer(2).shields}">
+                    <p th:text="${game.getPlayer(game.players.size() - 2).shields}">
                     </p>
                 </div>
             </div>
-            <p class="player-name" style="text-align: left" th:text="${game.getPlayer(2).name}">
+            <p class="player-name" style="text-align: left" th:text="${game.getPlayer(game.players.size() - 2).name}">
             </p>
 
         </div>
         <div id="player4" class="columnRight">
             <div class="cards-shields-container" style="justify-content: right">
                 <div class="cardCount">
-                    <p th:text="${game.getPlayer(3).hand.size()}">
+                    <p th:text="${game.getPlayer(game.players.size() - 1).hand.size()}">
                     </p>
                 </div>
                 <div class="shield">
-                    <p th:text="${game.getPlayer(3).shields}">
+                    <p th:text="${game.getPlayer(game.players.size() - 1).shields}">
                     </p>
                 </div>
             </div>
             <div>
-                <p class="player-name" style="text-align: right" th:text="${game.getPlayer(3).name}">
+                <p class="player-name" style="text-align: right" th:text="${game.getPlayer(game.players.size() - 1).name}">
                 </p>
             </div>
         </div>
