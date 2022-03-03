@@ -21,7 +21,7 @@ public class Game {
     }
     public void generateDeck(){
         for(int i = 0; i < 99; i++){
-            deck.add(new Card("shields"));
+            deck.add(new Card("boar"));
         }
     }
 

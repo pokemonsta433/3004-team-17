@@ -64,7 +64,7 @@ public class DefaultController {
     @GetMapping(value = "/card")
     public ResponseEntity<InputStreamResource> getCard(@RequestParam(name= "cardName") String cardName) throws IOException {
 
-        var imgFile = new ClassPathResource("assets/QuestsCards/Quests_Events/" + cardName + ".png");
+        var imgFile = new ClassPathResource("assets/QuestsCards/AllCards/" + cardName + ".png");
 
         return ResponseEntity
                 .ok()

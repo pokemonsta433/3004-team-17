@@ -183,6 +183,7 @@ div#button{
     font-size: 30px;
     margin: 0;
     padding: 0;
+    font-family: Candara;
 }
 
 #player2{
@@ -212,14 +213,22 @@ div#button{
 }
 
 .card{
-    border: .2em solid black;
-    border-radius: 10%;
-    height: 80px;
-    width: 56px; /*70% of height*/
     margin-right: 5px;
     float: left;
-    background-color: white;
     text-align: center;
+}
+
+.card img{
+    border: .2em solid greenyellow;
+    border-radius: 10%;
+    height: 120px;
+    width: 84px; /*70% of height*/
+    float: left;
+    transition: all .2s ease-in-out;
+}
+
+.card img:hover{
+    transform: scale(1.1);
 }
 
 :root {
@@ -244,6 +253,8 @@ div#button{
     margin-left: 30%;
     margin-top: 5%;
     font-size: 40px;
+    font-family: Candara;
+    padding-right: 10px;
 }
 
 .cardCount{
@@ -252,6 +263,10 @@ div#button{
     height: 50px;
     width: 50px;
     background: #a67500;
+    font-family: Candara;
+    text-align: center;
+    padding-right: 15px;
+    padding-bottom: 5px;
 }
 
 .cardCount p{
@@ -259,3 +274,4 @@ div#button{
     margin-top: 5%;
     font-size: 40px;
 }
+
