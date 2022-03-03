@@ -132,9 +132,31 @@ div#button{
     float: left;
 }
 
+.two-equal-columns .columnLeft .played-cards-div{
+    float:left;
+}
+
+.two-equal-columns .columnRight .played-cards-div{
+    float: right;
+}
+
+.played-cards-div{
+    display: flex;
+    text-align:center;
+    justify-content: center;
+    margin-right: 25px;
+}
+
+.played-cards-div .played-cards{
+    list-style: none;
+}
+
+.played-cards-div .played-cards li{
+    display: inline;
+}
+
 .cards-shields-container {
     display: flex;
-    justify-content: center;
 }
 
 .two-equal-columns:after {
@@ -165,7 +187,6 @@ div#button{
 
 #player2{
     margin: 30px auto auto;
-    height: 180px;
 }
 
 #bottomRow{
@@ -177,8 +198,17 @@ div#button{
 }
 
 #player-hand{/* TODO: make this always centered no matter how many cards are in the hand*/
-    position: relative;
-    left: 30%;
+    display: flex;
+    text-align:center;
+    justify-content: center;
+}
+
+#hand-list{
+    list-style:none;
+}
+
+#hand-list li{
+    display: inline;
 }
 
 .card{
@@ -189,34 +219,7 @@ div#button{
     margin-right: 5px;
     float: left;
     background-color: white;
-}
-
-.cardCount{
-    border: .2em solid black;
-    border-radius: 50%;
-    height: 50px;
-    width: 50px;
-    background: #a67500;
-}
-
-.cardCount p{
-    margin-left: 30%;
-    margin-top: 5%;
-    font-size: 40px;
-}
-
-.shield p{
-    margin-left: 30%;
-    margin-top: 5%;
-    font-size: 40px;
-}
-
-#hand-list{
-    list-style:none;
-    margin: auto;
-    overflow: hidden;
-    padding: 20px;
-
+    text-align: center;
 }
 
 :root {
@@ -235,4 +238,24 @@ div#button{
     background-image: linear-gradient(90deg,
     var(--shield-background-color) 50%
     var(--darker-shield-background-color) 100%);
+}
+
+.shield p{
+    margin-left: 30%;
+    margin-top: 5%;
+    font-size: 40px;
+}
+
+.cardCount{
+    border: .2em solid black;
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+    background: #a67500;
+}
+
+.cardCount p{
+    margin-left: 30%;
+    margin-top: 5%;
+    font-size: 40px;
 }
