@@ -1,10 +1,14 @@
 package com.team17.quest;
 
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -18,7 +22,7 @@ public class DefaultController {
     int MAX_PLAYERS = 4;
 
     @GetMapping(value = "/")
-    public String index(Model model){
+    public String index(){
         return "redirect:/join";
     }
     @GetMapping(value = "/join")
@@ -57,9 +61,14 @@ public class DefaultController {
         return "Quest-Styles.css";
     }
 
-    @GetMapping("/card") //This line tells the app to map this function to our website (http://localhost:8080)'s /hello GET request.
-    //Click the little world icon next to "hello" and click "Generate request" to visit the site and try it yourself
-    public String hello(@RequestParam(value = "cardName", defaultValue = "defaultCard") String cardName){
-        return String.format("I'm giving you %s!", cardName); //functions can go in here, for the application.
+    @GetMapping(value = "/card")
+    public ResponseEntity<InputStreamResource> getCard(@RequestParam(name= "cardName") String cardName) throws IOException {
+
+        var imgFile = new ClassPathResource("assets/QuestsCards/Quests_Events/" + cardName + ".png");
+
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.IMAGE_JPEG)
+                .body(new InputStreamResource(imgFile.getInputStream()));
     }
 }
