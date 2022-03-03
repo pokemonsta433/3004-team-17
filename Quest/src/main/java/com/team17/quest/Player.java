@@ -14,6 +14,7 @@ public class Player {
         hand = new ArrayList<>();
     }
 
+
     public Player(String n){
         name = n;
         shields = 0;
@@ -41,6 +42,5 @@ public class Player {
         return hand;
     }
 
-
-
+    public int getShields(){ return shields; }
 }

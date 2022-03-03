@@ -5,4 +5,6 @@ public class Card {
     public Card(String n){
         name = n;
     }
+
+    public String getName(){return name;}
 }

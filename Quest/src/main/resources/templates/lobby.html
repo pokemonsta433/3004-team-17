@@ -17,9 +17,11 @@
                 <td id = "names" th:text="${p.name}"></td>
             </tr>
         </table>
-        <button id = "start" type = "submit">
+        <form method="post" th:action="@{/game}">
+        <button id = "start" type="submit">
             START GAME!
         </button>
+        </form>
     </div>
 </body>
 </html>

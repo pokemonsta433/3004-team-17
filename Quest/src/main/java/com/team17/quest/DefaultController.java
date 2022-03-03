@@ -45,6 +45,12 @@ public class DefaultController {
         return "lobby";
     }
 
+    @PostMapping(value = "game")
+    public String start(Model model){
+        model.addAttribute("game", new Game(players));
+        return "GameBoard";
+    }
+
     @GetMapping(value = "/templates/Quest-Styles.css")
     public String CSS(Model model){
         model.addAttribute("css", "True");

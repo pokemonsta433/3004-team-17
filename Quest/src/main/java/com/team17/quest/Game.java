@@ -9,20 +9,24 @@ public class Game {
     ArrayList<Player> players;
     ArrayList<Card> discardPile;
 
-    public Game(ArrayList<Player> players){ playGame(players); }
-
-    public void generateDeck(){
+    public Game(ArrayList<Player> ps){
+        players = ps;
         deck = new Stack<>();
+        discardPile = new ArrayList<>();
+        playGame();
+    }
+
+    public Player getPlayer(int i){
+        return players.get(i);
+    }
+    public void generateDeck(){
         for(int i = 0; i < 99; i++){
-            deck.add(new Card("card"));
+            deck.add(new Card("shields"));
         }
     }
 
     public void shuffleDeck(){ Collections.shuffle(deck); }
 
-    public void createPlayers(ArrayList<Player> ps){
-        players = ps;
-    }
 
     public void dealHands(){
         for(Player player: players){
@@ -47,11 +51,10 @@ public class Game {
         }
     }
 
-    public void playGame(ArrayList<Player> players){
+    public void playGame(){
         //one time game set up
         generateDeck();
         shuffleDeck();
-        createPlayers(players);
         dealHands();
         //game begins
         gameStart();

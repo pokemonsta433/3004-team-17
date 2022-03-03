@@ -9,20 +9,20 @@
 <!-- TODO: display decks! -->
 
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>QuestBoard</title>
-    <link rel="stylesheet" href="Quest-Styles.css">
+    <link rel="stylesheet" href="/templates/Quest-Styles.css">
 </head>
 <body>
 <div id="Banner">
     <ul id = "horizontal-list" style="background-color: #a67500">
         <li>
-            leave
+            Leave
         </li>
         <li>
-            some other options?
+            More
         </li>
     </ul>
 </div>
@@ -32,19 +32,16 @@
     <div id="player2">
         <div class="cards-shields-container" style="Justify-Content: Center">
             <div class="cardCount">
-                <p>
-                    9
+                <p th:text="${game.getPlayer(1).hand.size()}">
                 </p>
             </div>
             <div class="shield">
-                <p>
-                    0
+                <p th:text="${game.getPlayer(1).shields}">
                 </p>
             </div>
         </div>
         <div>
-            <p class="player-name" style="text-align: center">
-                playerTwo
+            <p class="player-name" style="text-align: center" th:text="${game.getPlayer(1).name}">
             </p>
         </div>
 
@@ -64,37 +61,31 @@
         <div id="player3" class="columnLeft">
             <div class="cards-shields-container" style="width: 50%">
                 <div class="cardCount">
-                    <p>
-                        9
+                    <p th:text="${game.getPlayer(2).hand.size()}">
                     </p>
                 </div>
                 <div class="shield">
-                    <p>
-                        0
+                    <p th:text="${game.getPlayer(2).shields}">
                     </p>
                 </div>
             </div>
-            <p class="player-name" style="text-align: left">
-                playerThree
+            <p class="player-name" style="text-align: left" th:text="${game.getPlayer(2).name}">
             </p>
 
         </div>
         <div id="player4" class="columnRight">
             <div class="cards-shields-container" style="justify-content: right">
                 <div class="cardCount">
-                    <p>
-                        9
+                    <p th:text="${game.getPlayer(3).hand.size()}">
                     </p>
                 </div>
                 <div class="shield">
-                    <p>
-                        0
+                    <p th:text="${game.getPlayer(3).shields}">
                     </p>
                 </div>
             </div>
             <div>
-                <p class="player-name" style="text-align: right">
-                    playerFour
+                <p class="player-name" style="text-align: right" th:text="${game.getPlayer(3).name}">
                 </p>
             </div>
         </div>
@@ -135,22 +126,9 @@
         </div>
         <div id="player-hand">
             <ul id = "hand-list">
-                <li>
-                    <div class="card">
-                        card
+                <li th:each="c: ${game.getPlayer(0).hand}">
+                    <div class="card" th:text="${c.name}">
                     </div>
-                </li>
-                <li>
-                    <div class="card">
-                        card
-                    </div>
-
-                </li>
-                <li>
-                    <div class="card">
-                        card
-                    </div>
-
                 </li>
             </ul>
         </div>
