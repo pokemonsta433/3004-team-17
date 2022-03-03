@@ -212,7 +212,7 @@ div#button{
     display: inline;
 }
 
-.card{
+#hand-list li .card{
     margin-right: 5px;
     float: left;
     text-align: center;
@@ -220,11 +220,11 @@ div#button{
     transition: transform .15s ease-in;
 }
 
-.card:hover{
+#hand-list li .card:hover{
     transform: translateY(-80px);
 }
 
-.card img{
+#hand-list li .card img{
     border: .2em solid greenyellow;
     border-radius: 10%;
     height: 120px;
@@ -233,7 +233,7 @@ div#button{
     transition: transform .2s ease-in-out;
 }
 
-.card img:hover{
+#hand-list li .card img:hover{
     transform: scale(2.0);
 }
 
