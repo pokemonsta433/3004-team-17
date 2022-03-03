@@ -45,7 +45,7 @@ div#welcome{
     text-align: center;
     padding-top: 150px;
     font-size: 400%;
-    font-family: Candara;
+    font-family: var(--default-font-family);
 }
 
 
@@ -55,7 +55,7 @@ input[type=text]{
     height: 40px;
     font-size: 100%;
     vertical-align: center;
-    font-family: Candara;
+    font-family: var(--default-font-family);
 }
 
 button#join{
@@ -63,7 +63,7 @@ button#join{
     padding-top: 15px;
     padding-bottom: 15px;
     font-size: 125%;
-    font-family: Candara;
+    font-family: var(--default-font-family);
     color : forestgreen;
     background-color: white;
     border-color: black;
@@ -80,7 +80,7 @@ button#start{
     padding-top: 15px;
     padding-bottom: 15px;
     font-size: 125%;
-    font-family: Candara;
+    font-family: var(--default-font-family);
     color : firebrick;
     background-color: white;
     border-color: black;
@@ -93,7 +93,7 @@ button#start:hover{
 }
 
 div#lobby_list{
-    font-family: Candara;
+    font-family: var(--default-font-family);
     text-align: left;
     padding-top: 25px;
     padding-left: 50px;
@@ -183,7 +183,7 @@ div#button{
     font-size: 30px;
     margin: 0;
     padding: 0;
-    font-family: Candara;
+    font-family: var(--default-font-family);
 }
 
 #player2{
@@ -216,6 +216,12 @@ div#button{
     margin-right: 5px;
     float: left;
     text-align: center;
+    transform: translateY(0);
+    transition: transform .15s ease-in;
+}
+
+.card:hover{
+    transform: translateY(-80px);
 }
 
 .card img{
@@ -224,23 +230,24 @@ div#button{
     height: 120px;
     width: 84px; /*70% of height*/
     float: left;
-    transition: all .2s ease-in-out;
+    transition: transform .2s ease-in-out;
 }
 
 .card img:hover{
-    transform: scale(1.1);
+    transform: scale(2.0);
 }
 
 :root {
     --shield-border-color: #111; <!-- I think this is necessary -->
     --shield-background-color: #1e90ff;
     --darker-shield-background-color: #198cd3;
+    --default-font-family: Candara, seriff;
 }
 
 .shield {
     margin-left: 10px;
-    height: 50px;
-    width: 50px;
+    height: 60px;
+    width: 60px;
     border: .2em solid var(--shield-border-color);
     background-color: dodgerblue;
     border-radius: 50% 50% 50% 50% / 12% 12% 88% 88%;
@@ -250,28 +257,24 @@ div#button{
 }
 
 .shield p{
-    margin-left: 30%;
-    margin-top: 5%;
+    text-align: center;
+    margin: auto;
     font-size: 40px;
-    font-family: Candara;
-    padding-right: 10px;
+    font-family: var(--default-font-family);
 }
 
 .cardCount{
     border: .2em solid black;
     border-radius: 50%;
-    height: 50px;
-    width: 50px;
+    height: 60px;
+    width: 60px;
     background: #a67500;
-    font-family: Candara;
+    font-family: var(--default-font-family);
     text-align: center;
-    padding-right: 15px;
-    padding-bottom: 5px;
 }
 
 .cardCount p{
-    margin-left: 30%;
-    margin-top: 5%;
+    margin:auto;
     font-size: 40px;
 }
 
