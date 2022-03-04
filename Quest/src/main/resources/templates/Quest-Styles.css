@@ -79,6 +79,7 @@ button#join:hover{
 
 button#start{
     width: 12%;
+    height: 100px;
     padding-top: 15px;
     padding-bottom: 15px;
     font-size: 125%;
@@ -92,6 +93,19 @@ button#start{
 button#start:hover{
     background-color: firebrick;
     color: white;
+}
+
+button#notready{
+    width: 12%;
+    height: 100px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    font-size: 125%;
+    font-family: var(--default-font-family);
+    color : firebrick;
+    background-color: lightgray;
+    border-color: black;
+    border-width: 1px;
 }
 
 div#lobby_list{
