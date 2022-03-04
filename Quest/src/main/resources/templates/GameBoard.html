@@ -29,7 +29,6 @@
 
 <div id="gameboard">
 
-
     <div id="player2" th:if="${game.players.size() % 2 == 0}">
         <div class="cards-shields-container" style="Justify-Content: Center">
             <div class="cardCount">
@@ -47,13 +46,14 @@
         </div>
 
         <div id="p2Discard">
-                <div class="played-cards-div">
+            <div class="played-cards-div">
+                <div class="mat" th:if="${game.players.size() == 2}">
                     <ul class="played-cards">
                         <li class="card">
-                            disc.
                         </li>
                     </ul>
                 </div>
+            </div>
         </div>
     </div>
 
@@ -91,12 +91,11 @@
             </div>
         </div>
     </div>
-    <div id="discard-piles" class="two-equal-columns">
+    <div class="two-equal-columns" th:if="${game.players.size() > 2}">
         <div class="columnLeft">
             <div class="played-cards-div">
                 <ul class="played-cards">
                     <li class="card">
-                        disc.
                     </li>
                 </ul>
             </div>
@@ -106,7 +105,6 @@
             <div class="played-cards-div">
                 <ul class="played-cards">
                     <li class="card">
-                        disc.
                     </li>
                 </ul>
             </div>
@@ -118,11 +116,12 @@
 
         <div id="player-discard">
             <div class="played-cards-div">
-                <ul class="played-cards">
-                    <li class="card">
-                        disc.
-                    </li>
-                </ul>
+                <div class="card mat">
+                    <ul class="played-cards">
+                        <li class="card">
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
         <div id="player-hand">

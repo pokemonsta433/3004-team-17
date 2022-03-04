@@ -17,6 +17,8 @@ div#banner{
 
 ul{
     list-style: none;
+    margin-left: 0;
+    padding-left: 0;
 }
 
 ul#horizontal-list{
@@ -132,26 +134,35 @@ div#button{
     float: left;
 }
 
-.two-equal-columns .columnLeft .played-cards-div{
+.two-equal-columns .columnLeft .played-cards-div .mat{
     float:left;
 }
 
-.two-equal-columns .columnRight .played-cards-div{
+.two-equal-columns .columnRight .played-cards-div .mat{
     float: right;
 }
 
-.played-cards-div{
+.played-cards-div {
     display: flex;
     text-align:center;
     justify-content: center;
-    margin-right: 25px;
 }
 
-.played-cards-div .played-cards{
+
+.played-cards-div .mat{
+    border: .4em solid #a67500;
+    border-radius: 5%;
+    justify-content: center;
+    text-align: center;
+    width: 60%;
+    height: 100px;
+}
+
+.played-cards-div .mat .played-cards{
     list-style: none;
 }
 
-.played-cards-div .played-cards li{
+.played-cards-div .mat .played-cards li{
     display: inline;
 }
 
