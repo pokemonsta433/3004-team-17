@@ -8,11 +8,13 @@ public class Game {
     Stack<Card> deck;
     ArrayList<Player> players;
     ArrayList<Card> discardPile;
+    DeckFactory deckMaker;
 
     public Game(ArrayList<Player> ps){
         players = ps;
         deck = new Stack<>();
         discardPile = new ArrayList<>();
+        deckMaker = new DeckFactory();
         playGame();
     }
 
@@ -23,9 +25,7 @@ public class Game {
         return players.get(i);
     }
     public void generateDeck(){
-        for(int i = 0; i < 99; i++){
-            deck.add(new Card("boar"));
-        }
+        deck = deckMaker.build("Adventure");
     }
 
     public void shuffleDeck(){ Collections.shuffle(deck); }
@@ -33,6 +33,7 @@ public class Game {
 
     public void dealHands(){
         for(Player player: players){
+            player.hand.clear();
             for(int i = 0; i < 12; i++){
                 player.hand.add(deck.remove(deck.size() - 1));
             }
