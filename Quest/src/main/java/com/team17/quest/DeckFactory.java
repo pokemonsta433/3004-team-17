@@ -14,17 +14,17 @@ public class DeckFactory {
             {"sword", "weapon", "10", "16"},
             {"horse", "weapon", "10", "11"},
             {"dagger", "weapon", "5", "6"},
-            {"dragon", "foe", "50", "70", "", "1"},
-            {"giant", "foe", "40", "40", "", "2"},
-            {"mordred", "foe", "30", "30", "", "4"},
-            {"green_knight", "foe", "25", "40", "", "2"},
-            {"black_knight", "foe", "25", "35", "", "3"},
-            {"evil_knight", "foe", "20", "30", "", "6"},
-            {"saxon_knight", "foe", "15", "25", "", "8"},
-            {"robber_knight", "foe", "15", "15", "", "7"},
-            {"saxons", "foe", "10", "20", "", "5"},
-            {"boar", "foe", "5", "15", "", "4"},
-            {"thieves", "foe", "5", "5", "", "8"},
+            {"dragon", "foe", "50", "70", "defend_the_queens_honor,search_for_the_holy_grail,slay_the_dragon", "1"},
+            {"giant", "foe", "40", "40", "defend_the_queens_honor,search_for_the_holy_grail", "2"},
+            {"mordred", "foe", "30", "30", "defend_the_queens_honor,search_for_the_holy_grail", "4"},
+            {"green_knight", "foe", "25", "40", "defend_the_queens_honor,search_for_the_holy_grail,test_of_the_green_knight", "2"},
+            {"black_knight", "foe", "25", "35", "defend_the_queens_honor,rescue_the_fair_maiden,search_for_the_holy_grail", "3"},
+            {"evil_knight", "foe", "20", "30", "defend_the_queens_honor,journey_through_the_enchanted_forest,search_for_the_holy_grail", "6"},
+            {"saxon_knight", "foe", "15", "25", "defend_the_queens_honor,repel_saxon_raiders,search_for_the_holy_grail", "8"},
+            {"robber_knight", "foe", "15", "15", "defend_the_queens_honor,search_for_the_holy_grail", "7"},
+            {"saxons", "foe", "10", "20", "defend_the_queens_honor,repel_saxon_raiders,search_for_the_holy_grail", "5"},
+            {"boar", "foe", "5", "15", "boar_hunt,defend_the_queens_honor,search_for_the_holy_grail", "4"},
+            {"thieves", "foe", "5", "5", "defend_the_queens_honor,search_for_the_holy_grail", "8"},
     };
 
     public Stack<Card> build(String type){
@@ -45,7 +45,7 @@ public class DeckFactory {
             }
             else if(adventure_deck[i][1] == "foe"){
                 for(int j = 0; j <= Integer.parseInt(adventure_deck[i][5]); j++){
-                    deck.add(new FoeCard(adventure_deck[i][0],Integer.parseInt(adventure_deck[i][2]), Integer.parseInt(adventure_deck[i][3]), adventure_deck[i][4]));
+                    deck.add(new FoeCard(adventure_deck[i][0],Integer.parseInt(adventure_deck[i][2]), Integer.parseInt(adventure_deck[i][3]), adventure_deck[i][4].split(",")));
                 }
             }
         }

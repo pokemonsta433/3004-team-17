@@ -2,9 +2,9 @@ package com.team17.quest;
 
 public class FoeCard extends AdventureCard{
     int bonus_points;
-    String bonus_card;
+    String[] bonus_card;
 
-    public FoeCard(String name, int bp, int bonus, String bc){
+    public FoeCard(String name, int bp, int bonus, String[] bc){
         super(name, bp);
         bonus_points = bonus;
         bonus_card = bc;

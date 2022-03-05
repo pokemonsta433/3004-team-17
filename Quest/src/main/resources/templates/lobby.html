@@ -11,7 +11,7 @@
         <h3 style="font-size: 225%">Quest of the Round Table</h3>
         <table>
             <tr>
-                <th id = "head">Lobby<th>
+                <th id = "head" th:text="'Lobby ' + ${PlayerList.size()} + '/4 Players'"><th>
             </tr>
             <tr th:each="p: ${PlayerList}">
                 <td id = "names" th:text="${p.name}"></td>
@@ -23,6 +23,9 @@
                START GAME!
             </button>
         </form>
+        <button id = "notready" type="submit" th:if="${PlayerList.size() == 1}">
+            WAITING FOR PLAYERS
+        </button>
     </div>
 </body>
 </html>
