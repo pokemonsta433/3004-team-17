@@ -1,5 +1,6 @@
 package com.team17.quest;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
@@ -7,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
@@ -25,8 +27,12 @@ public class DefaultController {
 
     ArrayList<Player> players = new ArrayList<>();
     int MAX_PLAYERS = 4;
-    private SimpMessageSendingOperations messaging;
-
+    @Autowired
+    private SimpMessagingTemplate messageSender;
+    private void broadcastMessage(String message) {
+        messageSender.convertAndSend("/topic/greetings",
+                new ServerMessage(HtmlUtils.htmlEscape(message)));
+    }
     @MessageMapping("/hello")
     @SendTo("/topic/greetings")
     public ServerMessage greeting(ClientMessage message) throws Exception {
@@ -37,7 +43,6 @@ public class DefaultController {
     @GetMapping(value = "/testmessage")
     public String testing(Model model) {
         System.out.println("===== testmessage");
-
         return "testmessage";
     }
     @GetMapping(value = "/")
@@ -68,7 +73,10 @@ public class DefaultController {
         players.add(p);
         model.addAttribute("PlayerList", players);
         model.addAttribute("player", p);
-        //messaging.convertAndSend("Player: " + p.getName() + " joined the game!");
+        System.out.println("convertAndSend: Player: " + p.getName() + " joined the game!");
+
+        // broadcast the name of the play that joined
+        broadcastMessage("Server says: " + p.getName() + " has joined.");
         return "lobby";
     }
 
