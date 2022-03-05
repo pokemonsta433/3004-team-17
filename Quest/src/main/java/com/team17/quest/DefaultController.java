@@ -4,9 +4,13 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.util.HtmlUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,11 +24,27 @@ public class DefaultController {
 
     ArrayList<Player> players = new ArrayList<>();
     int MAX_PLAYERS = 4;
+    private SimpMessageSendingOperations messaging;
 
+    @MessageMapping("/hello")
+    @SendTo("/topic/greetings")
+    public ServerMessage greeting(ClientMessage message) throws Exception {
+        Thread.sleep(1000); // simulated delay
+        return new ServerMessage("Server message received from: " + HtmlUtils.htmlEscape(message.getName()));
+    }
+
+    @GetMapping(value = "/testmessage")
+    public String testing(Model model) {
+        System.out.println("===== testmessage");
+
+        return "testmessage";
+    }
     @GetMapping(value = "/")
     public String index(){
         return "redirect:/join";
+        //return "testmessage";
     }
+
     @GetMapping(value = "/join")
     public String Join(Model model) {
         model.addAttribute("Player", new Player());
@@ -46,12 +66,27 @@ public class DefaultController {
         }
         players.add(p);
         model.addAttribute("PlayerList", players);
+        model.addAttribute("player", p);
+        //messaging.convertAndSend("Player: " + p.getName() + " joined the game!");
         return "lobby";
     }
 
     @PostMapping(value = "game")
-    public String start(Model model){
+    public String start(@RequestParam(name = "playername") String playername, Model model){
         model.addAttribute("game", new Game(players));
+        System.out.println("===== playername=" + playername);
+/*        Player myPlayer = new Player();
+        ArrayList<Player> otherplayers = new ArrayList<Player>();
+        for(Player play : players){
+            if(playername.equals(play.name)){
+                myPlayer = play;
+            }
+            else
+            {
+                otherplayers.add(play);
+            }
+        }
+        otherplayers.add(0, myPlayer);*/
         return "GameBoard";
     }
 
