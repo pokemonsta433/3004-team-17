@@ -7,7 +7,7 @@ public class DeckFactory {
 
     public DeckFactory(){}
 
-    String adventure_deck[][] = {
+    String[][] adventure_deck = {
             {"excalibur", "weapon", "30", "2"},
             {"lance", "weapon", "20", "6"},
             {"battle-ax", "weapon", "15", "8"},
@@ -37,15 +37,14 @@ public class DeckFactory {
 
     public Stack<Card> populateAdventure(){
         Stack<Card> deck = new Stack<>();
-        for(int i = 0; i < adventure_deck.length; i++){
-            if(adventure_deck[i][1] == "weapon"){
-                for(int j = 0; j <= Integer.parseInt(adventure_deck[i][3]); j++){
-                    deck.add(new WeaponCard(adventure_deck[i][0], Integer.parseInt(adventure_deck[i][2])));
+        for (String[] strings : adventure_deck) {
+            if (strings[1].equals("weapon")) {
+                for (int j = 0; j <= Integer.parseInt(strings[3]); j++) {
+                    deck.add(new WeaponCard(strings[0], Integer.parseInt(strings[2])));
                 }
-            }
-            else if(adventure_deck[i][1] == "foe"){
-                for(int j = 0; j <= Integer.parseInt(adventure_deck[i][5]); j++){
-                    deck.add(new FoeCard(adventure_deck[i][0],Integer.parseInt(adventure_deck[i][2]), Integer.parseInt(adventure_deck[i][3]), adventure_deck[i][4].split(",")));
+            } else if (strings[1].equals("foe")) {
+                for (int j = 0; j <= Integer.parseInt(strings[5]); j++) {
+                    deck.add(new FoeCard(strings[0], Integer.parseInt(strings[2]), Integer.parseInt(strings[3]), strings[4].split(",")));
                 }
             }
         }
