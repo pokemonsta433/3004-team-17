@@ -122,20 +122,21 @@
                         </li>
                     </ul>
                 </div>
-                <div class="shield">
+                <div class="shield" style="margin-top: 20px">
                     <p th:text="${game.getPlayer(0).shields}">
+                    </p>
                 </div>
             </div>
         </div>
-    </div>
-    <div id="player-hand">
-        <ul id = "hand-list">
-            <li th:each="c: ${game.getPlayer(0).hand}">
-                <div class="card">
-                    <img th:src = "@{/card(cardName=${c.name})}">
-                </div>
-            </li>
-        </ul>
+        <div id="player-hand">
+            <ul id = "hand-list">
+                <li th:each="c: ${game.getPlayer(0).hand}">
+                    <div class="card">
+                        <img th:src = "@{/card(cardName=${c.name})}">
+                    </div>
+                </li>
+            </ul>
+        </div>
     </div>
 </div>
 </body>
