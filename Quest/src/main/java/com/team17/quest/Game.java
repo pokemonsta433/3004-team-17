@@ -5,60 +5,64 @@ import java.util.Collections;
 import java.util.Stack;
 
 public class Game {
-    Stack<Card> deck;
+    Stack<Card> adventure_deck;
+    Stack<Card> story_deck;
     ArrayList<Player> players;
-    ArrayList<Card> discardPile;
+    ArrayList<Card> adventure_discardPile;
+    ArrayList<Card> story_discardPile;
     DeckFactory deckMaker;
+    Card current_story;
+    int player_turn;
 
     public Game(ArrayList<Player> ps){
         players = ps;
-        deck = new Stack<>();
-        discardPile = new ArrayList<>();
+        adventure_deck = new Stack<>();
+        story_deck = new Stack<>();
+        adventure_discardPile = new ArrayList<>();
+        story_discardPile = new ArrayList<>();
         deckMaker = new DeckFactory();
+        player_turn = 0;
         playGame();
     }
 
     public ArrayList<Player> getPlayers(){
         return players;
     }
+
     public Player getPlayer(int i){
         return players.get(i);
     }
-    public void generateDeck(){
-        deck = deckMaker.build("Adventure");
+
+    public Card getCurrent_story(){ return current_story;}
+    public void generateDecks(){
+        story_deck = deckMaker.build("Story");
+        adventure_deck = deckMaker.build("Adventure");
     }
 
-    public void shuffleDeck(){ Collections.shuffle(deck); }
+    public void shuffleDecks(){
+        Collections.shuffle(adventure_deck);
+        Collections.shuffle(story_deck);
+    }
 
 
     public void dealHands(){
         for(Player player: players){
             player.hand.clear();
             for(int i = 0; i < 12; i++){
-                player.hand.add(deck.remove(deck.size() - 1));
+                player.hand.add(adventure_deck.pop());
             }
         }
     }
 
-    public int getPlayerInput(Player p){
-        //get input from frontend, gives index of card to discard or -1 if end turn.
-        return 0;
-    }
 
     public void gameStart(){
-        for(Player player: players){
-            int input = getPlayerInput(player);
-            if(input >= 0){
-                player.discardCard(player.hand.get(input));
-                player.drawCard(deck);
-            }
-        }
+        current_story = story_deck.pop();
     }
 
     public void playGame(){
         //one time game set up
-        generateDeck();
-        shuffleDeck();
+        generateDecks();
+        shuffleDecks();
         dealHands();
         //game begins
         gameStart();

@@ -4,8 +4,8 @@ public class FoeCard extends AdventureCard{
     int bonus_points;
     String[] bonus_card;
 
-    public FoeCard(String name, int bp, int bonus, String[] bc){
-        super(name, bp);
+    public FoeCard(String name, int i, int bp, int bonus, String[] bc){
+        super(name, i, bp);
         bonus_points = bonus;
         bonus_card = bc;
     }

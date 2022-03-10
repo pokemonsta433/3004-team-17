@@ -30,8 +30,16 @@ public class Player {
     }
 
 
-    public void discardCard(Card c){
+    public Card discardCard(Card c){
         hand.remove(c);
+        return c;
+    }
+
+    public Card getById(int i){
+        for(Card c: hand){
+            if(c.id == i) return c;
+        }
+        return null;
     }
 
     public void drawCard(Stack<Card> d){

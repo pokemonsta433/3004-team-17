@@ -27,6 +27,7 @@ public class DefaultController {
 
     ArrayList<Player> players = new ArrayList<>();
     int MAX_PLAYERS = 4;
+    Game game;
     @Autowired
     private SimpMessagingTemplate messageSender;
     private void broadcastMessage(String message) {
@@ -82,7 +83,7 @@ public class DefaultController {
 
     @PostMapping(value = "game")
     public String start(@RequestParam(name = "playername") String playername, Model model){
-        model.addAttribute("game", new Game(players));
+        model.addAttribute("game", game = new Game(players));
         System.out.println("===== playername=" + playername);
 /*        Player myPlayer = new Player();
         ArrayList<Player> otherplayers = new ArrayList<Player>();

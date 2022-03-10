@@ -135,6 +135,11 @@
                         <img th:src = "@{/card(cardName=${c.name})}">
                     </div>
                 </li>
+                <li>
+                    <div class="card">
+                        <img th:src="@{/card(cardName=${game.current_story.name})}">
+                    </div>
+                </li>
             </ul>
         </div>
     </div>
