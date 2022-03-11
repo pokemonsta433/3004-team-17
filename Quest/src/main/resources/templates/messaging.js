@@ -1,4 +1,14 @@
-var userName = 'Isaac';
+var userName = null;
+
+function loadData() {
+    var user = localStorage.getItem('_user');
+    if (!user) alert("somehow you got here without setting your name! Please go back to the home page and try joining the game again!")
+    localStorage.removeItem('_user');
+    user = atob(user); //decode the data
+    user = JSON.parse(user); //parse it
+    userName = user;
+    alert("user name is " + userName);
+}
 
 var socket = new SockJS('/gs-guide-websocket');
 stompClient = Stomp.over(socket);

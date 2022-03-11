@@ -4,9 +4,21 @@
     <meta charset="UTF-8">
     <title>Quest of The Round Table</title>
     <link rel="stylesheet" href="/templates/Quest-Styles.css">
+    <script>
+        function setUsername(){
+            var uname = document.querySelector('body').getAttribute('data-name'); //is this a bit of a hack? Hell yes it is :)
+            user = JSON.stringify(uname);
+            //converts to base 64 ASCII
+            user = btoa(user)
+            //save to web storage -- I'm not teaching my team how to use cookies they can barely understand english!
+            localStorage.setItem('_user', user);
+            return true;
+        }
+    </script>
 </head>
-<body>
 
+<body th:data-name="${Player.name}"  th:onload="setUsername()">
+<!--<body th:onload="'setUsername(' + ${player.name} + ');'" > -->
     <div id = "lobby_list">
         <h3 style="font-size: 225%">Quest of the Round Table</h3>
         <table>
