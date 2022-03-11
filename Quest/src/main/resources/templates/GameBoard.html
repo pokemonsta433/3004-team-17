@@ -10,8 +10,13 @@
     <meta charset="UTF-8">
     <title>QuestBoard</title>
     <link rel="stylesheet" href="/templates/Quest-Styles.css">
+    <script src="/js"></script>
 </head>
 <body>
+<noscript><h1 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being
+    enabled. Please enable
+    Javascript and reload this page!</h1></noscript>
+
 <div id="Banner">
     <ul id = "horizontal-list" style="background-color: #a67500">
         <li>
@@ -113,6 +118,7 @@
         <div id="player-discard">
             <div class="played-cards-div">
                 <div class="card mat">
+                     <input id="highlightCards" type="button" value="Highlight Cards" onclick="highlightCards();">
                     <ul class="played-cards">
                         <li class="card">
                         </li>

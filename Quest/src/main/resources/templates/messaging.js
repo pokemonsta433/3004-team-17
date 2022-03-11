@@ -1,28 +1,13 @@
-var stompClient = null;
+var userName = 'Isaac';
 
-function setConnected(connected) {
-    $("#connect").prop("disabled", connected);
-    $("#disconnect").prop("disabled", !connected);
-    if (connected) {
-        $("#conversation").show();
-    }
-    else {
-        $("#conversation").hide();
-    }
-    $("#greetings").html("");
-}
-
-function connect() {
-    var socket = new SockJS('/gs-guide-websocket');
-    stompClient = Stomp.over(socket);
-    stompClient.connect({}, function (frame) {
-        setConnected(true);
-        console.log('Connected: ' + frame);
-        stompClient.subscribe('/topic/greetings', function (greeting) {
-            showGreeting(JSON.parse(greeting.body).content);
-        });
+var socket = new SockJS('/gs-guide-websocket');
+stompClient = Stomp.over(socket);
+stompClient.connect({}, function (frame) {
+    console.log('Connected: ' + frame);
+    stompClient.subscribe('/topic/greetings', function (greeting) {
+        showGreeting(JSON.parse(greeting.body).content);
     });
-}
+});
 
 function disconnect() {
     if (stompClient !== null) {
@@ -36,9 +21,28 @@ function sendName() {
     stompClient.send("/app/hello", {}, JSON.stringify({'name': $("#name").val()}));
 }
 
-function showGreeting(message) {
-    $("#greetings").append("<tr><td>" + message + "</td></tr>");
+function playCard(card){
+   alert ("played card" + card)
+    return true;
 }
+
+function highlightCards() {
+    const handCards = document.querySelectorAll('#hand-list li .card img')
+    handCards.forEach(card => {
+        card.style.border = '.2em solid greenyellow';
+        card.style.borderRadius = '10%';
+        card.onclick = function(){playCard(card)};
+    })
+}
+
+function unhighlightCards() {
+    alert("it fuckin' worked btw :)");
+    const handCards = document.querySelectorAll('#hand-list li .card img')
+    handCards.forEach(card => {
+        card.style.border = 'none';
+    })
+}
+
 
 $(function () {
     $("form").on('submit', function (e) {
