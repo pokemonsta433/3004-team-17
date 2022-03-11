@@ -1,4 +1,34 @@
 var userName = null;
+var stompClient = null;
+
+function setConnected(connected) { //this is not required
+    $("#connect").prop("disabled", connected);
+    $("#disconnect").prop("disabled", !connected);
+    if (connected) {
+        $("#conversation").show();
+    }
+    else {
+        $("#conversation").hide();
+    }
+    $("#greetings").html("");
+}
+
+function refreshPage() {
+    location.reload();
+}
+
+function connect() {
+    var socket = new SockJS('/gs-guide-websocket');
+    stompClient = Stomp.over(socket);
+    stompClient.connect({}, function (frame) {
+        setConnected(true);
+        console.log('Connected: ' + frame);
+        stompClient.subscribe('/topic/greetings', function (greeting) { //TODO: call it not greeting (and change that in the server side)
+            showGreeting(JSON.parse(greeting.body).content); //TODO: instead of this, we look at it and parse it if it says refresh we... refresh
+        });
+    });
+}
+connect(); //somebody has to call connect
 
 function loadData() {
     var user = localStorage.getItem('_user');
@@ -10,15 +40,6 @@ function loadData() {
     alert("user name is " + userName);
 }
 
-var socket = new SockJS('/gs-guide-websocket');
-stompClient = Stomp.over(socket);
-stompClient.connect({}, function (frame) {
-    console.log('Connected: ' + frame);
-    stompClient.subscribe('/topic/greetings', function (greeting) {
-        showGreeting(JSON.parse(greeting.body).content);
-    });
-});
-
 function disconnect() {
     if (stompClient !== null) {
         stompClient.disconnect();
@@ -27,12 +48,24 @@ function disconnect() {
     console.log("Disconnected");
 }
 
+function sendCard(uname, id) {
+    let card = {
+        name: uname,
+        msg: "play " + id
+    }
+    let msg = JSON.stringify(card);
+    alert("about to send msg " + msg)
+    stompClient.send("/app/hello", {}, msg);
+}
+
 function sendName() {
-    stompClient.send("/app/hello", {}, JSON.stringify({'name': $("#name").val()}));
+    alert("we fucking got 'em going")
+    stompClient.send("/app/hello", {}, JSON.stringify({'name': userName, msg: "testing"}));
 }
 
 function playCard(id){
     alert("Card Played " + id);
+    sendCard(userName, id);
 }
 
 function highlightCards() {
@@ -45,7 +78,6 @@ function highlightCards() {
 }
 
 function unhighlightCards() {
-    alert("it fuckin' worked btw :)");
     const handCards = document.querySelectorAll('#hand-list li .card img')
     handCards.forEach(card => {
         card.style.border = 'none';

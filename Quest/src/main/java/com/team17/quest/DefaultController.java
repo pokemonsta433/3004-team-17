@@ -34,11 +34,24 @@ public class DefaultController {
         messageSender.convertAndSend("/topic/greetings",
                 new ServerMessage(HtmlUtils.htmlEscape(message)));
     }
+
     @MessageMapping("/hello")
     @SendTo("/topic/greetings")
     public ServerMessage greeting(ClientMessage message) throws Exception {
-        Thread.sleep(1000); // simulated delay
-        return new ServerMessage("Server message received from: " + HtmlUtils.htmlEscape(message.getName()));
+        System.out.println("got a message!!!!~");
+        System.out.println("message is from " + message.getName());
+        System.out.println("message content is " + message.getMsg());
+        //TODO: add a switch to work on message.getMsg()
+        return new ServerMessage("Changed!");
+    }
+
+    @MessageMapping("/ServerRcv")
+    @SendTo("/topic/serverMessages")
+    public ServerMessage answer(ClientMessage message) throws Exception {
+        System.out.println("got a message" + message);
+        //json.parse <--
+        //<-- remove card from model
+        return new ServerMessage("Change");
     }
 
     @GetMapping(value = "/testmessage")
