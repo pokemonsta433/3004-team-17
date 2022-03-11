@@ -14,6 +14,7 @@ public class Game {
     Card current_story;
     int player_turn;
 
+
     public Game(ArrayList<Player> ps){
         players = ps;
         adventure_deck = new Stack<>();
@@ -23,6 +24,17 @@ public class Game {
         deckMaker = new DeckFactory();
         player_turn = 0;
         playGame();
+    }
+
+    public int getIndexOfName(String n){
+        int i = 0;
+        for(Player p: players){
+            if(p.name.equals(n)){
+                return i;
+            }
+            i++;
+        }
+        return -1;
     }
 
     public ArrayList<Player> getPlayers(){

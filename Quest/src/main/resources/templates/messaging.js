@@ -23,8 +23,10 @@ function connect() {
     stompClient.connect({}, function (frame) {
         setConnected(true);
         console.log('Connected: ' + frame);
-        stompClient.subscribe('/topic/greetings', function (greeting) { //TODO: call it not greeting (and change that in the server side)
-            showGreeting(JSON.parse(greeting.body).content); //TODO: instead of this, we look at it and parse it if it says refresh we... refresh
+        stompClient.subscribe('/topic/serverMessages', function (message) {
+            if(message.body.substring(12,message.body.length - 2) === "Change"){
+                refreshPage();
+            }
         });
     });
 }
@@ -32,7 +34,7 @@ connect(); //somebody has to call connect
 
 function loadData() {
     var user = localStorage.getItem('_user');
-    if (!user) alert("somehow you got here without setting your name! Please go back to the home page and try joining the game again!")
+    //if (!user) alert("somehow you got here without setting your name! Please go back to the home page and try joining the game again!")
     localStorage.removeItem('_user');
     user = atob(user); //decode the data
     user = JSON.parse(user); //parse it
@@ -54,8 +56,7 @@ function sendCard(uname, id) {
         msg: "play " + id
     }
     let msg = JSON.stringify(card);
-    alert("about to send msg " + msg)
-    stompClient.send("/app/hello", {}, msg);
+    stompClient.send("/app/ServerRcv", {}, msg);
 }
 
 function sendName() {

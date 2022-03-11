@@ -30,9 +30,14 @@ public class Player {
     }
 
 
-    public Card discardCard(Card c){
-        hand.remove(c);
-        return c;
+    public Card discardCard(int id){
+        for(Card c: hand){
+            if(c.id == id){
+                hand.remove(c);
+                return c;
+            }
+        }
+        return null;
     }
 
     public Card getById(int i){

@@ -37,16 +37,16 @@
     <div id="player2" th:if="${game.players.size() % 2 == 0}">
         <div class="cards-shields-container" style="Justify-Content: Center">
             <div class="cardCount">
-                <p th:text="${game.getPlayer(1).hand.size()}">
+                <p th:text="${game.getPlayer((i + game.players.size()/2) % game.players.size()).hand.size()}">
                 </p>
             </div>
             <div class="shield">
-                <p th:text="${game.getPlayer(1).shields}">
+                <p th:text="${game.getPlayer((i + game.players.size()/2) % game.players.size()).shields}">
                 </p>
             </div>
         </div>
         <div>
-            <p class="player-name" style="text-align: center" th:text="${game.getPlayer(1).name}">
+            <p class="player-name" style="text-align: center" th:text="${game.getPlayer((i + game.players.size()/2) % game.players.size()).name}">
             </p>
         </div>
 
@@ -67,31 +67,31 @@
         <div id="player3" class="columnLeft">
             <div class="cards-shields-container" style="width: 50%">
                 <div class="cardCount">
-                    <p th:text="${game.getPlayer(game.players.size() - 2).hand.size()}">
+                    <p th:text="${game.getPlayer((i + 1) % game.players.size()).hand.size()}">
                     </p>
                 </div>
                 <div class="shield">
-                    <p th:text="${game.getPlayer(game.players.size() - 2).shields}">
+                    <p th:text="${game.getPlayer((i + 1) % game.players.size()).shields}">
                     </p>
                 </div>
             </div>
-            <p class="player-name" style="text-align: left" th:text="${game.getPlayer(game.players.size() - 2).name}">
+            <p class="player-name" style="text-align: left" th:text="${game.getPlayer((i + 1) % game.players.size()).name}">
             </p>
 
         </div>
         <div id="player4" class="columnRight">
             <div class="cards-shields-container" style="justify-content: right">
                 <div class="cardCount">
-                    <p th:text="${game.getPlayer(game.players.size() - 1).hand.size()}">
+                    <p th:text="${game.getPlayer((i + game.players.size() - 1) % game.players.size()).hand.size()}">
                     </p>
                 </div>
                 <div class="shield">
-                    <p th:text="${game.getPlayer(game.players.size() - 1).shields}">
+                    <p th:text="${game.getPlayer((i + game.players.size() - 1) % game.players.size()).shields}">
                     </p>
                 </div>
             </div>
             <div>
-                <p class="player-name" style="text-align: right" th:text="${game.getPlayer(game.players.size() - 1).name}">
+                <p class="player-name" style="text-align: right" th:text="${game.getPlayer((i + game.players.size() - 1) % game.players.size()).name}">
                 </p>
             </div>
         </div>
@@ -129,14 +129,14 @@
                     </ul>
                 </div>
                 <div class="shield" style="margin-top: 20px">
-                    <p th:text="${game.getPlayer(0).shields}">
+                    <p th:text="${game.getPlayer(i).shields}">
                     </p>
                 </div>
             </div>
         </div>
         <div id="player-hand">
             <ul id = "hand-list">
-                <li th:each="c: ${game.getPlayer(0).hand}">
+                <li th:each="c: ${game.getPlayer(i).hand}">
                     <div class="card">
                         <img th:src = "@{/card(cardName=${c.name})}" th:id="${c.id}">
                     </div>

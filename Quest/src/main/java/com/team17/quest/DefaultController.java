@@ -28,27 +28,11 @@ public class DefaultController {
     ArrayList<Player> players = new ArrayList<>();
     int MAX_PLAYERS = 4;
     Game game;
-    @Autowired
-    private SimpMessagingTemplate messageSender;
-    private void broadcastMessage(String message) {
-        messageSender.convertAndSend("/topic/greetings",
-                new ServerMessage(HtmlUtils.htmlEscape(message)));
-    }
-
-    @MessageMapping("/hello")
-    @SendTo("/topic/greetings")
-    public ServerMessage greeting(ClientMessage message) throws Exception {
-        System.out.println("got a message!!!!~");
-        System.out.println("message is from " + message.getName());
-        System.out.println("message content is " + message.getMsg());
-        //TODO: add a switch to work on message.getMsg()
-        return new ServerMessage("Changed!");
-    }
-
+    boolean game_started = false;
     @MessageMapping("/ServerRcv")
     @SendTo("/topic/serverMessages")
     public ServerMessage answer(ClientMessage message) throws Exception {
-        System.out.println("got a message" + message);
+        game.players.get(game.getIndexOfName(message.getName())).discardCard(Integer.parseInt(message.getMsg().split(" ")[1]));
         //json.parse <--
         //<-- remove card from model
         return new ServerMessage("Change");
@@ -87,29 +71,18 @@ public class DefaultController {
         players.add(p);
         model.addAttribute("PlayerList", players);
         model.addAttribute("player", p);
-        System.out.println("convertAndSend: Player: " + p.getName() + " joined the game!");
-
         // broadcast the name of the play that joined
-        broadcastMessage("Server says: " + p.getName() + " has joined.");
         return "lobby";
     }
 
     @PostMapping(value = "game")
     public String start(@RequestParam(name = "playername") String playername, Model model){
-        model.addAttribute("game", game = new Game(players));
-        System.out.println("===== playername=" + playername);
-/*        Player myPlayer = new Player();
-        ArrayList<Player> otherplayers = new ArrayList<Player>();
-        for(Player play : players){
-            if(playername.equals(play.name)){
-                myPlayer = play;
-            }
-            else
-            {
-                otherplayers.add(play);
-            }
+        if(game_started == false){
+            game = new Game(players);
+            game_started = true;
         }
-        otherplayers.add(0, myPlayer);*/
+        model.addAttribute("game", game);
+        model.addAttribute("i", game.getIndexOfName(playername));
         return "GameBoard";
     }
 
