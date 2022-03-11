@@ -31,9 +31,8 @@ function sendName() {
     stompClient.send("/app/hello", {}, JSON.stringify({'name': $("#name").val()}));
 }
 
-function playCard(card){
-   alert ("played card" + card)
-    return true;
+function playCard(id){
+    alert("Card Played " + id);
 }
 
 function highlightCards() {
@@ -41,7 +40,7 @@ function highlightCards() {
     handCards.forEach(card => {
         card.style.border = '.2em solid greenyellow';
         card.style.borderRadius = '10%';
-        card.onclick = function(){playCard(card)};
+        card.onclick = function(){playCard(card.id)};
     })
 }
 

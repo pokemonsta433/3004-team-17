@@ -134,7 +134,7 @@
             <ul id = "hand-list">
                 <li th:each="c: ${game.getPlayer(0).hand}">
                     <div class="card">
-                        <img th:src = "@{/card(cardName=${c.name})}">
+                        <img th:src = "@{/card(cardName=${c.name})}" th:id="${c.id}">
                     </div>
                 </li>
                 <li>
