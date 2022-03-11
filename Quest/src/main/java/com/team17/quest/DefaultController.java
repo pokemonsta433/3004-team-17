@@ -116,4 +116,9 @@ public class DefaultController {
                 .contentType(MediaType.IMAGE_JPEG)
                 .body(new InputStreamResource(imgFile.getInputStream()));
     }
+    @GetMapping(value = "/js")
+    public String JavaScript(Model model){
+        model.addAttribute("JavaScript", "True");
+        return "Messaging.js";
+    }
 }
