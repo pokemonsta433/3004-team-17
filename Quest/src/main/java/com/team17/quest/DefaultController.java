@@ -77,7 +77,7 @@ public class DefaultController {
 
     @PostMapping(value = "game")
     public String start(@RequestParam(name = "playername") String playername, Model model){
-        if(game_started == false){
+        if(!game_started){
             game = new Game(players);
             game_started = true;
         }
@@ -85,6 +85,14 @@ public class DefaultController {
         model.addAttribute("i", game.getIndexOfName(playername));
         return "GameBoard";
     }
+
+    @GetMapping(value = "gameboard")
+    public String observe(@RequestParam(name = "playername") String playername, Model model){
+        model.addAttribute("game", game);
+        model.addAttribute("i", game.getIndexOfName(playername));
+        return "GameBoard";
+    }
+
 
     @GetMapping(value = "/templates/Quest-Styles.css")
     public String CSS(Model model){

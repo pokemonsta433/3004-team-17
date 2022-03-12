@@ -13,8 +13,39 @@ function setConnected(connected) { //this is not required
     $("#greetings").html("");
 }
 
+function saveUsername(){
+    user = JSON.stringify(userName);
+    //converts to base 64 ASCII
+    user = btoa(user)
+    //save to web storage -- I'm not teaching my team how to use cookies they can barely understand english!
+    localStorage.setItem('_user', user);
+    return true;
+}
+
+function loadUsername() {
+    var user = localStorage.getItem('_user');
+    //if (!user) alert("somehow you got here without setting your name! Please go back to the home page and try joining the game again!")
+    localStorage.removeItem('_user');
+    user = atob(user); //decode the data
+    user = JSON.parse(user); //parse it
+    userName = user;
+    alert("user name is " + userName);
+}
+
 function refreshPage() {
-    location.reload();
+    //setUsername();
+    //location.reload();
+    //window.location;
+    fetch('http://localhost:8080/gameboard?playername=' + userName , {
+        method: "GET"
+    }).then (response => response.text())
+        .then(result => {
+            let parser = new DOMParser();
+            doc = parser.parseFromString(result, 'text/html');
+            document.replaceChild( doc.documentElement, document.documentElement);
+        })
+    //loadUsername();
+    //window.location = window.location; // can't do this because it uses get requests :(
 }
 
 function connect() {
@@ -32,15 +63,6 @@ function connect() {
 }
 connect(); //somebody has to call connect
 
-function loadData() {
-    var user = localStorage.getItem('_user');
-    //if (!user) alert("somehow you got here without setting your name! Please go back to the home page and try joining the game again!")
-    localStorage.removeItem('_user');
-    user = atob(user); //decode the data
-    user = JSON.parse(user); //parse it
-    userName = user;
-    alert("user name is " + userName);
-}
 
 function disconnect() {
     if (stompClient !== null) {
