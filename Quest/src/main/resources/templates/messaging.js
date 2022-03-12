@@ -55,8 +55,11 @@ function connect() {
         setConnected(true);
         console.log('Connected: ' + frame);
         stompClient.subscribe('/topic/serverMessages', function (message) {
-            if(message.body.substring(12,message.body.length - 2) === "Change"){
-                refreshPage();
+            //alert("message received: " + JSON.parse(message.body).content);
+            //if(message.body.substring(12,message.body.length - 2) === "Change"){
+            if(JSON.parse(message.body).content === "Change"){
+                //alert("Calling ....  refreshPage()");
+                acceptPlayerJoin();
             }
         });
     });

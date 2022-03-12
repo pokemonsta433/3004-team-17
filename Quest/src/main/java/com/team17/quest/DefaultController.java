@@ -29,6 +29,14 @@ public class DefaultController {
     int MAX_PLAYERS = 4;
     Game game;
     boolean game_started = false;
+    @Autowired
+    private SimpMessagingTemplate messageSender;
+
+    private void broadcastMessage(String message) {
+        messageSender.convertAndSend("/topic/serverMessages",
+                new ServerMessage(HtmlUtils.htmlEscape(message)));
+    }
+
     @MessageMapping("/ServerRcv")
     @SendTo("/topic/serverMessages")
     public ServerMessage answer(ClientMessage message) throws Exception {
@@ -66,6 +74,8 @@ public class DefaultController {
         model.addAttribute("PlayerList", players);
         model.addAttribute("player", p);
         // broadcast the name of the play that joined
+        //broadcastMessage("Server says: " + p.getName() + " has joined.");
+        broadcastMessage("Change");
         return "lobby";
     }
 
@@ -114,5 +124,11 @@ public class DefaultController {
     public String JavaScript(Model model){
         model.addAttribute("JavaScript", "True");
         return "Messaging.js";
+    }
+
+    @GetMapping(value = "/testmessage")
+    public String testing(Model model) {
+        System.out.println("===== testmessage");
+        return "testmessage";
     }
 }
