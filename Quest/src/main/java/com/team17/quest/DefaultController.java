@@ -98,10 +98,16 @@ public class DefaultController {
     }
 
 
-    @GetMapping(value = "/templates/Quest-Styles.css")
-    public String CSS(Model model){
+    @GetMapping(value = "/templates/Global.css")
+    public String globalCSS(Model model){
         model.addAttribute("css", "True");
-        return "Quest-Styles.css";
+        return "Global.css";
+    }
+
+    @GetMapping(value = "/templates/Gameboard.css")
+    public String gameboardCSS(Model model){
+        model.addAttribute("css", "True");
+        return "Gameboard.css";
     }
 
     @GetMapping(value = "/card")
