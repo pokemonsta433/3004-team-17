@@ -1,0 +1,107 @@
+:root {
+    --default-font-family: Candara, seriff;
+}
+
+body {
+    background-color: #bfa70b ;
+    font-size: 150%;
+}
+
+.table{
+    display: table;
+    position:absolute;
+    text-align: left;
+}
+
+ul{
+    list-style: none;
+    margin-left: 0;
+    padding-left: 0;
+}
+
+div#welcome{
+    text-align: center;
+    padding-top: 150px;
+    font-size: 400%;
+    font-family: var(--default-font-family);
+}
+
+
+input[type=text]{
+    width : 30%;
+    margin-left: 35%;
+    height: 40px;
+    font-size: 100%;
+    vertical-align: center;
+    font-family: var(--default-font-family);
+}
+
+button#join{
+    width: 12%;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    font-size: 125%;
+    font-family: var(--default-font-family);
+    color : forestgreen;
+    background-color: white;
+    border-color: black;
+    border-width: 1px;
+}
+
+button#join:hover{
+    background-color: forestgreen;
+    color: white;
+}
+
+button#start{
+    width: 12%;
+    height: 100px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    font-size: 125%;
+    font-family: var(--default-font-family);
+    color : firebrick;
+    background-color: white;
+    border-color: black;
+    border-width: 1px;
+}
+
+button#start:hover{
+    background-color: firebrick;
+    color: white;
+}
+
+button#notready{
+    width: 12%;
+    height: 100px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    font-size: 125%;
+    font-family: var(--default-font-family);
+    color : firebrick;
+    background-color: lightgray;
+    border-color: black;
+    border-width: 1px;
+}
+
+div#lobby_list{
+    font-family: var(--default-font-family);
+    text-align: left;
+    padding-top: 25px;
+    padding-left: 50px;
+}
+
+th#head{
+    padding-bottom: 25px;
+    font-size: 180%;
+}
+
+td#names{
+    padding-bottom: 50px;
+    font-size: 140%;
+}
+
+div#button{
+    padding-top: 50px;
+    padding-left: 46.5%;
+}
