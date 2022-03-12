@@ -7,11 +7,15 @@ public class Player {
     String name;
     ArrayList<Card> hand;
     int shields;
+    Stage played;
+    ArrayList<Card> allies;
 
     public Player(){
         name = "";
         shields = 0;
         hand = new ArrayList<>();
+        played = new Stage();
+        allies = new ArrayList<>();
     }
 
 
@@ -30,9 +34,39 @@ public class Player {
     }
 
 
-    public Card discardCard(int id){
+    public void playCard(int id){
         for(Card c: hand){
             if(c.id == id){
+                if(played.playcard(c) == true){
+                    hand.remove(c);
+                }
+            }
+        }
+    }
+
+    public void returnCardFromPlayer(int id){
+        if(id == played.foe.id){
+            hand.add(played.returnFoe());
+            return;
+        }
+        else{
+            for(Card c: played.weapons){
+                if(c.id == id){
+                    hand.add(played.returnWeapon(id));
+                    return;
+                }
+            }
+        }
+
+    }
+
+    public void drawCard(Stack<Card> d){
+        hand.add(d.pop());
+    }
+
+    public Card discardCard(int id){
+        for(Card c: hand) {
+            if (c.id == id) {
                 hand.remove(c);
                 return c;
             }
@@ -40,19 +74,12 @@ public class Player {
         return null;
     }
 
-    public Card getById(int i){
-        for(Card c: hand){
-            if(c.id == i) return c;
-        }
-        return null;
-    }
-
-    public void drawCard(Stack<Card> d){
-        hand.add(d.pop());
-    }
-
     public ArrayList<Card> getHand(){
         return hand;
+    }
+
+    public Stage getPlayed(){
+        return played;
     }
 
     public int getShields(){ return shields; }

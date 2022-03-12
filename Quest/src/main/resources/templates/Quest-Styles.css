@@ -229,6 +229,12 @@ div#button{
     justify-content: center;
 }
 
+#player-played{/* TODO: make this always centered no matter how many cards are in the hand*/
+    display: flex;
+    text-align:center;
+    justify-content: center;
+}
+
 #hand-list{
     list-style:none;
 }
@@ -258,6 +264,29 @@ div#button{
 
 #hand-list li .card img:hover{
     transform: scale(2.0);
+}
+
+#played-list{
+    list-style:none;
+}
+
+#played-list li{
+    display: inline;
+}
+
+#played-list li .card{
+    margin-right: 5px;
+    float: left;
+    text-align: center;
+    transform: translateY(0);
+    transition: transform .15s ease-in;
+}
+
+#played-list li .card img{
+    height: 120px;
+    width: 84px; /*70% of height*/
+    float: left;
+    transition: transform .2s ease-in-out;
 }
 
 :root {

@@ -32,21 +32,15 @@ public class DefaultController {
     @MessageMapping("/ServerRcv")
     @SendTo("/topic/serverMessages")
     public ServerMessage answer(ClientMessage message) throws Exception {
-        game.players.get(game.getIndexOfName(message.getName())).discardCard(Integer.parseInt(message.getMsg().split(" ")[1]));
+        game.players.get(game.getIndexOfName(message.getName())).playCard(Integer.parseInt(message.getMsg().split(" ")[1]));
         //json.parse <--
         //<-- remove card from model
         return new ServerMessage("Change");
     }
 
-    @GetMapping(value = "/testmessage")
-    public String testing(Model model) {
-        System.out.println("===== testmessage");
-        return "testmessage";
-    }
     @GetMapping(value = "/")
     public String index(){
         return "redirect:/join";
-        //return "testmessage";
     }
 
     @GetMapping(value = "/join")
