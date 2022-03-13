@@ -32,9 +32,9 @@ public class DefaultController {
     @Autowired
     private SimpMessagingTemplate messageSender;
 
-    private void broadcastMessage(String message) {
+    private void broadcastMessage(String messagetype, String message) {
         messageSender.convertAndSend("/topic/serverMessages",
-                new ServerMessage(HtmlUtils.htmlEscape(message)));
+                new ServerMessage(messagetype, HtmlUtils.htmlEscape(message)));
     }
 
     @MessageMapping("/ServerRcv")
@@ -43,7 +43,8 @@ public class DefaultController {
         game.players.get(game.getIndexOfName(message.getName())).playCard(Integer.parseInt(message.getMsg().split(" ")[1]));
         //json.parse <--
         //<-- remove card from model
-        return new ServerMessage("Change");
+        ServerMessage serverMessage = new ServerMessage("Join", "Change");
+        return serverMessage;
     }
 
     @GetMapping(value = "/")
@@ -55,6 +56,13 @@ public class DefaultController {
     public String Join(Model model) {
         model.addAttribute("Player", new Player());
         return "join";
+    }
+
+    @GetMapping(value = "/lobby")
+    public String Lobby(Model model) {
+        model.addAttribute("PlayerList", players);
+        //model.addAttribute("player", p);
+        return "lobby";
     }
 
     @PostMapping(value = "/lobby")
@@ -75,7 +83,8 @@ public class DefaultController {
         model.addAttribute("player", p);
         // broadcast the name of the play that joined
         //broadcastMessage("Server says: " + p.getName() + " has joined.");
-        broadcastMessage("Change");
+        //broadcastMessage("Change");
+        broadcastMessage("Join", p.getName());
         return "lobby";
     }
 
@@ -87,6 +96,7 @@ public class DefaultController {
         }
         model.addAttribute("game", game);
         model.addAttribute("i", game.getIndexOfName(playername));
+        broadcastMessage("Start", "StartGame");
         return "GameBoard";
     }
 

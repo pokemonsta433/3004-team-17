@@ -57,15 +57,23 @@ function connect() {
         stompClient.subscribe('/topic/serverMessages', function (message) {
             //alert("message received: " + JSON.parse(message.body).content);
             //if(message.body.substring(12,message.body.length - 2) === "Change"){
-            if(JSON.parse(message.body).content === "Change"){
-                //alert("Calling ....  refreshPage()");
-                acceptPlayerJoin();
+            if (JSON.parse(message.body).messagetype === "Join") {
+                // get player name
+                $("#playerlist").append("<tr><td>" + JSON.parse(message.body).content + "</td></tr>");
+                // enable start button
+                document.getElementById("start").disabled = false;
+            }
+            else  if(JSON.parse(message.body).messagetype === "Start"){
+                alert("Calling ....  StartGame");
+                //refreshPage();
+                //acceptPlayerJoin();
+                //$("#palyerlist").append("<tr><td>" + JSON.parse(message.body).content + "</td></tr>");
             }
         });
     });
 }
-connect(); //somebody has to call connect
 
+connect(); //somebody has to call connect
 
 function disconnect() {
     if (stompClient !== null) {
