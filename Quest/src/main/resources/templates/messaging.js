@@ -74,10 +74,8 @@ function connect() {
                 document.getElementById("start").disabled = false;
             }
             else  if(JSON.parse(message.body).messagetype === "Start"){
-                alert("Calling ....  StartGame");
-                //refreshPage();
-                //acceptPlayerJoin();
-                //$("#palyerlist").append("<tr><td>" + JSON.parse(message.body).content + "</td></tr>");
+                alert("press start game to begin");
+                //document.getElementById("startbutton-form").submit();
             }
         });
     });
