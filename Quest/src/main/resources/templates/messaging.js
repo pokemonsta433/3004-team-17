@@ -60,6 +60,16 @@ function connect() {
             if (JSON.parse(message.body).messagetype === "Join") {
                 // get player name
                 $("#playerlist").append("<tr><td>" + JSON.parse(message.body).content + "</td></tr>");
+                var playercount = document.getElementById("head")
+                var oldText = playercount.innerHTML;
+                newtext = oldText .replace(/(\d)+?\//g, function(match, number) {
+                    return parseInt(number)+1 + "/";
+                });
+
+
+                playercount.innerHTML = newtext;
+                console.log("boiiii new text is " + newtext);
+
                 // enable start button
                 document.getElementById("start").disabled = false;
             }
