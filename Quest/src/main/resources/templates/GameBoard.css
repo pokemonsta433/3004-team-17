@@ -4,6 +4,19 @@
     --darker-shield-background-color: #198cd3;
 }
 
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    background-color: #558a40;
+}
+
+html {
+    height: 100%;
+}
+
 div#banner{
     float: left;
     width: 100%;
@@ -15,6 +28,10 @@ ul#horizontal-list{
     padding: 0;
     overflow: hidden;
     padding-top: 20px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
 }
 
 ul#horizontal-list li{
@@ -32,16 +49,11 @@ ul#horizontal-list li a{
 }
 
 #gameboard{
-    background-color: green;
-    min-height: 700px;
-    height: 90%;
     width: 80%;
-    border-radius: 5%;
-    margin-top: 50px;
-    margin-left: auto;
-    margin-right: auto;
-    border: 1em solid black;
-
+    height: 70%;
+    background-color: #91742d;
+    margin-top: 5%;
+    border-radius: 10px;
 }
 
 .player-name{
@@ -129,12 +141,12 @@ ul#horizontal-list li a{
     display: flex;
     text-align:center;
     justify-content: center;
+    width: 100%;
 }
 
-
 .played-cards-div .mat{
-    border: .4em solid #a67500;
-    border-radius: 5%;
+    border: 1px dashed black;
+    border-radius: 10px;
     justify-content: center;
     text-align: center;
     width: 60%;
@@ -149,18 +161,33 @@ ul#horizontal-list li a{
     display: inline;
 }
 
-#bottomRow{
-    position:absolute;
-    width: 80%; /*TODO: make this width just relative to the parent, somehow*/
-    bottom: 0;
-    margin: 0;
-    padding: 0;
+#player-hand .shield {
+    position: relative;
+    top: 60px;
 }
 
-#player-hand{/* TODO: make this always centered no matter how many cards are in the hand*/
+#bottomRow{
+    width: 100%;
+    height: 50%;
+}
+
+#bottomRow #player-discard .played-cards-div {
+    margin-top: 10%;
+}
+
+#hand-list{
+    position: relative;
+    bottom: -50px;
+    background-color: #7e6527;
+    padding-top: 20px;
+    margin: 0;
+    border-radius: 20px;
     display: flex;
-    text-align:center;
+    padding-left: 60px;
+    padding-right: 40px;
     justify-content: center;
+    height: 154px;
+    min-width: 260px;
 }
 
 #player-played{/* TODO: make this always centered no matter how many cards are in the hand*/
@@ -169,8 +196,13 @@ ul#horizontal-list li a{
     justify-content: center;
 }
 
-#hand-list{
-    list-style:none;
+#player-hand{/* TODO: make this always centered no matter how many cards are in the hand*/
+    position: fixed;
+    display: flex;
+    bottom: 0px;
+    left: 0;
+    width: 100%;
+    justify-content: center;
 }
 
 #hand-list li{
@@ -178,27 +210,36 @@ ul#horizontal-list li a{
 }
 
 #hand-list li .card{
-    margin-right: 5px;
-    float: left;
-    text-align: center;
-    transform: translateY(0);
-    transition: transform .15s ease-in;
+    border: 2px solid black;
+    border-radius: 10px;
+    width: 100px;
+    height: 150px;
+    background-color: white;
+    margin-top: auto;
+    position: relative;
+    margin-left: -20px;
+    z-index: 0;
+    transition: all 0.5s;
 }
 
 #hand-list li .card:hover{
-    transform: translateY(-80px);
+    width: 150px;
+    height: 225px;
+    border: 2px solid rgb(0, 125, 228);
+    z-index: 1;
+    transform: translateY(-150px);
 }
 
-#hand-list li .card img{
+/* #hand-list li .card img{
     height: 120px;
-    width: 84px; /*70% of height*/
+    width: 84px;
     float: left;
     transition: transform .2s ease-in-out;
-}
+} */
 
-#hand-list li .card img:hover{
+/* #hand-list li .card img:hover{
     transform: scale(2.0);
-}
+} */
 
 #played-list{
     list-style:none;
@@ -216,9 +257,16 @@ ul#horizontal-list li a{
     transition: transform .15s ease-in;
 }
 
-#played-list li .card img{
+.card img {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: fill;
+}
+
+/* #played-list li .card img{
     height: 120px;
-    width: 84px; /*70% of height*/
+    width: 84px;
     float: left;
     transition: transform .2s ease-in-out;
-}
+} */

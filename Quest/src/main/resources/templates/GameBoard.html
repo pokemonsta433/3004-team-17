@@ -23,7 +23,7 @@
     Javascript and reload this page!</h1></noscript>
 
 <div id="Banner">
-    <ul id = "horizontal-list" style="background-color: #a67500">
+    <ul id = "horizontal-list" style="background-color: #7e6527">
         <li>
             Leave
         </li>
@@ -34,7 +34,6 @@
 </div>
 
 <div id="gameboard">
-
     <div id="player2" th:if="${game.players.size() % 2 == 0}">
         <div class="cards-shields-container" style="Justify-Content: Center">
             <div class="cardCount">
@@ -137,12 +136,9 @@
                         </li>
                     </ul>
                 </div>
-                <div class="shield" style="margin-top: 20px">
-                    <p th:text="${game.getPlayer(i).shields}">
-                    </p>
-                </div>
             </div>
         </div>
+        
         <div id="player-hand">
             <ul id = "hand-list">
                 <li th:each="c: ${game.getPlayer(i).hand}">
@@ -151,11 +147,15 @@
                     </div>
                 </li>
                 <li>
-                    <div class="card">
+                    <div class="card" style="margin-left: 20px">
                         <img th:src="@{/card(cardName=${game.current_story.name})}">
                     </div>
                 </li>
             </ul>
+            <div class="shield" style="margin-top: 20px">
+                <p th:text="${game.getPlayer(i).shields}">
+                </p>
+            </div>
         </div>
     </div>
 </div>
