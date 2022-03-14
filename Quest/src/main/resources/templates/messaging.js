@@ -1,5 +1,6 @@
 var userName = null;
 var stompClient = null;
+var submittedStartGameForm = false;
 
 function setConnected(connected) { //this is not required
     $("#connect").prop("disabled", connected);
@@ -74,8 +75,12 @@ function connect() {
                 document.getElementById("start").disabled = false;
             }
             else  if(JSON.parse(message.body).messagetype === "Start"){
-                alert("press start game to begin");
-                //document.getElementById("startbutton-form").submit();
+                //alert("press start game to begin");
+                if(!submittedStartGameForm){
+                    submittedStartGameForm = true;
+                    var theform = document.getElementById("startbutton-form");
+                    theform.requestSubmit();
+                }
             }
         });
     });
@@ -113,7 +118,7 @@ function playCard(id){
 function moveCardUp(e){
     var list1 = document.getElementById("hand-list");
     var list2 = document.getElementById("played-list");
-    var moveTo = e.parentElement.parentElement.parentElement == list1 ? list2 : list1;
+    var moveTo = e.parentElement.parentElement.parentElement === list1 ? list2 : list1;
     moveTo.appendChild(e.parentElement.parentElement);
 }
 function highlightCards() {
