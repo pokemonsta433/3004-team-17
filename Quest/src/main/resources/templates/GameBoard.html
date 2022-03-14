@@ -119,13 +119,13 @@
 
     <div id = "bottomRow">
 
-        <div id="player-discard">
+        <div id="played-cards">
             <div class="played-cards-div">
                 <div class="card mat">
                     <input id="highlightCards" type="button" value="Highlight Cards" onclick="highlightCards();">
                     <ul id = "played-list">
                         <li>
-                            <div class="card" th:if="${game.getPlayer(i).played.foe != null}">
+                            <div class="card" th:if="${game.getPlayer(i).played.foe}">
                                 <img th:src="@{/card(cardName=${game.getPlayer(i).played.foe.name})}">
                             </div>
                         </li>

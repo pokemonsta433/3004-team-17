@@ -40,10 +40,11 @@ public class DefaultController {
     @MessageMapping("/ServerRcv")
     @SendTo("/topic/serverMessages")
     public ServerMessage answer(ClientMessage message) throws Exception {
+        System.out.println("Name: " + message.getName());
         game.players.get(game.getIndexOfName(message.getName())).playCard(Integer.parseInt(message.getMsg().split(" ")[1]));
         //json.parse <--
         //<-- remove card from model
-        ServerMessage serverMessage = new ServerMessage("Join", "Change");
+        ServerMessage serverMessage = new ServerMessage("Change", "Change");
         return serverMessage;
     }
 

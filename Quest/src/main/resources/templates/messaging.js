@@ -110,12 +110,18 @@ function playCard(id){
     sendCard(userName, id);
 }
 
+function moveCardUp(e){
+    var list1 = document.getElementById("hand-list");
+    var list2 = document.getElementById("played-list");
+    var moveTo = e.parentElement.parentElement === list1 ? list2 : list1;
+    moveTo.appendChild(e.parentElement);
+}
 function highlightCards() {
     const handCards = document.querySelectorAll('#hand-list li .card img')
     handCards.forEach(card => {
         card.style.border = '.2em solid greenyellow';
         card.style.borderRadius = '10%';
-        card.onclick = function(){playCard(card.id)};
+        card.onclick = function(){moveCardUp(card)};
     })
 }
 

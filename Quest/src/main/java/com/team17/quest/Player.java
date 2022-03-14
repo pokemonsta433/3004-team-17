@@ -39,6 +39,7 @@ public class Player {
             if(c.id == id){
                 if(played.playcard(c) == true){
                     hand.remove(c);
+                    return;
                 }
             }
         }
