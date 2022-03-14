@@ -57,7 +57,7 @@
         </form>
         <form method="post" id = "startbutton-form" th:action="@{/game}" th:if="${PlayerList.size()  > 1}">
             <input type="hidden" name="playername" th:value="${player.name}"/>
-            <button id="start1" type="submit">
+            <button id="start1" type="submit" style="visibility: hidden;">
                 START
             </button>
         </form>
