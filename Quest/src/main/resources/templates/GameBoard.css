@@ -42,7 +42,7 @@ ul#horizontal-list li{
 
 ul#horizontal-list li a{
     display:block;
-    color: white;
+    color: black;
     text-align: center;
     padding: 48px 16px;
     text-decoration: none;
@@ -217,7 +217,7 @@ ul#horizontal-list li a{
     border-radius: 10px;
     width: 100px;
     height: 150px;
-    background-color: white;
+    background-color: black;
     margin-top: auto;
     position: relative;
     margin-left: -20px;
@@ -231,6 +231,24 @@ ul#horizontal-list li a{
     border: 2px solid rgb(0, 125, 228);
     z-index: 1;
     transform: translateY(-150px);
+}
+
+.selected-card {
+    position: fixed;
+    border-radius: 10px;
+    background-color: black;
+    width: 150px;
+    height: 225px;
+    border: 2px solid rgb(0, 125, 228);
+    z-index: 1;
+    transition: all 0.1s;
+}
+
+.selected-card img {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: fill;
 }
 
 /* #hand-list li .card img{
@@ -276,7 +294,7 @@ ul#horizontal-list li a{
     border-radius: 10px;
     width: 100px;
     height: 150px;
-    background-color: white;
+    background-color: black;
     margin-top: auto;
     position: relative;
     margin-left: -20px;

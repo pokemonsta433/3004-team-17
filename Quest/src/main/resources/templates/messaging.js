@@ -131,7 +131,65 @@ function unhighlightCards() {
         card.style.border = 'none';
     })
 }
-
+/*
+* --------------------------------------
+*        Rough Draggable Code
+* --------------------------------------
+* */
+// document.addEventListener('DOMContentLoaded', function() {
+//     document.onselectstart = () => { return false; }
+//
+//     let x = 0;
+//     let y = 0;
+//
+//     document.addEventListener('mousemove', (e) => {
+//         x = e.clientX;
+//         y = e.clientY;
+//     });
+//
+//     let cards = document.querySelectorAll('#player-hand #hand-list li .card');
+//
+//     cards.forEach(card => {
+//         card.firstElementChild.ondragstart = () => { return false; }
+//
+//         let mousedown = false;
+//         let interval = null;
+//         let init = false;
+//
+//         function clearDrag() {
+//             clearInterval(interval);
+//             card.style = '';
+//             card.className = 'card'
+//             init = false;
+//         }
+//
+//         let initPos = null;
+//         card.addEventListener('mousedown', () => {
+//             mousedown = true;
+//             card.className = 'selected-card'
+//             interval = setInterval(() => {
+//                 if (!mousedown) {
+//                     clearDrag(); // for some reason not clearing interval, could lag if not fixed
+//                     return;
+//                 }
+//
+//                 if (!init) {
+//                     init = true;
+//                     initPos = card.getBoundingClientRect();
+//                 }
+//
+//                 card.style = `transform: translate(${-(initPos.x - (x - card.clientWidth / 2))}px, ${-(initPos.y - (y - card.clientHeight / 2))}px);`;
+//                 // card.style.top = (y - card.clientHeight / 2) + 'px';
+//                 // card.style.left = (x - card.clientWidth / 2) + 'px';
+//             }, 100);
+//         });
+//
+//         card.addEventListener('mouseup', () => {
+//             mousedown = false;
+//             clearDrag();
+//         });
+//     });
+// });
 
 $(function () {
 /*    $("form").on('submit', function (e) {
