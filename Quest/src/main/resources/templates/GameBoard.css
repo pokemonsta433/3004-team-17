@@ -244,6 +244,28 @@ ul#horizontal-list li a{
     transform: scale(2.0);
 } */
 
+#played-list{
+    position: relative;
+    bottom: -50px;
+    background-color: #7e6527;
+    padding-top: 20px;
+    margin: 0;
+    border-radius: 20px;
+    display: flex;
+    padding-left: 60px;
+    padding-right: 40px;
+    justify-content: center;
+    height: 154px;
+    min-width: 260px;
+}
+
+#played-list li .card:hover{
+    width: 150px;
+    height: 225px;
+    border: 2px solid rgb(0, 125, 228);
+    z-index: 1;
+    transform: translateY(-150px);
+}
 
 #played-list li{
     display: inline;
