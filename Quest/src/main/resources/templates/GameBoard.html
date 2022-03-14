@@ -124,16 +124,6 @@
                 <div class="card mat">
                     <input id="highlightCards" type="button" value="Highlight Cards" onclick="highlightCards();">
                     <ul id = "played-list">
-                        <li>
-                            <div class="card" th:if="${game.getPlayer(i).played.foe}">
-                                <img th:src="@{/card(cardName=${game.getPlayer(i).played.foe.name})}">
-                            </div>
-                        </li>
-                        <li th:each="c: ${game.getPlayer(i).played.weapons}">
-                            <div class="card">
-                                <img th:src = "@{/card(cardName=${c.name})}" th:id="${c.id}">
-                            </div>
-                        </li>
                     </ul>
                 </div>
             </div>

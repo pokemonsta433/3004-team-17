@@ -190,10 +190,13 @@ ul#horizontal-list li a{
     min-width: 260px;
 }
 
-#player-played{/* TODO: make this always centered no matter how many cards are in the hand*/
+#played-cards{/* TODO: make this always centered no matter how many cards are in the hand*/
     display: flex;
     text-align:center;
     justify-content: center;
+    bottom: 0px;
+    left: 0;
+    width: 100%;
 }
 
 #player-hand{/* TODO: make this always centered no matter how many cards are in the hand*/
@@ -241,20 +244,22 @@ ul#horizontal-list li a{
     transform: scale(2.0);
 } */
 
-#played-list{
-    list-style:none;
-}
 
 #played-list li{
     display: inline;
 }
 
 #played-list li .card{
-    margin-right: 5px;
-    float: left;
-    text-align: center;
-    transform: translateY(0);
-    transition: transform .15s ease-in;
+    border: 2px solid black;
+    border-radius: 10px;
+    width: 100px;
+    height: 150px;
+    background-color: white;
+    margin-top: auto;
+    position: relative;
+    margin-left: -20px;
+    z-index: 0;
+    transition: all 0.5s;
 }
 
 .card img {

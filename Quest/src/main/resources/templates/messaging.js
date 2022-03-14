@@ -113,8 +113,8 @@ function playCard(id){
 function moveCardUp(e){
     var list1 = document.getElementById("hand-list");
     var list2 = document.getElementById("played-list");
-    var moveTo = e.parentElement.parentElement === list1 ? list2 : list1;
-    moveTo.appendChild(e.parentElement);
+    var moveTo = e.parentElement.parentElement.parentElement == list1 ? list2 : list1;
+    moveTo.appendChild(e.parentElement.parentElement);
 }
 function highlightCards() {
     const handCards = document.querySelectorAll('#hand-list li .card img')
