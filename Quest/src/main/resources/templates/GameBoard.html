@@ -111,11 +111,12 @@
         </div>
     </div>
 
+
     <div id = "SponsorPrompt" style='position: absolute; left: 100px; top: 50px; border: solid black 1px; padding: 10px; background-color: rgb(200,100,100); text-align: justify; font-size: 12px; width: 135px;' >
         <span class='new-quest-text'>A new quest is starting!</span>
         <p>What would you like to do for the following quest?</p>
         <div class="card" style="margin-left: 20px">
-            <img src="/card?cardName=boar_hunt">
+            <img th:src="@{/card(cardName=${game.current_story.name})}">
         </div>
         <input class="Sponsor" type="button" value="Sponsor" onclick="submitPrompt(this)">
         <input class="Participate" type="button" value="Participate" onclick="submitPrompt(this)">
@@ -126,7 +127,7 @@
         <span class="new-quest-text">A new quest is starting!</span>
         <p>What would you like to do for the following quest?</p>
         <div class="card" style="margin-left: 20px">
-            <img src="/card?cardName=boar_hunt">
+            <img th:src="@{/card(cardName=${game.current_story.name})}">
         </div>
         <input class="Participate" type="button" value="Participate" onclick="submitPrompt(this)">
         <input class="Drop Out" type="button" value="Drop Out" onclick="submitPrompt(this)">
@@ -150,11 +151,6 @@
                 <li th:each="c: ${game.getPlayer(i).hand}">
                     <div class="card">
                         <img th:src = "@{/card(cardName=${c.name})}" th:id="${c.id}">
-                    </div>
-                </li>
-                <li>
-                    <div class="card" style="margin-left: 20px">
-                        <img th:src="@{/card(cardName=${game.current_story.name})}">
                     </div>
                 </li>
             </ul>
