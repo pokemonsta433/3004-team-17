@@ -26,8 +26,8 @@ function saveUsername(){
 function loadUsername() {
     var user = localStorage.getItem('_user');
     //if (!user) alert("somehow you got here without setting your name! Please go back to the home page and try joining the game again!")
-    localStorage.removeItem('_user');
     user = atob(user); //decode the data
+    console.log(user);
     user = JSON.parse(user); //parse it
     userName = user;
     alert("user name is " + userName);
@@ -66,8 +66,6 @@ function connect() {
                 newtext = oldText .replace(/(\d)+?\//g, function(match, number) {
                     return parseInt(number)+1 + "/";
                 });
-
-
                 playercount.innerHTML = newtext;
                 // enable start button
                 document.getElementById("start").disabled = false;
@@ -84,6 +82,7 @@ function connect() {
                 alert("Valid cards played: " + JSON.parse(message.body).content)
             }
         });
+        if(userName === null){loadUsername();}
         stompClient.subscribe("/user/" + userName + "/reply", function(message) {
             if(JSON.parse(message.body).messagetype === "Prompt") {
                 if(JSON.parse(message.body).content === "Sponsor"){
