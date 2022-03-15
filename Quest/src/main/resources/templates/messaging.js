@@ -211,9 +211,15 @@ function playCards(){
 
 function moveCard(e){
     let list1 = document.getElementById("hand");
-    let list2 = document.getElementById("played-list");
+    // let list2 = document.getElementById("played-list");
+    let list2 = document.getElementById("discard");
     let moveTo = e.parentElement === list1 ? list2 : list1;
+
+    if (moveTo == list1 && list2.className === 'discard') return;
+
     moveTo.appendChild(e);
+    unhighlightCards();
+    highlightCards();
 }
 
 function submitPrompt(e){
@@ -221,23 +227,76 @@ function submitPrompt(e){
     document.getElementById("NoSponsorPrompt").style.display = 'none';
     stompClient.send("/app/prompt", {}, JSON.stringify({'name': userName, msg: e.className}));
 }
-
 function highlightCards() {
-     const handCards = document.querySelectorAll('#hand .card')
-     handCards.forEach(card => {
-         card.style.border = '.2em solid greenyellow';
-         card.style.borderRadius = '10%';
-         card.onclick = function(){moveCard(card)};
-     })
- }
+    const playedFoe = document.querySelector('#played-list .card.foe img');
 
- function unhighlightCards() {
-    const handCards = document.querySelectorAll('#hand .card')
-     handCards.forEach(card => {
-         card.style.border = 'none';
-         card.onclick = "";
-     })
+    if (playedFoe === null){
+        console.log("playedfoe is null")
+        const handFoes = document.querySelectorAll('#hand .card.foe img')
+        handFoes.forEach(card => {
+            card.style.border = '.2em solid orange';
+            card.style.borderRadius = '10%';
+            card.parentElement.onclick = function(){moveCard(card.parentElement)};
+        })
+    }
+    else{
+        console.log("playedfoe is NOT null")
+        const playedWeapons = document.querySelectorAll('#played-list .card.weapon img');
+        const handWeapons = document.querySelectorAll('#hand .card.weapon img')
+        handWeapons.forEach(card => {
+            //check if a weapon of this name has been played already
+            var found = false;
+            playedWeapons.forEach(weap => {
+                console.log ("checking weapon of class " + card.classList)
+                if (weap.classList.contains(card.classList)){
+                    found = true;
+                }
+            }
+             )
+            if (!found){
+                card.style.border = '.2em solid greenyellow';
+                card.borderRadius = '10%';
+                card.parentElement.onclick = function(){moveCard(card.parentElement)};
+            }
+        })
+    }
+
 }
+
+function unhighlightCards() {
+    console.log("unhighlighting cards...")
+    const handCards = document.querySelectorAll('#hand .card img')
+    handCards.forEach(card => {
+        card.style.border = 'none';
+        card.parentElement.onclick = function(){};
+    })
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    let discard = document.querySelector('#discard');
+
+    function openDiscard(e) {
+        let selection = document.createElement('div');
+        selection.id = 'selection';
+
+        let button = document.createElement('button');
+        button.onclick = function() {
+            discard.className = 'discard'
+            discard.addEventListener('click', openDiscard);
+            document.querySelector('body').appendChild(discard);
+            selection.remove();
+        }
+        selection.appendChild(button);
+
+        discard.className = '';
+        discard.removeEventListener('click', openDiscard);
+        selection.appendChild(discard);
+
+        document.querySelector('body').appendChild(selection);
+    }
+
+    discard.addEventListener('click', openDiscard);
+});
 
 /*
 * --------------------------------------
