@@ -169,9 +169,10 @@ function submitPrompt(e){
     stompClient.send("/app/prompt", {}, JSON.stringify({'name': userName, msg: e.className}));
 }
 function highlightCards() {
-    const playedFoe = document.querySelector('#played-list li .card.foe img');
+    const playedFoe = document.querySelector('#played-list .card.foe img');
 
     if (playedFoe === null){
+        console.log("playedfoe is null")
         const handFoes = document.querySelectorAll('#hand .card.foe img')
         handFoes.forEach(card => {
             card.style.border = '.2em solid orange';
@@ -180,6 +181,7 @@ function highlightCards() {
         })
     }
     else{
+        console.log("playedfoe is NOT null")
         const playedWeapons = document.querySelectorAll('#played-list .card.weapon img');
         const handWeapons = document.querySelectorAll('#hand .card.weapon img')
         handWeapons.forEach(card => {
