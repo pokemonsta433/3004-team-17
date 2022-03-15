@@ -13,6 +13,8 @@ public class Game {
     DeckFactory deckMaker;
     Card current_story;
     int player_turn;
+    Player sponsor;
+    ArrayList<Player> questParticipants;
 
 
     public Game(ArrayList<Player> ps){
@@ -35,6 +37,17 @@ public class Game {
             i++;
         }
         return -1;
+    }
+
+    public void setSponsorAndParticipants(String name, ArrayList<String> pNames){
+        questParticipants.clear();
+        for(String n : pNames){
+            questParticipants.add(getPlayer(getIndexOfName(n)));
+        }
+    }
+
+    public void setSponsor(String name){
+        sponsor = getPlayer(getIndexOfName(name));
     }
 
     public ArrayList<Player> getPlayers(){
@@ -67,7 +80,7 @@ public class Game {
     }
 
 
-    public void gameStart(){
+    public void drawStory(){
         current_story = story_deck.pop();
     }
 
@@ -77,6 +90,6 @@ public class Game {
         shuffleDecks();
         dealHands();
         //game begins
-        gameStart();
+
     }
 }

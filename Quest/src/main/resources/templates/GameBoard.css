@@ -262,6 +262,13 @@ ul#horizontal-list li a{
     transform: scale(2.0);
 } */
 
+#SponsorPrompt{
+    display: none;
+}
+
+#NoSponsorPrompt{
+    display: none;
+}
 #played-list{
     position: relative;
     bottom: -50px;

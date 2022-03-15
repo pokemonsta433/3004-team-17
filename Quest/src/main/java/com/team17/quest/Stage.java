@@ -3,6 +3,7 @@ package com.team17.quest;
 import java.util.ArrayList;
 
 public class Stage {
+    //this class is irrelevant and will be reworked or removed in the future.
     Card foe;
     ArrayList<Card> weapons;
 
@@ -12,6 +13,7 @@ public class Stage {
     }
 
     public boolean playcard(Card c){
+        //this function is currently irrelevant and will be reworked in the future.
         if(c instanceof FoeCard && foe == null){
             foe = c;
             return true;

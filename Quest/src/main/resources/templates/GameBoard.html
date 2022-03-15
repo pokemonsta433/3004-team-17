@@ -117,6 +117,19 @@
         </div>
     </div>
 
+    <div id = "SponsorPrompt">
+        <p>What would you like to do for the following quest?</p>
+        <input class="Sponsor" type="button" value="Sponsor" onclick="submitPrompt(this)">
+        <input class="Participate" type="button" value="Participate" onclick="submitPrompt(this)">
+        <input class="Drop Out" type="button" value="Drop Out" onclick="submitPrompt(this)">
+    </div>
+
+    <div id = "NoSponsorPrompt">
+        <p>What would you like to do for the following quest?</p>
+        <input class="Participate" type="button" value="Participate" onclick="submitPrompt(this)">
+        <input class="Drop Out" type="button" value="Drop Out" onclick="submitPrompt(this)">
+    </div>
+
     <div id = "bottomRow">
 
         <div id="played-cards">
@@ -126,6 +139,7 @@
                     <ul id = "played-list">
                     </ul>
                 </div>
+                <input id="playCards" type="button" value="Play Cards" onclick="playCards();">
             </div>
         </div>
         
