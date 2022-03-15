@@ -125,8 +125,12 @@
         </div>
 
         <div id="hotbar">
+            <div id="makeStage" style="display: none">
+                <p id="stageText">Please make stage 1</p>
+            </div>
+            <input type="button" value="Play Cards" id="playCards" onclick="playCards()" style="display: none">
             <ul id="hand">
-                <li class="card" onclick="moveCard(this)" th:each="c: ${game.getPlayer(i).hand}">
+                <li class="card" th:each="c: ${game.getPlayer(i).hand}">
                     <img th:src = "@{/card(cardName=${c.name})}" th:id="${c.id}">
                 </li>
         <!--        <li>-->

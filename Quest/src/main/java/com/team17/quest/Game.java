@@ -1,7 +1,9 @@
 package com.team17.quest;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Stack;
 
 public class Game {
@@ -12,10 +14,11 @@ public class Game {
     ArrayList<Card> story_discardPile;
     DeckFactory deckMaker;
     Card current_story;
-    int player_turn;
     Player sponsor;
     ArrayList<Player> questParticipants;
     int stages = 0;
+    ArrayList<ArrayList<Card>> quest;
+
 
 
     public Game(ArrayList<Player> ps){
@@ -25,7 +28,7 @@ public class Game {
         adventure_discardPile = new ArrayList<>();
         story_discardPile = new ArrayList<>();
         deckMaker = new DeckFactory();
-        player_turn = 0;
+        quest = new ArrayList<>();
         playGame();
     }
 
@@ -80,6 +83,18 @@ public class Game {
         }
     }
 
+    public void addStage(Player p, List<String> ids){
+        ArrayList<Card> stage = new ArrayList<>();
+        for(Card c : p.hand){
+            if(ids.contains(Integer.toString(c.id))){
+                stage.add(c);
+            }
+        }
+        for(Card c : stage){
+            p.hand.remove(c);
+        }
+        quest.add(stage);
+    }
 
     public void drawStory(){
         if(current_story != null){
@@ -89,6 +104,7 @@ public class Game {
         if(current_story instanceof QuestCard){
             QuestCard card = (QuestCard) current_story;
             stages = card.stages;
+            quest.clear();
         }
         else{
             stages = 0;

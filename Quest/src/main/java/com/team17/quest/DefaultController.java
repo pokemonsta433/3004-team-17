@@ -45,16 +45,21 @@ public class DefaultController {
     }
 
     @MessageMapping("/playCards")
-    @SendTo("/topic/serverMessages")
-    public ServerMessage answer(ClientMessage message) throws Exception {
+    public void answer(ClientMessage message) throws Exception {
         String[] split = message.getMsg().split(",");
         List<String> ids = Arrays.asList(split);
         boolean valid = game.getPlayer(game.getIndexOfName(message.getName())).validPlay(ids);
         if(valid){
-            return new ServerMessage("Validity", "True");
+            game.addStage(game.getPlayer(game.getIndexOfName(message.getName())), ids);
+            if(game.quest.size() < game.stages){
+                messageSender.convertAndSendToUser(game.getPlayer(game.getIndexOfName(message.getName())).name, "/reply", new ServerMessage("Quest", "Next"));
+            }
+            else{
+                messageSender.convertAndSendToUser(game.getPlayer(game.getIndexOfName(message.getName())).name, "/reply", new ServerMessage("Quest", "Complete"));
+            }
         }
         else{
-            return new ServerMessage("Validity", "False");
+            messageSender.convertAndSendToUser(game.getPlayer(game.getIndexOfName(message.getName())).name, "/reply", new ServerMessage("Quest", "Invalid"));
         }
     }
 
@@ -74,7 +79,6 @@ public class DefaultController {
             participants.add(message.getName());
         }
         players_prompted += 1;
-        System.out.println(players_prompted);
         if(players_prompted >= game.players.size()){
             players_prompted = 0;
             if(!sponsored){
@@ -85,7 +89,7 @@ public class DefaultController {
                 messageSender.convertAndSendToUser(game.getPlayer(player_turn).name, "/reply", new ServerMessage("Prompt", "Sponsor")); //TO-DO change content to quest name?
             }
             else{
-                messageSender.convertAndSendToUser(game.sponsor.name, "/reply", new ServerMessage("Quest", "1"));
+                messageSender.convertAndSendToUser(game.sponsor.name, "/reply", new ServerMessage("Quest", "First"));
             }
         }
         else{

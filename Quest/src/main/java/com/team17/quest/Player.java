@@ -8,14 +8,12 @@ public class Player {
     String name;
     ArrayList<Card> hand;
     int shields;
-    Stage played;
     ArrayList<Card> allies;
 
     public Player(){
         name = "";
         shields = 0;
         hand = new ArrayList<>();
-        played = new Stage();
         allies = new ArrayList<>();
     }
 
@@ -34,16 +32,6 @@ public class Player {
         name = n;
     }
 
-
-    public void playCard(int id){
-        //this function is currently irrelevant and will be reworked in the future.
-        for(Card c: hand){
-            if(c.id == id){
-                played.playcard(c);
-                hand.remove(c);
-            }
-        }
-    }
 
     public boolean validPlay(List<String> ids){
         boolean foe = false;
@@ -83,15 +71,6 @@ public class Player {
         }
     }
 
-    public Card discardCard(int id){
-        for(Card c: hand) {
-            if (c.id == id) {
-                hand.remove(c);
-                return c;
-            }
-        }
-        return null;
-    }
 
     public int foeCount(){
         int i = 0;
@@ -104,10 +83,6 @@ public class Player {
     }
     public ArrayList<Card> getHand(){
         return hand;
-    }
-
-    public Stage getPlayed(){
-        return played;
     }
 
     public int getShields(){ return shields; }
