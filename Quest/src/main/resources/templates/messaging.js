@@ -212,10 +212,10 @@ function playCards(){
 function moveCard(e){
     let list1 = document.getElementById("hand");
     // let list2 = document.getElementById("played-list");
-    let list2 = document.getElementById("discard");
+    let list2 = document.getElementById("played-list");
     let moveTo = e.parentElement === list1 ? list2 : list1;
 
-    if (moveTo == list1 && list2.className === 'discard') return;
+    //if (moveTo == list1 && list2.className === 'discard') return;
 
     moveTo.appendChild(e);
     unhighlightCards();

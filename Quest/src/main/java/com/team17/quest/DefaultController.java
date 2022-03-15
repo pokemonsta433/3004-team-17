@@ -70,9 +70,9 @@ public class DefaultController {
                     }
                     else{
                         current_stage++;
+                        challenge_played.clear();
                         for(String s : participants){
                             System.out.println(s);
-                            challenge_played.clear();
                             challenge_played.add(false);
                             messageSender.convertAndSendToUser(game.getPlayer(game.getIndexOfName(s)).name, "/reply", new ServerMessage("Quest", "Continue"));
                         }
@@ -131,7 +131,7 @@ public class DefaultController {
             if(!sponsored){
                 game.drawStory();
                 System.out.println(player_turn);
-                player_turn = player_turn  % game.players.size();
+                player_turn = player_turn + player_turn - 1 % game.players.size();
                 System.out.println("HERE");
                 messageSender.convertAndSendToUser(game.getPlayer(player_turn).name, "/reply", new ServerMessage("Prompt", "Sponsor")); //TO-DO change content to quest name?
             }
