@@ -115,27 +115,29 @@ function playCard(id){
     sendCard(userName, id);
 }
 
-function moveCardUp(e){
-    var list1 = document.getElementById("hand-list");
-    var list2 = document.getElementById("played-list");
-    var moveTo = e.parentElement.parentElement.parentElement === list1 ? list2 : list1;
-    moveTo.appendChild(e.parentElement.parentElement);
-}
-function highlightCards() {
-    const handCards = document.querySelectorAll('#hand-list li .card img')
-    handCards.forEach(card => {
-        card.style.border = '.2em solid greenyellow';
-        card.style.borderRadius = '10%';
-        card.onclick = function(){moveCardUp(card)};
-    })
+function moveCard(e){
+    let list1 = document.getElementById("hand");
+    let list2 = document.getElementById("played-list");
+    let moveTo = e.parentElement === list1 ? list2 : list1;
+    moveTo.appendChild(e);
 }
 
-function unhighlightCards() {
-    const handCards = document.querySelectorAll('#hand-list li .card img')
-    handCards.forEach(card => {
-        card.style.border = 'none';
-    })
-}
+// function highlightCards() {
+//     const handCards = document.querySelectorAll('#hand-list .card')
+//     handCards.forEach(card => {
+//         card.style.border = '.2em solid greenyellow';
+//         card.style.borderRadius = '10%';
+//         card.onclick = function(){moveCardUp(card)};
+//     })
+// }
+//
+// function unhighlightCards() {
+//     const handCards = document.querySelectorAll('#hand-list li .card img')
+//     handCards.forEach(card => {
+//         card.style.border = 'none';
+//     })
+// }
+
 /*
 * --------------------------------------
 *        Rough Draggable Code

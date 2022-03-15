@@ -48,12 +48,30 @@ ul#horizontal-list li a{
     text-decoration: none;
 }
 
-#gameboard{
+#gameboard {
     width: 80%;
     height: 70%;
     background-color: #91742d;
     margin-top: 5%;
     border-radius: 10px;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+.quad {
+    display: flex;
+    justify-content: center;
+}
+
+.quad-split {
+    display: inline-flex;
+    gap: 10px;
+}
+
+.quad-split > div {
+    width: 50%;
 }
 
 .player-name{
@@ -64,11 +82,16 @@ ul#horizontal-list li a{
 }
 
 #player2{
-    margin: 30px auto auto;
+    display: block;
+    width: 100%;
 }
 
-.cards-shields-container {
+.stats {
     display: flex;
+}
+
+.stats div {
+    height: 100%;
 }
 
 .cardCount{
@@ -82,8 +105,10 @@ ul#horizontal-list li a{
 }
 
 .cardCount p{
-    margin:auto;
+    text-align: center;
+    margin: auto;
     font-size: 40px;
+    font-family: var(--default-font-family);
 }
 
 .shield {
@@ -105,77 +130,31 @@ ul#horizontal-list li a{
     font-family: var(--default-font-family);
 }
 
-.two-equal-columns:after {
-    content: "";
-    display: table;
-    clear: both;
-}
+/*.two-equal-columns:after {*/
+/*    content: "";*/
+/*    display: table;*/
+/*    clear: both;*/
+/*}*/
 
-.two-equal-columns {
-    display: flex;
-}
+/*.two-equal-columns {*/
+/*    display: flex;*/
+/*}*/
 
-.two-equal-columns .columnLeft{
-    width: 43%;
-    margin-right: auto;
-    margin-left: 5%;
-    float: left;
-}
+/*.two-equal-columns .columnLeft{*/
+/*    width: 43%;*/
+/*    margin-right: auto;*/
+/*    margin-left: 5%;*/
+/*    float: left;*/
+/*}*/
 
-.two-equal-columns .columnRight {
-    width: 43%;
-    margin-right: 5%;
-    margin-left: auto;
-    float: left;
-}
+/*.two-equal-columns .columnRight {*/
+/*    width: 43%;*/
+/*    margin-right: 5%;*/
+/*    margin-left: auto;*/
+/*    float: left;*/
+/*}*/
 
-.two-equal-columns .columnLeft .played-cards-div .mat{
-    float:left;
-}
-
-.two-equal-columns .columnRight .played-cards-div .mat{
-    float: right;
-}
-
-.played-cards-div {
-    display: flex;
-    text-align:center;
-    justify-content: center;
-    width: 100%;
-}
-
-.played-cards-div .mat{
-    border: 1px dashed black;
-    border-radius: 10px;
-    justify-content: center;
-    text-align: center;
-    width: 60%;
-    height: 100px;
-}
-
-.played-cards-div .mat .played-cards{
-    list-style: none;
-}
-
-.played-cards-div .mat .played-cards li{
-    display: inline;
-}
-
-#player-hand .shield {
-    position: relative;
-    top: 60px;
-}
-
-#bottomRow{
-    width: 100%;
-    height: 50%;
-}
-
-#bottomRow #player-discard .played-cards-div {
-    margin-top: 10%;
-}
-
-#hand-list{
+#hand {
     position: relative;
     bottom: -50px;
     background-color: #7e6527;
@@ -190,16 +169,7 @@ ul#horizontal-list li a{
     min-width: 260px;
 }
 
-#played-cards{/* TODO: make this always centered no matter how many cards are in the hand*/
-    display: flex;
-    text-align:center;
-    justify-content: center;
-    bottom: 0px;
-    left: 0;
-    width: 100%;
-}
-
-#player-hand{/* TODO: make this always centered no matter how many cards are in the hand*/
+#hotbar {
     position: fixed;
     display: flex;
     bottom: 0px;
@@ -208,29 +178,36 @@ ul#horizontal-list li a{
     justify-content: center;
 }
 
-#hand-list li{
-    display: inline;
+#hotbar .shield {
+    position: relative;
+    top: 60px;
 }
 
-#hand-list li .card{
-    border: 2px solid black;
-    border-radius: 10px;
+.card {
     width: 100px;
     height: 150px;
-    background-color: black;
-    margin-top: auto;
-    position: relative;
-    margin-left: -20px;
     z-index: 0;
     transition: all 0.5s;
 }
 
-#hand-list li .card:hover{
+.card img {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: fill;
+}
+
+#hand .card:hover{
     width: 150px;
     height: 225px;
-    border: 2px solid rgb(0, 125, 228);
     z-index: 1;
     transform: translateY(-150px);
+}
+
+#hand .card {
+    margin-left: -20px;
+    position: relative;
+    margin-top: auto;
 }
 
 .selected-card {
@@ -251,67 +228,36 @@ ul#horizontal-list li a{
     object-fit: fill;
 }
 
-/* #hand-list li .card img{
-    height: 120px;
-    width: 84px;
-    float: left;
-    transition: transform .2s ease-in-out;
-} */
-
-/* #hand-list li .card img:hover{
-    transform: scale(2.0);
-} */
-
-#played-list{
-    position: relative;
-    bottom: -50px;
+#played-list {
     background-color: #7e6527;
-    padding-top: 20px;
-    margin: 0;
     border-radius: 20px;
     display: flex;
-    padding-left: 60px;
-    padding-right: 40px;
+    padding: 10px 40px;
     justify-content: center;
     height: 154px;
-    min-width: 260px;
+    width: 90%;
+    margin: 0;
 }
 
-#played-list li .card:hover{
-    width: 150px;
-    height: 225px;
-    border: 2px solid rgb(0, 125, 228);
-    z-index: 1;
-    transform: translateY(-150px);
+#played-list .card {
+    padding: 5px;
 }
 
-#played-list li{
-    display: inline;
+.played-cards {
+    background-color: #7e6527;
+    border-radius: 20px;
+    display: flex;
+    padding: 10px 40px;
+    justify-content: center;
+    height: 154px;
+    width: 90%;
+    margin: auto;
 }
 
-#played-list li .card{
-    border: 2px solid black;
-    border-radius: 10px;
-    width: 100px;
-    height: 150px;
-    background-color: black;
-    margin-top: auto;
-    position: relative;
-    margin-left: -20px;
-    z-index: 0;
-    transition: all 0.5s;
+.played-cards .card {
+    padding: 5px;
 }
 
-.card img {
-    width: 100%;
-    height: 100%;
-    aspect-ratio: 1 / 1;
-    object-fit: fill;
+.quad-split .played-cards {
+    width: auto;
 }
-
-/* #played-list li .card img{
-    height: 120px;
-    width: 84px;
-    float: left;
-    transition: transform .2s ease-in-out;
-} */
