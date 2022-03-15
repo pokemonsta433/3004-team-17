@@ -13,5 +13,9 @@ public abstract class Card {
     }
     public String getName(){return name;}
 
+    public boolean isFoe(){
+        return this instanceof FoeCard;
+    }
+
     public int getId(){return id;}
 }

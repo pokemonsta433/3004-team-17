@@ -159,6 +159,8 @@ function moveCard(e){
     let list2 = document.getElementById("played-list");
     let moveTo = e.parentElement === list1 ? list2 : list1;
     moveTo.appendChild(e);
+    unhighlightCards();
+    highlightCards();
 }
 
 function submitPrompt(e){
@@ -166,24 +168,63 @@ function submitPrompt(e){
     document.getElementById("NoSponsorPrompt").style.display = 'none';
     stompClient.send("/app/prompt", {}, JSON.stringify({'name': userName, msg: e.className}));
 }
-
 function highlightCards() {
-     const handCards = document.querySelectorAll('#hand .card')
-     handCards.forEach(card => {
-         card.style.border = '.2em solid greenyellow';
-         card.style.borderRadius = '10%';
-         card.onclick = function(){moveCard(card)};
-     })
- }
+    const playedFoe = document.querySelector('#played-list li .card.foe img');
 
- function unhighlightCards() {
-    const handCards = document.querySelectorAll('#hand li .card img')
-     handCards.forEach(card => {
-         card.style.border = 'none';
-         card.onclick = "";
-     })
+    if (playedFoe === null){
+        const handFoes = document.querySelectorAll('#hand li .card.foe img')
+        handFoes.forEach(card => {
+            card.style.border = '.2em solid orange';
+            card.style.borderRadius = '10%';
+            card.onclick = function(){moveCard(card)};
+        })
+    }
+    else{
+        const playedWeapons = document.querySelectorAll('#played-list li .card.card img');
+        const handWeapons = document.querySelectorAll('#hand-list li .card.weapon img')
+        handWeapons.forEach(card => {
+            //check if a weapon of this name has been played already
+            var found = false;
+            playedWeapons.forEach(weap => {
+                console.log ("checking weapon of class " + card.classList)
+                if (weap.classList.contains(card.classList)){
+                    found = true;
+                }
+            }
+             )
+            if (!found){
+                card.style.border = '.2em solid greenyellow';
+                card.style.borderRadius = '10%';
+                card.onclick = function(){moveCard(card)};
+            }
+        })
+    }
+
+
 }
 
+function unhighlightCards() {
+    const handCards = document.querySelectorAll('#hand-list li .card img')
+    handCards.forEach(card => {
+        card.style.border = 'none';
+        card.onclick = function(){};
+    })
+}
+// function highlightCards() {
+//     const handCards = document.querySelectorAll('#hand-list .card')
+//     handCards.forEach(card => {
+//         card.style.border = '.2em solid greenyellow';
+//         card.style.borderRadius = '10%';
+//         card.onclick = function(){moveCardUp(card)};
+//     })
+// }
+//
+// function unhighlightCards() {
+//     const handCards = document.querySelectorAll('#hand-list li .card img')
+//     handCards.forEach(card => {
+//         card.style.border = 'none';
+//     })
+// }
 /*
 * --------------------------------------
 *        Rough Draggable Code
