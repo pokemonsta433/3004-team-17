@@ -172,16 +172,16 @@ function highlightCards() {
     const playedFoe = document.querySelector('#played-list li .card.foe img');
 
     if (playedFoe === null){
-        const handFoes = document.querySelectorAll('#hand li .card.foe img')
+        const handFoes = document.querySelectorAll('#hand .card.foe img')
         handFoes.forEach(card => {
             card.style.border = '.2em solid orange';
             card.style.borderRadius = '10%';
-            card.onclick = function(){moveCard(card)};
+            card.parentElement.onclick = function(){moveCard(card.parentElement)};
         })
     }
     else{
-        const playedWeapons = document.querySelectorAll('#played-list li .card.card img');
-        const handWeapons = document.querySelectorAll('#hand-list li .card.weapon img')
+        const playedWeapons = document.querySelectorAll('#played-list .card.weapon img');
+        const handWeapons = document.querySelectorAll('#hand .card.weapon img')
         handWeapons.forEach(card => {
             //check if a weapon of this name has been played already
             var found = false;
@@ -194,37 +194,23 @@ function highlightCards() {
              )
             if (!found){
                 card.style.border = '.2em solid greenyellow';
-                card.style.borderRadius = '10%';
-                card.onclick = function(){moveCard(card)};
+                card.borderRadius = '10%';
+                card.parentElement.onclick = function(){moveCard(card.parentElement)};
             }
         })
     }
 
-
 }
 
 function unhighlightCards() {
-    const handCards = document.querySelectorAll('#hand-list li .card img')
+    console.log("unhighlighting cards...")
+    const handCards = document.querySelectorAll('#hand .card img')
     handCards.forEach(card => {
         card.style.border = 'none';
-        card.onclick = function(){};
+        card.parentElement.onclick = function(){};
     })
 }
-// function highlightCards() {
-//     const handCards = document.querySelectorAll('#hand-list .card')
-//     handCards.forEach(card => {
-//         card.style.border = '.2em solid greenyellow';
-//         card.style.borderRadius = '10%';
-//         card.onclick = function(){moveCardUp(card)};
-//     })
-// }
-//
-// function unhighlightCards() {
-//     const handCards = document.querySelectorAll('#hand-list li .card img')
-//     handCards.forEach(card => {
-//         card.style.border = 'none';
-//     })
-// }
+
 /*
 * --------------------------------------
 *        Rough Draggable Code
