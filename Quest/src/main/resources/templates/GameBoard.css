@@ -292,22 +292,39 @@ ul#horizontal-list li a{
     transform: translateY(-150px);
 }
 
+#SponsorPrompt .card:hover{
+    width: 150px;
+    height: 225px;
+    border: 2px solid rgb(0, 125, 228);
+    z-index: 1;
+    transform: translateX(-25px) translateY(-75px); /* I was hoping this would not move the buttons down but it does TODO: make matt fix it :) */
+}
+
+#NoSponsorPrompt .card:hover{
+    width: 150px;
+    height: 225px;
+    border: 2px solid rgb(0, 125, 228);
+    z-index: 1;
+    transform: translateX(-25px) translateY(-75px); /* I was hoping this would not move the buttons down but it does TODO: make matt fix it :) */
+}
+
+
 #played-list li{
     display: inline;
 }
 
-#played-list li .card{
+.card{
     border: 2px solid black;
     border-radius: 10px;
     width: 100px;
     height: 150px;
-    background-color: black;
     margin-top: auto;
     position: relative;
     margin-left: -20px;
     z-index: 0;
     transition: all 0.5s;
 }
+
 
 .card img {
     width: 100%;
