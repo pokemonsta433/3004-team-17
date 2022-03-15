@@ -285,3 +285,59 @@ ul#horizontal-list li a{
     z-index: 1;
     transform: translateX(-25px) translateY(-75px); /* I was hoping this would not move the buttons down but it does TODO: make matt fix it :) */
 }
+
+.discard {
+    position: fixed;
+    top: 100px;
+    left: 100px;
+}
+
+.discard .card {
+    display: none;
+}
+
+.discard .card:last-child {
+    display: block;
+}
+
+#selection {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.36);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#selection > ul {
+    width: 80%;
+    height: 80%;
+    background-color: #404040;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+#selection > ul .card {
+    display: inline-block;
+    padding: 5px;
+}
+
+#selection > ul .card:hover {
+    z-index: 1;
+    transform: scale(1.5);
+}
+
+#selection button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 20px;
+    height: 20px;
+    background-color: red;
+    border: 1px solid black;
+    border-radius: 5px;
+}

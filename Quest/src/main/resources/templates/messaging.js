@@ -120,8 +120,12 @@ function playCards(){
 
 function moveCard(e){
     let list1 = document.getElementById("hand");
-    let list2 = document.getElementById("played-list");
+    // let list2 = document.getElementById("played-list");
+    let list2 = document.getElementById("discard");
     let moveTo = e.parentElement === list1 ? list2 : list1;
+
+    if (moveTo == list1 && list2.className === 'discard') return;
+
     moveTo.appendChild(e);
 }
 
@@ -130,6 +134,32 @@ function submitPrompt(e){
     document.getElementById("NoSponsorPrompt").style.display = 'none';
     stompClient.send("/app/prompt", {}, JSON.stringify({'name': userName, msg: e.className}));
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    let discard = document.querySelector('#discard');
+
+    function openDiscard(e) {
+        let selection = document.createElement('div');
+        selection.id = 'selection';
+
+        let button = document.createElement('button');
+        button.onclick = function() {
+            discard.className = 'discard'
+            discard.addEventListener('click', openDiscard);
+            document.querySelector('body').appendChild(discard);
+            selection.remove();
+        }
+        selection.appendChild(button);
+
+        discard.className = '';
+        discard.removeEventListener('click', openDiscard);
+        selection.appendChild(discard);
+
+        document.querySelector('body').appendChild(selection);
+    }
+
+    discard.addEventListener('click', openDiscard);
+});
 
 // function highlightCards() {
 //     const handCards = document.querySelectorAll('#hand-list .card')
