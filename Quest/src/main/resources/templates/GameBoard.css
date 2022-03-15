@@ -48,7 +48,7 @@ ul#horizontal-list li a{
     text-decoration: none;
 }
 
-#gameboard {
+#gameboard{
     width: 80%;
     height: 70%;
     background-color: #91742d;
@@ -260,4 +260,28 @@ ul#horizontal-list li a{
 
 .quad-split .played-cards {
     width: auto;
+}
+
+#SponsorPrompt{
+    display: none;
+}
+
+#NoSponsorPrompt{
+    display: none;
+}
+
+#SponsorPrompt .card:hover{
+    width: 150px;
+    height: 225px;
+    border: 2px solid rgb(0, 125, 228);
+    z-index: 1;
+    transform: translateX(-25px) translateY(-75px); /* I was hoping this would not move the buttons down but it does TODO: make matt fix it :) */
+}
+
+#NoSponsorPrompt .card:hover{
+    width: 150px;
+    height: 225px;
+    border: 2px solid rgb(0, 125, 228);
+    z-index: 1;
+    transform: translateX(-25px) translateY(-75px); /* I was hoping this would not move the buttons down but it does TODO: make matt fix it :) */
 }

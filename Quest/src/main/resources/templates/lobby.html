@@ -10,7 +10,6 @@
     <script>
         function setUsername(){
             var uname = document.querySelector('body').getAttribute('data-name'); //is this a bit of a hack? Hell yes it is :)
-            alert("about to save your name as " + uname)
             user = JSON.stringify(uname);
             //converts to base 64 ASCII
             user = btoa(user)

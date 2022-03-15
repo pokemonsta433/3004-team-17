@@ -25,12 +25,10 @@ function saveUsername(){
 
 function loadUsername() {
     var user = localStorage.getItem('_user');
-    //if (!user) alert("somehow you got here without setting your name! Please go back to the home page and try joining the game again!")
-    localStorage.removeItem('_user');
     user = atob(user); //decode the data
+    console.log(user);
     user = JSON.parse(user); //parse it
     userName = user;
-    alert("user name is " + userName);
 }
 
 function refreshPage() {
@@ -45,7 +43,6 @@ function refreshPage() {
             doc = parser.parseFromString(result, 'text/html');
             document.replaceChild( doc.documentElement, document.documentElement);
         })
-    //loadUsername();
     //window.location = window.location; // can't do this because it uses get requests :(
 }
 
@@ -56,7 +53,6 @@ function connect() {
         setConnected(true);
         console.log('Connected: ' + frame);
         stompClient.subscribe('/topic/serverMessages', function (message) {
-            //alert("message received: " + JSON.parse(message.body).content);
             //if(message.body.substring(12,message.body.length - 2) === "Change"){
             if (JSON.parse(message.body).messagetype === "Join") {
                 // get player name
@@ -66,23 +62,33 @@ function connect() {
                 newtext = oldText .replace(/(\d)+?\//g, function(match, number) {
                     return parseInt(number)+1 + "/";
                 });
-
-
                 playercount.innerHTML = newtext;
-                console.log("boiiii new text is " + newtext);
-
                 // enable start button
                 document.getElementById("start").disabled = false;
             }
             else  if(JSON.parse(message.body).messagetype === "Start"){
-                //alert("press start game to begin");
                 if(!submittedStartGameForm){
                     submittedStartGameForm = true;
                     var theform = document.getElementById("startbutton-form");
                     theform.requestSubmit();
                 }
             }
+            else if(JSON.parse(message.body).messagetype === "Validity"){
+                alert("Valid cards played: " + JSON.parse(message.body).content)
+            }
         });
+        if(userName === null){loadUsername();}
+        stompClient.subscribe("/user/" + userName + "/reply", function(message) {
+            if(JSON.parse(message.body).messagetype === "Prompt") {
+                if(JSON.parse(message.body).content === "Sponsor"){
+                    document.getElementById("SponsorPrompt").style.display = 'block';
+                }
+                else if(JSON.parse(message.body).content === "No Sponsor"){
+                    document.getElementById("NoSponsorPrompt").style.display = 'block';
+                }
+            }
+        });
+        stompClient.send("/app/gameStart",{},JSON.stringify({'name': userName, msg: "Start"})); //idk where to put this
     });
 }
 
@@ -96,23 +102,20 @@ function disconnect() {
     console.log("Disconnected");
 }
 
-function sendCard(uname, id) {
-    let card = {
-        name: uname,
-        msg: "play " + id
-    }
-    let msg = JSON.stringify(card);
-    stompClient.send("/app/ServerRcv", {}, msg);
-}
+
 
 function sendName() {
-    alert("we fucking got 'em going")
     stompClient.send("/app/hello", {}, JSON.stringify({'name': userName, msg: "testing"}));
 }
 
-function playCard(id){
-    alert("Card Played " + id);
-    sendCard(userName, id);
+
+function playCards(){
+    var cards = document.querySelectorAll('#played-list li .card img')
+    var message = ""
+    cards.forEach(card => {
+        message += (card.id + ",");
+    })
+    stompClient.send("/app/playCards", {}, JSON.stringify({'name': userName, msg: message}))
 }
 
 function moveCard(e){
@@ -120,6 +123,12 @@ function moveCard(e){
     let list2 = document.getElementById("played-list");
     let moveTo = e.parentElement === list1 ? list2 : list1;
     moveTo.appendChild(e);
+}
+
+function submitPrompt(e){
+    document.getElementById("SponsorPrompt").style.display = 'none';
+    document.getElementById("NoSponsorPrompt").style.display = 'none';
+    stompClient.send("/app/prompt", {}, JSON.stringify({'name': userName, msg: e.className}));
 }
 
 // function highlightCards() {

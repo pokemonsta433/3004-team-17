@@ -1,6 +1,7 @@
 package com.team17.quest;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 public class Player {
@@ -35,34 +36,51 @@ public class Player {
 
 
     public void playCard(int id){
+        //this function is currently irrelevant and will be reworked in the future.
         for(Card c: hand){
             if(c.id == id){
-                if(played.playcard(c) == true){
-                    hand.remove(c);
-                    return;
-                }
+                played.playcard(c);
+                hand.remove(c);
             }
         }
     }
 
-    public void returnCardFromPlayer(int id){
-        if(id == played.foe.id){
-            hand.add(played.returnFoe());
-            return;
+    public boolean validPlay(List<String> ids){
+        boolean foe = false;
+        ArrayList<String> weaponNames = new ArrayList<>();
+        for(Card c : hand){
+            if(ids.contains(Integer.toString(c.id))){
+                if(c instanceof FoeCard) {
+                    if (foe) {
+                        return false;
+                    } else {
+                        foe = true;
+                    }
+                }
+                else if(c instanceof WeaponCard){
+                    if(weaponNames.contains(c.name)){
+                        return false;
+                    }
+                    else{
+                        weaponNames.add(c.name);
+                    }
+                }
+            }
+        }
+        if(foe == false){
+            return false;
         }
         else{
-            for(Card c: played.weapons){
-                if(c.id == id){
-                    hand.add(played.returnWeapon(id));
-                    return;
-                }
-            }
+            return true;
         }
-
     }
 
-    public void drawCard(Stack<Card> d){
-        hand.add(d.pop());
+
+
+    public void drawCard(Stack<Card> d, int n){
+        for(int i = 0; i < n; i++){
+            hand.add(d.pop());
+        }
     }
 
     public Card discardCard(int id){
@@ -75,6 +93,15 @@ public class Player {
         return null;
     }
 
+    public int foeCount(){
+        int i = 0;
+        for(Card c : hand){
+            if(c instanceof FoeCard){
+                i++;
+            }
+        }
+        return i;
+    }
     public ArrayList<Card> getHand(){
         return hand;
     }

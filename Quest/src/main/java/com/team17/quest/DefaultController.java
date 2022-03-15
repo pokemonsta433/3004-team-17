@@ -1,5 +1,6 @@
 package com.team17.quest;
 
+import ch.qos.logback.core.net.server.Client;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.InputStreamResource;
@@ -17,6 +18,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 // this will be automatically pulled in by the application!
@@ -29,6 +32,10 @@ public class DefaultController {
     int MAX_PLAYERS = 4;
     Game game;
     boolean game_started = false;
+    int players_prompted = 0;
+    int player_turn = 0;
+    boolean sponsored = false;
+    ArrayList<String> participants = new ArrayList<>();
     @Autowired
     private SimpMessagingTemplate messageSender;
 
@@ -37,15 +44,65 @@ public class DefaultController {
                 new ServerMessage(messagetype, HtmlUtils.htmlEscape(message)));
     }
 
-    @MessageMapping("/ServerRcv")
+    @MessageMapping("/playCards")
     @SendTo("/topic/serverMessages")
     public ServerMessage answer(ClientMessage message) throws Exception {
-        System.out.println("Name: " + message.getName());
-        game.players.get(game.getIndexOfName(message.getName())).playCard(Integer.parseInt(message.getMsg().split(" ")[1]));
-        //json.parse <--
-        //<-- remove card from model
-        ServerMessage serverMessage = new ServerMessage("Change", "Change");
-        return serverMessage;
+        String[] split = message.getMsg().split(",");
+        List<String> ids = Arrays.asList(split);
+        boolean valid = game.getPlayer(game.getIndexOfName(message.getName())).validPlay(ids);
+        if(valid){
+            return new ServerMessage("Validity", "True");
+        }
+        else{
+            return new ServerMessage("Validity", "False");
+        }
+    }
+
+    @MessageMapping("/prompt")
+    public void prompt(ClientMessage message) throws Exception {
+        if(message.getMsg().equals("Sponsor")){
+            if(game.getPlayer(player_turn).foeCount() < game.stages){ //checks if has enough foes to make stage (later will change to foe + hasTest)
+                messageSender.convertAndSendToUser(game.getPlayer(player_turn).name, "/reply", new ServerMessage("Prompt", "No Sponsor"));
+                return;
+            }
+            else{
+                sponsored = true;
+                game.setSponsor(message.getName());
+            }
+        }
+        else if(message.getMsg().equals("Participate")){
+            participants.add(message.getName());
+        }
+        players_prompted += 1;
+        System.out.println(players_prompted);
+        if(players_prompted >= game.players.size()){
+            players_prompted = 0;
+            if(!sponsored){
+                game.drawStory();
+                System.out.println(player_turn);
+                player_turn = player_turn  % game.players.size();
+                System.out.println("HERE");
+                messageSender.convertAndSendToUser(game.getPlayer(player_turn).name, "/reply", new ServerMessage("Prompt", "Sponsor")); //TO-DO change content to quest name?
+            }
+            else{
+                messageSender.convertAndSendToUser(game.sponsor.name, "/reply", new ServerMessage("Quest", "1"));
+            }
+        }
+        else{
+            player_turn += 1;
+            player_turn = player_turn % game.players.size();
+            if(sponsored){
+                messageSender.convertAndSendToUser(game.getPlayer(player_turn).name, "/reply", new ServerMessage("Prompt", "No Sponsor"));
+            }
+            else{
+                messageSender.convertAndSendToUser(game.getPlayer(player_turn).name, "/reply", new ServerMessage("Prompt", "Sponsor"));
+            }
+        }
+    }
+
+    @MessageMapping("/gameStart")
+    public void gameStart(ClientMessage message) throws Exception {
+        messageSender.convertAndSendToUser(game.getPlayer(player_turn).name, "/reply", new ServerMessage("Prompt", "Sponsor")); //TO-DO change content to quest name?
     }
 
     @GetMapping(value = "/")
@@ -82,9 +139,6 @@ public class DefaultController {
         players.add(p);
         model.addAttribute("PlayerList", players);
         model.addAttribute("player", p);
-        // broadcast the name of the play that joined
-        //broadcastMessage("Server says: " + p.getName() + " has joined.");
-        //broadcastMessage("Change");
         broadcastMessage("Join", p.getName());
         return "lobby";
     }
@@ -98,6 +152,7 @@ public class DefaultController {
         model.addAttribute("game", game);
         model.addAttribute("i", game.getIndexOfName(playername));
         broadcastMessage("Start", "StartGame");
+        game.drawStory();
         return "GameBoard";
     }
 

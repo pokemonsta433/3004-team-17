@@ -13,6 +13,9 @@ public class Game {
     DeckFactory deckMaker;
     Card current_story;
     int player_turn;
+    Player sponsor;
+    ArrayList<Player> questParticipants;
+    int stages = 0;
 
 
     public Game(ArrayList<Player> ps){
@@ -35,6 +38,17 @@ public class Game {
             i++;
         }
         return -1;
+    }
+
+    public void setSponsorAndParticipants(String name, ArrayList<String> pNames){
+        questParticipants.clear();
+        for(String n : pNames){
+            questParticipants.add(getPlayer(getIndexOfName(n)));
+        }
+    }
+
+    public void setSponsor(String name){
+        sponsor = getPlayer(getIndexOfName(name));
     }
 
     public ArrayList<Player> getPlayers(){
@@ -67,8 +81,18 @@ public class Game {
     }
 
 
-    public void gameStart(){
+    public void drawStory(){
+        if(current_story != null){
+            story_discardPile.add(current_story);
+        }
         current_story = story_deck.pop();
+        if(current_story instanceof QuestCard){
+            QuestCard card = (QuestCard) current_story;
+            stages = card.stages;
+        }
+        else{
+            stages = 0;
+        }
     }
 
     public void playGame(){
@@ -77,6 +101,6 @@ public class Game {
         shuffleDecks();
         dealHands();
         //game begins
-        gameStart();
+
     }
 }
