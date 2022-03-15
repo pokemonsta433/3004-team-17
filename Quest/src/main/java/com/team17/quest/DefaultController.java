@@ -139,9 +139,6 @@ public class DefaultController {
         players.add(p);
         model.addAttribute("PlayerList", players);
         model.addAttribute("player", p);
-        // broadcast the name of the play that joined
-        //broadcastMessage("Server says: " + p.getName() + " has joined.");
-        //broadcastMessage("Change");
         broadcastMessage("Join", p.getName());
         return "lobby";
     }

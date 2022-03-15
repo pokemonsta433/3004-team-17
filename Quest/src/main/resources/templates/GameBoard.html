@@ -54,8 +54,6 @@
             <div class="played-cards-div">
                 <div class="mat" th:if="${game.players.size() == 2}">
                     <ul class="played-cards">
-                        <li class="card">
-                        </li>
                     </ul>
                 </div>
             </div>
@@ -100,8 +98,6 @@
         <div class="columnLeft">
             <div class="played-cards-div">
                 <ul class="played-cards">
-                    <li class="card">
-                    </li>
                 </ul>
             </div>
 
@@ -109,23 +105,29 @@
         <div class="columnRight" >
             <div class="played-cards-div">
                 <ul class="played-cards">
-                    <li class="card">
-                    </li>
                 </ul>
             </div>
 
         </div>
     </div>
 
-    <div id = "SponsorPrompt">
+    <div id = "SponsorPrompt" style='position: absolute; left: 100px; top: 50px; border: solid black 1px; padding: 10px; background-color: rgb(200,100,100); text-align: justify; font-size: 12px; width: 135px;' >
+        <span class='new-quest-text'>A new quest is starting!</span>
         <p>What would you like to do for the following quest?</p>
+        <div class="card" style="margin-left: 20px">
+            <img src="/card?cardName=boar_hunt">
+        </div>
         <input class="Sponsor" type="button" value="Sponsor" onclick="submitPrompt(this)">
         <input class="Participate" type="button" value="Participate" onclick="submitPrompt(this)">
         <input class="Drop Out" type="button" value="Drop Out" onclick="submitPrompt(this)">
     </div>
 
-    <div id = "NoSponsorPrompt">
+    <div id = "NoSponsorPrompt" style='position: absolute; left: 100px; top: 50px; border: solid black 1px; padding: 10px; background-color: rgb(200,100,100); text-align: justify; font-size: 12px; width: 135px;' >
+        <span class="new-quest-text">A new quest is starting!</span>
         <p>What would you like to do for the following quest?</p>
+        <div class="card" style="margin-left: 20px">
+            <img src="/card?cardName=boar_hunt">
+        </div>
         <input class="Participate" type="button" value="Participate" onclick="submitPrompt(this)">
         <input class="Drop Out" type="button" value="Drop Out" onclick="submitPrompt(this)">
     </div>
@@ -134,7 +136,7 @@
 
         <div id="played-cards">
             <div class="played-cards-div">
-                <div class="card mat">
+                <div class="card-mat">
                     <input id="highlightCards" type="button" value="Highlight Cards" onclick="highlightCards();">
                     <ul id = "played-list">
                     </ul>

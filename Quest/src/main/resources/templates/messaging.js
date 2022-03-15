@@ -25,12 +25,10 @@ function saveUsername(){
 
 function loadUsername() {
     var user = localStorage.getItem('_user');
-    //if (!user) alert("somehow you got here without setting your name! Please go back to the home page and try joining the game again!")
     user = atob(user); //decode the data
     console.log(user);
     user = JSON.parse(user); //parse it
     userName = user;
-    alert("user name is " + userName);
 }
 
 function refreshPage() {
@@ -45,7 +43,6 @@ function refreshPage() {
             doc = parser.parseFromString(result, 'text/html');
             document.replaceChild( doc.documentElement, document.documentElement);
         })
-    //loadUsername();
     //window.location = window.location; // can't do this because it uses get requests :(
 }
 
@@ -56,7 +53,6 @@ function connect() {
         setConnected(true);
         console.log('Connected: ' + frame);
         stompClient.subscribe('/topic/serverMessages', function (message) {
-            //alert("message received: " + JSON.parse(message.body).content);
             //if(message.body.substring(12,message.body.length - 2) === "Change"){
             if (JSON.parse(message.body).messagetype === "Join") {
                 // get player name
@@ -71,7 +67,6 @@ function connect() {
                 document.getElementById("start").disabled = false;
             }
             else  if(JSON.parse(message.body).messagetype === "Start"){
-                //alert("press start game to begin");
                 if(!submittedStartGameForm){
                     submittedStartGameForm = true;
                     var theform = document.getElementById("startbutton-form");
@@ -110,7 +105,6 @@ function disconnect() {
 
 
 function sendName() {
-    alert("we fucking got 'em going")
     stompClient.send("/app/hello", {}, JSON.stringify({'name': userName, msg: "testing"}));
 }
 
