@@ -9,12 +9,14 @@ public class Player {
     ArrayList<Card> hand;
     int shields;
     ArrayList<Card> allies;
+    ArrayList<AdventureCard> stage;
 
     public Player(){
         name = "";
         shields = 0;
         hand = new ArrayList<>();
         allies = new ArrayList<>();
+        stage = new ArrayList<>();
     }
 
 
@@ -63,7 +65,16 @@ public class Player {
         }
     }
 
-
+    public void addStage(List<String> ids){
+        for(Card c : hand){
+            if(ids.contains(Integer.toString(c.id))){
+                stage.add((AdventureCard) c);
+            }
+        }
+        for(Card c : stage){
+            hand.remove(c);
+        }
+    }
 
     public void drawCard(Stack<Card> d, int n){
         for(int i = 0; i < n; i++){
@@ -71,6 +82,13 @@ public class Player {
         }
     }
 
+    public int getStageValue(String q){
+        int total = 0;
+        for(AdventureCard c: stage){
+            total += c.getValue(q);
+        }
+        return total;
+    }
 
     public int foeCount(){
         int i = 0;

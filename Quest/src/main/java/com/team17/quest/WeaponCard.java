@@ -5,7 +5,7 @@ public class WeaponCard extends AdventureCard{
         super(name, i, bp);
     }
 
-    public int getValue(Card c){
+    public int getValue(String q){
         return battle_points;
     }
 }

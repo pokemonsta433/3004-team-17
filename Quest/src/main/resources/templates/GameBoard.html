@@ -128,6 +128,10 @@
             <div id="makeStage" style="display: none">
                 <p id="stageText">Please make stage 1</p>
             </div>
+            <div id="submitChallenge" style="display: none">
+                <p id="challengeText">Challenge Stage 0</p>
+            </div>
+            <input type="button" value="Challenge" id="challenge" onclick="challenge()" style="display: none">
             <input type="button" value="Play Cards" id="playCards" onclick="playCards()" style="display: none">
             <ul id="hand">
                 <li class="card" th:each="c: ${game.getPlayer(i).hand}">

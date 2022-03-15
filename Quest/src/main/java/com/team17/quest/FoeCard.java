@@ -1,5 +1,9 @@
 package com.team17.quest;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class FoeCard extends AdventureCard{
     int bonus_points;
     String[] bonus_card;
@@ -10,8 +14,9 @@ public class FoeCard extends AdventureCard{
         bonus_card = bc;
     }
 
-    public int getValue(Card c){
-        if(c.name.equals(bonus_card)){
+    public int getValue(String q){
+        List<String> bonus_quests = Arrays.asList(bonus_card);
+        if(bonus_quests.contains(q)){
             return bonus_points;
         }
         else{

@@ -120,6 +120,53 @@ function connect() {
                     document.getElementById("playCards").style.display = 'none';
                     unhighlightCards();
                 }
+                else if(JSON.parse(message.body).content == "Stage"){
+                    var cards = document.querySelectorAll('#played-list .card')
+                    cards.forEach(card => {
+                        card.parentElement.removeChild(card);
+                    })
+                    var stagecount = document.getElementById("challengeText");
+                    var oldText = stagecount.innerHTML;
+                    newtext = oldText .replace(/(\d)/g, function(match, number) {
+                        return parseInt(number)+1;
+                    });
+                    stagecount.innerHTML = newtext
+                    document.getElementById("challenge").style.display = 'block';
+                    document.getElementById("submitChallenge").style.display = 'block';
+                    highlightCards();
+                }
+                else if(JSON.parse(message.body).content == "Continue"){
+                    alert("NEXT STAGE");
+                    var cards = document.querySelectorAll('#played-list .card')
+                    cards.forEach(card => {
+                        card.parentElement.removeChild(card);
+                    })
+                    var stagecount = document.getElementById("challengeText");
+                    var oldText = stagecount.innerHTML;
+                    newtext = oldText .replace(/(\d)/g, function(match, number) {
+                        return parseInt(number)+1;
+                    });
+                    stagecount.innerHTML = newtext;
+                }
+                else if(JSON.parse(message.body).content == "Lose"){
+                    alert("YOU LOST");
+                    var cards = document.querySelectorAll('#played-list .card')
+                    cards.forEach(card => {
+                        card.parentElement.removeChild(card);
+                    })
+                    unhighlightCards();
+                    document.getElementById("challenge").style.display = 'none';
+                    document.getElementById("submitChallenge").style.display = 'none';
+                }
+                else if(JSON.parse(message.body).content == "Wait"){
+                    alert("Waiting for other players");
+                }
+                else if(JSON.parse(message.body).content == "Stage Done"){
+                    alert("Stage Done");
+                    document.getElementById("challenge").style.display = 'none';
+                    document.getElementById("submitChallenge").style.display = 'none';
+                    unhighlightCards();
+                }
 
             }
         });
@@ -143,7 +190,15 @@ function sendName() {
     stompClient.send("/app/hello", {}, JSON.stringify({'name': userName, msg: "testing"}));
 }
 
-
+function challenge(){
+    var cards = document.querySelectorAll('#played-list .card img')
+    var message = ""
+    cards.forEach(card => {
+        message += (card.id + ",");
+    })
+    console.log(message)
+    stompClient.send("/app/challenge", {}, JSON.stringify({'name': userName, msg: message}))
+}
 function playCards(){
     var cards = document.querySelectorAll('#played-list .card img')
     var message = ""
@@ -177,7 +232,7 @@ function highlightCards() {
  }
 
  function unhighlightCards() {
-    const handCards = document.querySelectorAll('#hand li .card img')
+    const handCards = document.querySelectorAll('#hand .card')
      handCards.forEach(card => {
          card.style.border = 'none';
          card.onclick = "";

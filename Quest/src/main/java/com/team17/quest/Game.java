@@ -17,7 +17,7 @@ public class Game {
     Player sponsor;
     ArrayList<Player> questParticipants;
     int stages = 0;
-    ArrayList<ArrayList<Card>> quest;
+    ArrayList<ArrayList<AdventureCard>> quest;
 
 
 
@@ -84,10 +84,10 @@ public class Game {
     }
 
     public void addStage(Player p, List<String> ids){
-        ArrayList<Card> stage = new ArrayList<>();
+        ArrayList<AdventureCard> stage = new ArrayList<>();
         for(Card c : p.hand){
             if(ids.contains(Integer.toString(c.id))){
-                stage.add(c);
+                stage.add((AdventureCard) c);
             }
         }
         for(Card c : stage){
@@ -111,6 +111,13 @@ public class Game {
         }
     }
 
+    public int getStageValue(int i){
+        int total = 0;
+        for(AdventureCard c: quest.get(i-1)){
+            total += c.getValue(current_story.name);
+        }
+        return total;
+    }
     public void playGame(){
         //one time game set up
         generateDecks();

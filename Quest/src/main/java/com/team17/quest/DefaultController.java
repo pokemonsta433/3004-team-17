@@ -34,8 +34,10 @@ public class DefaultController {
     boolean game_started = false;
     int players_prompted = 0;
     int player_turn = 0;
+    int current_stage = 1;
     boolean sponsored = false;
     ArrayList<String> participants = new ArrayList<>();
+    ArrayList<Boolean> challenge_played = new ArrayList<>();
     @Autowired
     private SimpMessagingTemplate messageSender;
 
@@ -44,6 +46,46 @@ public class DefaultController {
                 new ServerMessage(messagetype, HtmlUtils.htmlEscape(message)));
     }
 
+    @MessageMapping("/challenge")
+    public void challenge(ClientMessage message) throws Exception{
+        String[] split = message.getMsg().split(",");
+        List<String> ids = Arrays.asList(split);
+        boolean valid = game.getPlayer(game.getIndexOfName(message.getName())).validPlay(ids);
+        if(!valid){
+            messageSender.convertAndSendToUser(game.getPlayer(game.getIndexOfName(message.getName())).name, "/reply", new ServerMessage("Quest", "Invalid"));
+        }
+        else{
+            game.getPlayer(game.getIndexOfName(message.getName())).addStage(ids);
+            if(game.getPlayer(game.getIndexOfName(message.getName())).getStageValue(game.current_story.name) > game.getStageValue(current_stage)){ //need to know what stage we are on.
+                challenge_played.set(participants.indexOf(message.getName()), true);
+                if(challenge_played.contains(false)){
+                    messageSender.convertAndSendToUser(game.getPlayer(game.getIndexOfName(message.getName())).name, "/reply", new ServerMessage("Quest", "Wait"));
+                }
+                else{
+                    if(current_stage == game.stages){
+                        current_stage = 1;
+                        messageSender.convertAndSendToUser(game.getPlayer(game.getIndexOfName(message.getName())).name, "/reply", new ServerMessage("Quest", "Stage Done"));
+                        game.drawStory();
+                        messageSender.convertAndSendToUser(game.getPlayer(player_turn).name, "/reply", new ServerMessage("Prompt", "Sponsor")); //TO-DO change content to quest name?
+                    }
+                    else{
+                        current_stage++;
+                        for(String s : participants){
+                            System.out.println(s);
+                            challenge_played.clear();
+                            challenge_played.add(false);
+                            messageSender.convertAndSendToUser(game.getPlayer(game.getIndexOfName(s)).name, "/reply", new ServerMessage("Quest", "Continue"));
+                        }
+                    }
+                }
+            }
+            else{
+                challenge_played.remove(participants.indexOf(message.getName()));
+                participants.remove(message.getName());
+                messageSender.convertAndSendToUser(game.getPlayer(game.getIndexOfName(message.getName())).name, "/reply", new ServerMessage("Quest", "Lose"));
+            }
+        }
+    }
     @MessageMapping("/playCards")
     public void answer(ClientMessage message) throws Exception {
         String[] split = message.getMsg().split(",");
@@ -56,6 +98,11 @@ public class DefaultController {
             }
             else{
                 messageSender.convertAndSendToUser(game.getPlayer(game.getIndexOfName(message.getName())).name, "/reply", new ServerMessage("Quest", "Complete"));
+                for(String s : participants){
+                    System.out.println(s);
+                    challenge_played.add(false);
+                    messageSender.convertAndSendToUser(game.getPlayer(game.getIndexOfName(s)).name, "/reply", new ServerMessage("Quest", "Stage"));
+                }
             }
         }
         else{
