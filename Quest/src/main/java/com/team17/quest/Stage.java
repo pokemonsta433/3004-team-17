@@ -12,22 +12,15 @@ public class Stage {
         weapons = new ArrayList<>();
     }
 
-    public boolean playcard(Card c){
+    public void addCard(Card c){
         //this function is currently irrelevant and will be reworked in the future.
-        if(c instanceof FoeCard && foe == null){
+        if(c instanceof FoeCard) {
             foe = c;
-            return true;
         }
         if(c instanceof WeaponCard){
-            for(Card w : weapons){
-                if(c.name == w.name){
-                    return false;
-                }
-            }
             weapons.add(c);
-            return true;
+
         }
-        return false;
     }
 
     public Card returnFoe(){

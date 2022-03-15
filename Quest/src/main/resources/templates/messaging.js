@@ -87,6 +87,41 @@ function connect() {
                     document.getElementById("NoSponsorPrompt").style.display = 'block';
                 }
             }
+            else if(JSON.parse(message.body).messagetype === "Quest"){
+                if(JSON.parse(message.body).content == "First"){
+                    alert("You are the sponsor");
+                    document.getElementById("makeStage").style.display = 'block';
+                    document.getElementById("playCards").style.display = 'block';
+                    highlightCards();
+                }
+                else if(JSON.parse(message.body).content == "Next"){
+                    var stagecount = document.getElementById("stageText");
+                    var oldText = stagecount.innerHTML;
+                    newtext = oldText .replace(/(\d)/g, function(match, number) {
+                        return parseInt(number)+1;
+                    });
+                    stagecount.innerHTML = newtext
+                    var cards = document.querySelectorAll('#played-list .card')
+                    cards.forEach(card => {
+                        card.parentElement.removeChild(card);
+                    })
+                    //clear playable cards
+                }
+                else if(JSON.parse(message.body).content == "Invalid"){
+                    //do nothing?
+                    alert("Invalid stage");
+                }
+                else if(JSON.parse(message.body).content == "Complete"){
+                    var cards = document.querySelectorAll('#played-list .card')
+                    cards.forEach(card => {
+                        card.parentElement.removeChild(card);
+                    })
+                    document.getElementById("makeStage").style.display = 'none';
+                    document.getElementById("playCards").style.display = 'none';
+                    unhighlightCards();
+                }
+
+            }
         });
         stompClient.send("/app/gameStart",{},JSON.stringify({'name': userName, msg: "Start"})); //idk where to put this
     });
@@ -110,11 +145,12 @@ function sendName() {
 
 
 function playCards(){
-    var cards = document.querySelectorAll('#played-list li .card img')
+    var cards = document.querySelectorAll('#played-list .card img')
     var message = ""
     cards.forEach(card => {
         message += (card.id + ",");
     })
+    console.log(message)
     stompClient.send("/app/playCards", {}, JSON.stringify({'name': userName, msg: message}))
 }
 
@@ -133,6 +169,23 @@ function submitPrompt(e){
     document.getElementById("SponsorPrompt").style.display = 'none';
     document.getElementById("NoSponsorPrompt").style.display = 'none';
     stompClient.send("/app/prompt", {}, JSON.stringify({'name': userName, msg: e.className}));
+}
+
+function highlightCards() {
+     const handCards = document.querySelectorAll('#hand .card')
+     handCards.forEach(card => {
+         card.style.border = '.2em solid greenyellow';
+         card.style.borderRadius = '10%';
+         card.onclick = function(){moveCard(card)};
+     })
+ }
+
+ function unhighlightCards() {
+    const handCards = document.querySelectorAll('#hand li .card img')
+     handCards.forEach(card => {
+         card.style.border = 'none';
+         card.onclick = "";
+     })
 }
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -160,22 +213,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     discard.addEventListener('click', openDiscard);
 });
-
-// function highlightCards() {
-//     const handCards = document.querySelectorAll('#hand-list .card')
-//     handCards.forEach(card => {
-//         card.style.border = '.2em solid greenyellow';
-//         card.style.borderRadius = '10%';
-//         card.onclick = function(){moveCardUp(card)};
-//     })
-// }
-//
-// function unhighlightCards() {
-//     const handCards = document.querySelectorAll('#hand-list li .card img')
-//     handCards.forEach(card => {
-//         card.style.border = 'none';
-//     })
-// }
 
 /*
 * --------------------------------------
