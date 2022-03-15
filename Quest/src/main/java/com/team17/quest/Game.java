@@ -15,6 +15,7 @@ public class Game {
     int player_turn;
     Player sponsor;
     ArrayList<Player> questParticipants;
+    int stages = 0;
 
 
     public Game(ArrayList<Player> ps){
@@ -81,7 +82,17 @@ public class Game {
 
 
     public void drawStory(){
+        if(current_story != null){
+            story_discardPile.add(current_story);
+        }
         current_story = story_deck.pop();
+        if(current_story instanceof QuestCard){
+            QuestCard card = (QuestCard) current_story;
+            stages = card.stages;
+        }
+        else{
+            stages = 0;
+        }
     }
 
     public void playGame(){

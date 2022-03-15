@@ -93,6 +93,15 @@ public class Player {
         return null;
     }
 
+    public int foeCount(){
+        int i = 0;
+        for(Card c : hand){
+            if(c instanceof FoeCard){
+                i++;
+            }
+        }
+        return i;
+    }
     public ArrayList<Card> getHand(){
         return hand;
     }

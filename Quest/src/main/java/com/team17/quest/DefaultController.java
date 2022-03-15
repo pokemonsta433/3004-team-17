@@ -61,38 +61,50 @@ public class DefaultController {
     @MessageMapping("/prompt")
     public void prompt(ClientMessage message) throws Exception {
         if(message.getMsg().equals("Sponsor")){
-            sponsored = true;
-            game.setSponsor(message.getName());
+            if(game.getPlayer(player_turn).foeCount() < game.stages){ //checks if has enough foes to make stage (later will change to foe + hasTest)
+                messageSender.convertAndSendToUser(game.getPlayer(player_turn).name, "/reply", new ServerMessage("Prompt", "No Sponsor"));
+                return;
+            }
+            else{
+                sponsored = true;
+                game.setSponsor(message.getName());
+            }
         }
         else if(message.getMsg().equals("Participate")){
             participants.add(message.getName());
         }
         players_prompted += 1;
-        if(players_prompted > game.players.size()){
+        System.out.println(players_prompted);
+        if(players_prompted >= game.players.size()){
             players_prompted = 0;
-            //add participants
-            //logic
-            //send results to everyone
-            //draw new story card
-            //prompt next player
-        }
-        player_turn += 1;
-        player_turn = player_turn % game.players.size();
-        if(sponsored){
-            messageSender.convertAndSendToUser(game.getPlayer(player_turn).name, "/reply", new ServerMessage("Prompt", "No Sponsor"));
+            if(!sponsored){
+                game.drawStory();
+                System.out.println(player_turn);
+                player_turn = player_turn  % game.players.size();
+                System.out.println("HERE");
+                messageSender.convertAndSendToUser(game.getPlayer(player_turn).name, "/reply", new ServerMessage("Prompt", "Sponsor")); //TO-DO change content to quest name?
+            }
+            else{
+                messageSender.convertAndSendToUser(game.sponsor.name, "/reply", new ServerMessage("Quest", "1"));
+            }
         }
         else{
-            messageSender.convertAndSendToUser(game.getPlayer(player_turn).name, "/reply", new ServerMessage("Prompt", "Sponsor"));
+            player_turn += 1;
+            player_turn = player_turn % game.players.size();
+            if(sponsored){
+                messageSender.convertAndSendToUser(game.getPlayer(player_turn).name, "/reply", new ServerMessage("Prompt", "No Sponsor"));
+            }
+            else{
+                messageSender.convertAndSendToUser(game.getPlayer(player_turn).name, "/reply", new ServerMessage("Prompt", "Sponsor"));
+            }
         }
     }
 
     @MessageMapping("/gameStart")
     public void gameStart(ClientMessage message) throws Exception {
-        if(game.current_story instanceof QuestCard){
-            players_prompted += 1;
-            messageSender.convertAndSendToUser(game.getPlayer(player_turn).name, "/reply", new ServerMessage("Prompt", "Sponsor"));
-        }
+        messageSender.convertAndSendToUser(game.getPlayer(player_turn).name, "/reply", new ServerMessage("Prompt", "Sponsor")); //TO-DO change content to quest name?
     }
+
     @GetMapping(value = "/")
     public String index(){
         return "redirect:/join";
