@@ -10,6 +10,7 @@
     <script>
         function setUsername(){
             var uname = document.querySelector('body').getAttribute('data-name'); //is this a bit of a hack? Hell yes it is :)
+            alert("about to save your name as " + uname)
             user = JSON.stringify(uname);
             //converts to base 64 ASCII
             user = btoa(user)
@@ -24,7 +25,6 @@
 </head>
 
 <body th:data-name="${Player.name}"  th:onload="setUsername()">
-<!--<body th:onload="'setUsername(' + ${player.name} + ');'" > -->
     <div id = "lobby_list">
         <h3 style="font-size: 225%">Quest of the Round Table</h3>
         <table>
@@ -60,6 +60,7 @@
             <button id="start1" type="submit" style="visibility: hidden;">
                 START
             </button>
+            <p> WAITING FOR HOST TO START GAME </p>
         </form>
     </div>
 </body>
