@@ -112,10 +112,7 @@ function connect() {
                     alert("Invalid stage");
                 }
                 else if(JSON.parse(message.body).content === "Complete"){
-                    var cards = document.querySelectorAll('#played-list .card')
-                    cards.forEach(card => {
-                        card.parentElement.removeChild(card);
-                    })
+                    clearPlayArea();
                     document.getElementById("makeStage").style.display = 'none';
                     document.getElementById("playCards").style.display = 'none';
                     unhighlightCards();
@@ -213,14 +210,17 @@ function playCards(){
     stompClient.send("/app/playCards", {}, JSON.stringify({'name': userName, msg: message}))
 }
 
+function discard(e){
+    let discardPile = document.getElementById("discard");
+    discardPile.appendChild(e);
+}
+
 function moveCard(e){
     let list1 = document.getElementById("hand");
     // let list2 = document.getElementById("played-list");
     let list2 = document.getElementById("played-list");
     let moveTo = e.parentElement === list1 ? list2 : list1;
-
     //if (moveTo == list1 && list2.className === 'discard') return;
-
     moveTo.appendChild(e);
     unhighlightCards();
     highlightCards();
@@ -268,7 +268,8 @@ function highlightCards() {
 function clearPlayArea(){
     var cards = document.querySelectorAll('#played-list .card')
     cards.forEach(card => {
-        card.parentElement.removeChild(card);
+        discard(card)
+        //card.parentElement.removeChild(card);
     })
 }
 
