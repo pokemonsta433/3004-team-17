@@ -58,7 +58,7 @@ function connect() {
                 // get player name
                 $("#playerlist").append("<tr><td>" + JSON.parse(message.body).content + "</td></tr>");
                 var playercount = document.getElementById("head")
-                var oldText = playercount.innerHTML;
+                let oldText = playercount.innerHTML;
                 newtext = oldText .replace(/(\d)+?\//g, function(match, number) {
                     return parseInt(number)+1 + "/";
                 });
@@ -88,16 +88,16 @@ function connect() {
                 }
             }
             else if(JSON.parse(message.body).messagetype === "Quest"){
-                if(JSON.parse(message.body).content == "First"){
+                if(JSON.parse(message.body).content === "First"){
                     alert("You are the sponsor");
                     document.getElementById("makeStage").style.display = 'block';
                     document.getElementById("playCards").style.display = 'block';
                     highlightCards();
                 }
-                else if(JSON.parse(message.body).content == "Next"){
+                else if(JSON.parse(message.body).content === "Next"){
                     //increase stage count
-                    var stagecount = document.getElementById("stageText");
-                    var oldText = stagecount.innerHTML;
+                    let stagecount = document.getElementById("stageText");
+                    let oldText = stagecount.innerHTML;
                     newtext = oldText .replace(/(\d)/g, function(match, number) {
                         return parseInt(number)+1;
                     });
@@ -107,11 +107,11 @@ function connect() {
                     unhighlightCards(); //TODO: we should make a re-highlight function that does all this
                     highlightCards();
                 }
-                else if(JSON.parse(message.body).content == "Invalid"){
+                else if(JSON.parse(message.body).content === "Invalid"){
                     //do nothing?
                     alert("Invalid stage");
                 }
-                else if(JSON.parse(message.body).content == "Complete"){
+                else if(JSON.parse(message.body).content === "Complete"){
                     var cards = document.querySelectorAll('#played-list .card')
                     cards.forEach(card => {
                         card.parentElement.removeChild(card);
@@ -120,12 +120,12 @@ function connect() {
                     document.getElementById("playCards").style.display = 'none';
                     unhighlightCards();
                 }
-                else if(JSON.parse(message.body).content == "Stage"){
+                else if(JSON.parse(message.body).content === "Stage"){
                     clearPlayArea();
 
                     //increase stage count
-                    var stagecount = document.getElementById("challengeText");
-                    var oldText = stagecount.innerHTML;
+                    let stagecount = document.getElementById("challengeText");
+                    let oldText = stagecount.innerHTML;
                     newtext = oldText .replace(/(\d)/g, function(match, number) {
                         return parseInt(number)+1;
                     });
@@ -136,13 +136,13 @@ function connect() {
                     unhighlightCards();
                     highlightCards();
                 }
-                else if(JSON.parse(message.body).content == "Continue"){
+                else if(JSON.parse(message.body).content === "Continue"){
                     //refreshPage(); //this will refresh the card counts of other players <-- but it is async and then the rest won't work
                     clearPlayArea();
                     alert("NEXT STAGE");
                     //update stage count
-                    var stagecount = document.getElementById("challengeText");
-                    var oldText = stagecount.innerHTML;
+                    let stagecount = document.getElementById("challengeText");
+                    let oldText = stagecount.innerHTML;
                     newtext = oldText .replace(/(\d)/g, function(match, number) {
                         return parseInt(number)+1;
                     });
@@ -156,21 +156,21 @@ function connect() {
                     highlightCards();
                     stagecount.innerHTML = newtext;
                 }
-                else if(JSON.parse(message.body).content == "Lose"){
+                else if(JSON.parse(message.body).content === "Lose"){
                     alert("YOU LOST");
                     clearPlayArea();
                     unhighlightCards();
                     document.getElementById("challenge").style.display = 'none';
                     document.getElementById("submitChallenge").style.display = 'none';
                 }
-                else if(JSON.parse(message.body).content == "Wait"){
+                else if(JSON.parse(message.body).content === "Wait"){
                     clearPlayArea();
                     alert("Waiting for other players");
                     document.getElementById("challenge").style.display = 'none';
                     document.getElementById("submitChallenge").style.display = 'none';
                     unhighlightCards();
                 }
-                else if(JSON.parse(message.body).content == "Stage Done"){
+                else if(JSON.parse(message.body).content === "Stage Done"){
                     clearPlayArea();
                     alert("Stage Done");
                     document.getElementById("challenge").style.display = 'none';
@@ -192,12 +192,6 @@ function disconnect() {
     }
     setConnected(false);
     console.log("Disconnected");
-}
-
-
-
-function sendName() {
-    stompClient.send("/app/hello", {}, JSON.stringify({'name': userName, msg: "testing"}));
 }
 
 function challenge(){
@@ -289,7 +283,7 @@ function unhighlightCards() {
 document.addEventListener('DOMContentLoaded', function() {
     let discard = document.querySelector('#discard');
 
-    function openDiscard(e) {
+    function openDiscard() {
         let selection = document.createElement('div');
         selection.id = 'selection';
 
