@@ -97,6 +97,7 @@ public class DefaultController {
                 messageSender.convertAndSendToUser(game.getPlayer(game.getIndexOfName(message.getName())).name, "/reply", new ServerMessage("Quest", "Next"));
             }
             else{
+                System.out.println("the quest is of size " + game.quest.size() + " and the number of stages is " + game.stages);
                 messageSender.convertAndSendToUser(game.getPlayer(game.getIndexOfName(message.getName())).name, "/reply", new ServerMessage("Quest", "Complete"));
                 for(String s : participants){
                     System.out.println(s);
