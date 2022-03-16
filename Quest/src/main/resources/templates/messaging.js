@@ -213,6 +213,7 @@ function playCards(){
 function discard(e){
     let discardPile = document.getElementById("discard");
     discardPile.appendChild(e);
+    e.onclick = function (){}
 }
 
 function moveCard(e){
@@ -277,6 +278,11 @@ function unhighlightCards() {
     const handCards = document.querySelectorAll('#hand .card img')
     handCards.forEach(card => {
         card.style.border = 'none';
+        card.parentElement.onclick = function(){};
+    })
+    const discardCards = document.querySelectorAll('#discard .card img')
+    discardCards.forEach(card=>{
+        card.style.border= 'none';
         card.parentElement.onclick = function(){};
     })
 }
