@@ -341,3 +341,12 @@ ul#horizontal-list li a{
     border: 1px solid black;
     border-radius: 5px;
 }
+
+
+#SponsorPrompt {
+    margin-left: 40%;
+}
+
+#NoSponsorPrompt {
+    margin-left: 40%;
+}

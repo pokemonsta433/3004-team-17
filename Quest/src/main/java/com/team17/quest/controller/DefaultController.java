@@ -97,7 +97,12 @@ public class DefaultController {
                 messageSender.convertAndSendToUser(game.getPlayer(game.getIndexOfName(message.getName())).getName(), "/reply", new ServerMessage("Quest", "Next"));
             }
             else{
+<<<<<<< HEAD:Quest/src/main/java/com/team17/quest/controller/DefaultController.java
                 messageSender.convertAndSendToUser(game.getPlayer(game.getIndexOfName(message.getName())).getName(), "/reply", new ServerMessage("Quest", "Complete"));
+=======
+                System.out.println("the quest is of size " + game.quest.size() + " and the number of stages is " + game.stages);
+                messageSender.convertAndSendToUser(game.getPlayer(game.getIndexOfName(message.getName())).name, "/reply", new ServerMessage("Quest", "Complete"));
+>>>>>>> baceda9b792befb59cddf24a365939a1a8c358ea:Quest/src/main/java/com/team17/quest/DefaultController.java
                 for(String s : participants){
                     System.out.println(s);
                     challenge_played.add(false);
