@@ -1,4 +1,4 @@
-package com.team17.quest;
+package com.team17.quest.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;

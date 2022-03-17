@@ -1,10 +1,11 @@
-package com.team17.quest;
+package com.team17.quest.model;
 
-import java.util.ArrayList;
+import com.team17.quest.model.AdventureCard;
+
 import java.util.Arrays;
 import java.util.List;
 
-public class FoeCard extends AdventureCard{
+public class FoeCard extends AdventureCard {
     int bonus_points;
     String[] bonus_card;
 

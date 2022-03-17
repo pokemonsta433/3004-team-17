@@ -1,6 +1,8 @@
-package com.team17.quest;
+package com.team17.quest.model;
 
-public class WeaponCard extends AdventureCard{
+import com.team17.quest.model.AdventureCard;
+
+public class WeaponCard extends AdventureCard {
     public WeaponCard(String name, int i, int bp){
         super(name, i, bp);
     }

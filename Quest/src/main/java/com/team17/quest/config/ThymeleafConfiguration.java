@@ -1,4 +1,4 @@
-package com.team17.quest;
+package com.team17.quest.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;

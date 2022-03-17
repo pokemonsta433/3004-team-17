@@ -1,4 +1,4 @@
-package com.team17.quest;
+package com.team17.quest.message;
 
 public class ClientMessage { //all messages send with a name and a message
 

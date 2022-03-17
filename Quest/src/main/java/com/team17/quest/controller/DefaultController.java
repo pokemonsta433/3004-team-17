@@ -1,20 +1,20 @@
-package com.team17.quest;
+package com.team17.quest.controller;
 
-import ch.qos.logback.core.net.server.Client;
+import com.team17.quest.message.ClientMessage;
+import com.team17.quest.model.Game;
+import com.team17.quest.model.Player;
+import com.team17.quest.message.ServerMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.util.HtmlUtils;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -52,21 +52,21 @@ public class DefaultController {
         List<String> ids = Arrays.asList(split);
         boolean valid = game.getPlayer(game.getIndexOfName(message.getName())).validPlay(ids);
         if(!valid){
-            messageSender.convertAndSendToUser(game.getPlayer(game.getIndexOfName(message.getName())).name, "/reply", new ServerMessage("Quest", "Invalid"));
+            messageSender.convertAndSendToUser(game.getPlayer(game.getIndexOfName(message.getName())).getName(), "/reply", new ServerMessage("Quest", "Invalid"));
         }
         else{
             game.getPlayer(game.getIndexOfName(message.getName())).addStage(ids);
-            if(game.getPlayer(game.getIndexOfName(message.getName())).getStageValue(game.current_story.name) > game.getStageValue(current_stage)){ //need to know what stage we are on.
+            if(game.getPlayer(game.getIndexOfName(message.getName())).getStageValue(game.getCurrent_story().getName()) > game.getStageValue(current_stage)){ //need to know what stage we are on.
                 challenge_played.set(participants.indexOf(message.getName()), true);
                 if(challenge_played.contains(false)){
-                    messageSender.convertAndSendToUser(game.getPlayer(game.getIndexOfName(message.getName())).name, "/reply", new ServerMessage("Quest", "Wait"));
+                    messageSender.convertAndSendToUser(game.getPlayer(game.getIndexOfName(message.getName())).getName(), "/reply", new ServerMessage("Quest", "Wait"));
                 }
                 else{
-                    if(current_stage == game.stages){
+                    if(current_stage == game.getStages()){
                         current_stage = 1;
-                        messageSender.convertAndSendToUser(game.getPlayer(game.getIndexOfName(message.getName())).name, "/reply", new ServerMessage("Quest", "Stage Done"));
+                        messageSender.convertAndSendToUser(game.getPlayer(game.getIndexOfName(message.getName())).getName(), "/reply", new ServerMessage("Quest", "Stage Done"));
                         game.drawStory();
-                        messageSender.convertAndSendToUser(game.getPlayer(player_turn).name, "/reply", new ServerMessage("Prompt", "Sponsor")); //TO-DO change content to quest name?
+                        messageSender.convertAndSendToUser(game.getPlayer(player_turn).getName(), "/reply", new ServerMessage("Prompt", "Sponsor")); //TO-DO change content to quest name?
                     }
                     else{
                         current_stage++;
@@ -74,7 +74,7 @@ public class DefaultController {
                         for(String s : participants){
                             System.out.println(s);
                             challenge_played.add(false);
-                            messageSender.convertAndSendToUser(game.getPlayer(game.getIndexOfName(s)).name, "/reply", new ServerMessage("Quest", "Continue"));
+                            messageSender.convertAndSendToUser(game.getPlayer(game.getIndexOfName(s)).getName(), "/reply", new ServerMessage("Quest", "Continue"));
                         }
                     }
                 }
@@ -82,7 +82,7 @@ public class DefaultController {
             else{
                 challenge_played.remove(participants.indexOf(message.getName()));
                 participants.remove(message.getName());
-                messageSender.convertAndSendToUser(game.getPlayer(game.getIndexOfName(message.getName())).name, "/reply", new ServerMessage("Quest", "Lose"));
+                messageSender.convertAndSendToUser(game.getPlayer(game.getIndexOfName(message.getName())).getName(), "/reply", new ServerMessage("Quest", "Lose"));
             }
         }
     }
@@ -93,28 +93,28 @@ public class DefaultController {
         boolean valid = game.getPlayer(game.getIndexOfName(message.getName())).validPlay(ids);
         if(valid){
             game.addStage(game.getPlayer(game.getIndexOfName(message.getName())), ids);
-            if(game.quest.size() < game.stages){
-                messageSender.convertAndSendToUser(game.getPlayer(game.getIndexOfName(message.getName())).name, "/reply", new ServerMessage("Quest", "Next"));
+            if(game.getQuest().size() < game.getStages()){
+                messageSender.convertAndSendToUser(game.getPlayer(game.getIndexOfName(message.getName())).getName(), "/reply", new ServerMessage("Quest", "Next"));
             }
             else{
-                messageSender.convertAndSendToUser(game.getPlayer(game.getIndexOfName(message.getName())).name, "/reply", new ServerMessage("Quest", "Complete"));
+                messageSender.convertAndSendToUser(game.getPlayer(game.getIndexOfName(message.getName())).getName(), "/reply", new ServerMessage("Quest", "Complete"));
                 for(String s : participants){
                     System.out.println(s);
                     challenge_played.add(false);
-                    messageSender.convertAndSendToUser(game.getPlayer(game.getIndexOfName(s)).name, "/reply", new ServerMessage("Quest", "Stage"));
+                    messageSender.convertAndSendToUser(game.getPlayer(game.getIndexOfName(s)).getName(), "/reply", new ServerMessage("Quest", "Stage"));
                 }
             }
         }
         else{
-            messageSender.convertAndSendToUser(game.getPlayer(game.getIndexOfName(message.getName())).name, "/reply", new ServerMessage("Quest", "Invalid"));
+            messageSender.convertAndSendToUser(game.getPlayer(game.getIndexOfName(message.getName())).getName(), "/reply", new ServerMessage("Quest", "Invalid"));
         }
     }
 
     @MessageMapping("/prompt")
     public void prompt(ClientMessage message) throws Exception {
         if(message.getMsg().equals("Sponsor")){
-            if(game.getPlayer(player_turn).foeCount() < game.stages){ //checks if has enough foes to make stage (later will change to foe + hasTest)
-                messageSender.convertAndSendToUser(game.getPlayer(player_turn).name, "/reply", new ServerMessage("Prompt", "No Sponsor"));
+            if(game.getPlayer(player_turn).foeCount() < game.getStages()){ //checks if has enough foes to make stage (later will change to foe + hasTest)
+                messageSender.convertAndSendToUser(game.getPlayer(player_turn).getName(), "/reply", new ServerMessage("Prompt", "No Sponsor"));
                 return;
             }
             else{
@@ -126,34 +126,34 @@ public class DefaultController {
             participants.add(message.getName());
         }
         players_prompted += 1;
-        if(players_prompted >= game.players.size()){
+        if(players_prompted >= game.getPlayers().size()){
             players_prompted = 0;
             if(!sponsored){
                 game.drawStory();
                 System.out.println(player_turn);
-                player_turn = player_turn + player_turn - 1 % game.players.size();
+                player_turn = player_turn + player_turn - 1 % game.getPlayers().size();
                 System.out.println("HERE");
-                messageSender.convertAndSendToUser(game.getPlayer(player_turn).name, "/reply", new ServerMessage("Prompt", "Sponsor")); //TO-DO change content to quest name?
+                messageSender.convertAndSendToUser(game.getPlayer(player_turn).getName(), "/reply", new ServerMessage("Prompt", "Sponsor")); //TO-DO change content to quest name?
             }
             else{
-                messageSender.convertAndSendToUser(game.sponsor.name, "/reply", new ServerMessage("Quest", "First"));
+                messageSender.convertAndSendToUser(game.getSponsor().getName(), "/reply", new ServerMessage("Quest", "First"));
             }
         }
         else{
             player_turn += 1;
-            player_turn = player_turn % game.players.size();
+            player_turn = player_turn % game.getPlayers().size();
             if(sponsored){
-                messageSender.convertAndSendToUser(game.getPlayer(player_turn).name, "/reply", new ServerMessage("Prompt", "No Sponsor"));
+                messageSender.convertAndSendToUser(game.getPlayer(player_turn).getName(), "/reply", new ServerMessage("Prompt", "No Sponsor"));
             }
             else{
-                messageSender.convertAndSendToUser(game.getPlayer(player_turn).name, "/reply", new ServerMessage("Prompt", "Sponsor"));
+                messageSender.convertAndSendToUser(game.getPlayer(player_turn).getName(), "/reply", new ServerMessage("Prompt", "Sponsor"));
             }
         }
     }
 
     @MessageMapping("/gameStart")
     public void gameStart(ClientMessage message) throws Exception {
-        messageSender.convertAndSendToUser(game.getPlayer(player_turn).name, "/reply", new ServerMessage("Prompt", "Sponsor")); //TO-DO change content to quest name?
+        messageSender.convertAndSendToUser(game.getPlayer(player_turn).getName(), "/reply", new ServerMessage("Prompt", "Sponsor")); //TO-DO change content to quest name?
     }
 
     @GetMapping(value = "/")
@@ -176,14 +176,14 @@ public class DefaultController {
 
     @PostMapping(value = "/lobby")
     public String Lobby(@ModelAttribute("Player") Player p, Model model) {
-        if(Objects.equals(p.name, "")){
+        if(Objects.equals(p.getName(), "")){
             return "redirect:/join";
         }
         if(players.size() >= MAX_PLAYERS){
             return "redirect:/join";
         }
         for(Player play : players){
-            if(p.name.equals(play.name)){
+            if(p.getName().equals(play.getName())){
                 return "redirect:/join";
             }
         }

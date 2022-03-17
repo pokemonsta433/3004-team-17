@@ -1,6 +1,5 @@
-package com.team17.quest;
+package com.team17.quest.model;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -50,6 +49,11 @@ public class Game {
         }
     }
 
+    public Player getSponsor() {
+        return sponsor;
+    }
+
+
     public void setSponsor(String name){
         sponsor = getPlayer(getIndexOfName(name));
     }
@@ -60,6 +64,22 @@ public class Game {
 
     public Player getPlayer(int i){
         return players.get(i);
+    }
+
+    public int getStages() {
+        return stages;
+    }
+
+    public void setStages(int stages) {
+        this.stages = stages;
+    }
+
+    public ArrayList<ArrayList<AdventureCard>> getQuest() {
+        return quest;
+    }
+
+    public void setQuest(ArrayList<ArrayList<AdventureCard>> quest) {
+        this.quest = quest;
     }
 
     public Card getCurrent_story(){ return current_story;}

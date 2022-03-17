@@ -1,6 +1,6 @@
-package com.team17.quest;
+package com.team17.quest.model;
 
-public abstract class AdventureCard extends Card{
+public abstract class AdventureCard extends Card {
     int battle_points;
     public AdventureCard(String name, int i, int bp){
         super(name, i);

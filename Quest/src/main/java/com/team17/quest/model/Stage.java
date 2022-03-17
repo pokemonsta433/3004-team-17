@@ -1,4 +1,8 @@
-package com.team17.quest;
+package com.team17.quest.model;
+
+import com.team17.quest.model.Card;
+import com.team17.quest.model.FoeCard;
+import com.team17.quest.model.WeaponCard;
 
 import java.util.ArrayList;
 

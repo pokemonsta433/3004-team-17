@@ -1,5 +1,6 @@
 package com.team17.quest;
 
+import com.team17.quest.QuestApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 

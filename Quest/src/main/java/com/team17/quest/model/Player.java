@@ -1,4 +1,4 @@
-package com.team17.quest;
+package com.team17.quest.model;
 
 import java.util.ArrayList;
 import java.util.List;
