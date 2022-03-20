@@ -65,6 +65,7 @@ public class DefaultController {
                     if(current_stage == game.getStages()){
                         current_stage = 1;
                         messageSender.convertAndSendToUser(game.getPlayer(game.getIndexOfName(message.getName())).getName(), "/reply", new ServerMessage("Quest", "Stage Done"));
+                        game.setCurrentPlayer(player_turn);
                         game.drawStory();
                         messageSender.convertAndSendToUser(game.getPlayer(player_turn).getName(), "/reply", new ServerMessage("Prompt", "Sponsor")); //TO-DO change content to quest name?
                     }

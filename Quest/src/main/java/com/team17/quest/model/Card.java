@@ -17,5 +17,13 @@ public abstract class Card {
         return this instanceof FoeCard;
     }
 
+    public boolean isWeapon(){
+        return this instanceof WeaponCard;
+    }
+
+    public boolean isAlly(){
+        return false;
+    }
+
     public int getId(){return id;}
 }

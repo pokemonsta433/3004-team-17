@@ -10,6 +10,7 @@ public class Player {
     int shields;
     ArrayList<Card> allies;
     ArrayList<AdventureCard> stage;
+    int rank;
 
     public Player(){
         name = "";
@@ -17,6 +18,7 @@ public class Player {
         hand = new ArrayList<>();
         allies = new ArrayList<>();
         stage = new ArrayList<>();
+        rank = 0;
     }
 
 
@@ -32,6 +34,14 @@ public class Player {
 
     public void setName(String n){
         name = n;
+    }
+
+    public int getRank() {
+        return rank;
+    }
+
+    public void setRank(int rank) {
+        this.rank = rank;
     }
 
 
@@ -104,4 +114,8 @@ public class Player {
     }
 
     public int getShields(){ return shields; }
+
+    public void setShields(int shields) {
+        this.shields = shields;
+    }
 }

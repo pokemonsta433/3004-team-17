@@ -1,5 +1,7 @@
 package com.team17.quest.model;
 
+import com.team17.quest.model.storyDeck.*;
+
 import java.util.Stack;
 
 public class DeckFactory {
@@ -39,6 +41,17 @@ public class DeckFactory {
             {"repel_saxon_raiders", "2", "2"}
     };
 
+    String[][] event_story_deck = {
+            {"chivalrous_deed","1"},
+            {"court_called_to_camelot","2"},
+            {"king_s_call_to_arms","1"},
+            {"king_s_recognition","2"},
+            {"plague","1"},
+            {"pox","1"},
+            {"prosperity_throughout_the_realm", "1"},
+            {"queen_s_favor", "2"}
+    };
+
     public Stack<Card> build(String type){
         switch(type){
             case "Adventure":
@@ -71,9 +84,34 @@ public class DeckFactory {
     public Stack<Card> populateStory(){
         Stack<Card> deck = new Stack<>();
         int i = 0;
+        // quest cards in adventure deck
         for(String[] strings : story_deck){
             for(int j = 0; j <= Integer.parseInt(strings[2]); j++){
                 deck.add(new QuestCard(strings[0], i, Integer.parseInt(strings[1])));
+                i++;
+            }
+        }
+        // event cards for story deck
+        for (String[] strings : event_story_deck) {
+            for (int j = 0; j <= Integer.parseInt(strings[1]); j++) {
+                if (strings[0].equals("chivalrous_deed")) {
+                    deck.add(new ChivalrousDeedEventCard(strings[0], i));
+                } else if  (strings[0].equals("court_called_to_camelot")) {
+                    deck.add(new CamelotEventCard(strings[0], i));
+                } else if  (strings[0].equals("king_s_call_to_arms")) {
+                    deck.add(new KingsCallToArmsEventCard(strings[0], i));
+                } else if  (strings[0].equals("king_s_recognition")) {
+                    deck.add(new KingsRecognitionEventCard(strings[0], i));
+                } else if  (strings[0].equals("plague")) {
+                    deck.add(new PlagueEventCard(strings[0], i));
+                } else if  (strings[0].equals("pox")) {
+                    deck.add(new PoxEventCard(strings[0], i));
+                } else if  (strings[0].equals("prosperity_throughout_the_realm")) {
+                    deck.add(new ProsperityEventCard(strings[0], i));
+                } else if  (strings[0].equals("queen_s_favor")) {
+                    deck.add(new QueensFavorEventCard(strings[0], i));
+                }
+                i++;
             }
         }
         return deck;
