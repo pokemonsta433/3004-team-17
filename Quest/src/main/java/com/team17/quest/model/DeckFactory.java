@@ -41,7 +41,7 @@ public class DeckFactory {
             {"repel_saxon_raiders", "2", "2"}
     };
 
-    String[][] event_story_deck = {
+    /* String[][] event_story_deck = {
             {"chivalrous_deed","1"},
             {"court_called_to_camelot","2"},
             {"king_s_call_to_arms","1"},
@@ -50,7 +50,7 @@ public class DeckFactory {
             {"pox","1"},
             {"prosperity_throughout_the_realm", "1"},
             {"queen_s_favor", "2"}
-    };
+    }; */
 
     public Stack<Card> build(String type){
         switch(type){
@@ -92,7 +92,7 @@ public class DeckFactory {
             }
         }
         // event cards for story deck
-        for (String[] strings : event_story_deck) {
+        /* for (String[] strings : event_story_deck) {
             for (int j = 0; j <= Integer.parseInt(strings[1]); j++) {
                 if (strings[0].equals("chivalrous_deed")) {
                     deck.add(new ChivalrousDeedEventCard(strings[0], i));
@@ -113,7 +113,7 @@ public class DeckFactory {
                 }
                 i++;
             }
-        }
+        } */
         return deck;
     }
 }
