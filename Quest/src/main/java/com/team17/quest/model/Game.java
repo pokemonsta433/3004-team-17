@@ -1,5 +1,7 @@
 package com.team17.quest.model;
 
+import com.team17.quest.model.storyDeck.*;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -14,6 +16,8 @@ public class Game {
     DeckFactory deckMaker;
     Card current_story;
     Player sponsor;
+    int currentPlayerIndex;
+    ArrayList<Player> questParticipants;
     int stages = 0;
     ArrayList<ArrayList<AdventureCard>> quest;
 
@@ -57,6 +61,19 @@ public class Game {
 
     public Player getPlayer(int i){
         return players.get(i);
+    }
+
+    public int getCurrentPlayer() {
+        return this.currentPlayerIndex;
+    }
+
+    public void setCurrentPlayer(int playerIndex) {
+        this.currentPlayerIndex = playerIndex;
+    }
+
+    public int getNextPlayer() {
+        int nextPlayerIndex = (currentPlayerIndex + 1) % questParticipants.size();
+        return nextPlayerIndex;
     }
 
     public int getStages() {
@@ -122,6 +139,23 @@ public class Game {
         }
         else{
             stages = 0;
+            if(current_story instanceof ChivalrousDeedEventCard) {
+                ((ChivalrousDeedEventCard) current_story).eventStrategy(questParticipants);
+            } else if(current_story instanceof CamelotEventCard) {
+                ((CamelotEventCard) current_story).eventStrategy(questParticipants, adventure_discardPile);
+            } else if(current_story instanceof KingsCallToArmsEventCard) {
+                ((KingsCallToArmsEventCard) current_story).eventStrategy(questParticipants, adventure_discardPile);
+            } else if(current_story instanceof KingsRecognitionEventCard) {
+                ((KingsRecognitionEventCard) current_story).eventStrategy(questParticipants, this.getCurrentPlayer(), getNextPlayer());
+            } else if(current_story instanceof PlagueEventCard) {
+                ((PlagueEventCard) current_story).eventStrategy(questParticipants, this.getCurrentPlayer());
+            }  else if(current_story instanceof PoxEventCard) {
+                ((PoxEventCard) current_story).eventStrategy(questParticipants, this.getCurrentPlayer());
+            } else if(current_story instanceof ProsperityEventCard) {
+                ((ProsperityEventCard) current_story).eventStrategy(questParticipants, adventure_deck);
+            } else if(current_story instanceof QueensFavorEventCard) {
+                ((QueensFavorEventCard) current_story).eventStrategy(questParticipants, adventure_deck);
+            }
         }
     }
 
