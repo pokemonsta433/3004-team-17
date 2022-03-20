@@ -8,13 +8,12 @@ import java.util.Stack;
 public class Game {
     Stack<Card> adventure_deck;
     Stack<Card> story_deck;
-    ArrayList<Player> players;
+    public ArrayList<Player> players;
     ArrayList<Card> adventure_discardPile;
     ArrayList<Card> story_discardPile;
     DeckFactory deckMaker;
     Card current_story;
     Player sponsor;
-    ArrayList<Player> questParticipants;
     int stages = 0;
     ArrayList<ArrayList<AdventureCard>> quest;
 
@@ -42,12 +41,6 @@ public class Game {
         return -1;
     }
 
-    public void setSponsorAndParticipants(String name, ArrayList<String> pNames){
-        questParticipants.clear();
-        for(String n : pNames){
-            questParticipants.add(getPlayer(getIndexOfName(n)));
-        }
-    }
 
     public Player getSponsor() {
         return sponsor;
@@ -83,6 +76,7 @@ public class Game {
     }
 
     public Card getCurrent_story(){ return current_story;}
+
     public void generateDecks(){
         story_deck = deckMaker.build("Story");
         adventure_deck = deckMaker.build("Adventure");
@@ -117,6 +111,7 @@ public class Game {
     }
 
     public void drawStory(){
+        quest.clear();
         if(current_story != null){
             story_discardPile.add(current_story);
         }
@@ -124,7 +119,6 @@ public class Game {
         if(current_story instanceof QuestCard){
             QuestCard card = (QuestCard) current_story;
             stages = card.stages;
-            quest.clear();
         }
         else{
             stages = 0;

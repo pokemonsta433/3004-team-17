@@ -63,9 +63,22 @@ public class DefaultController {
                 }
                 else{
                     if(current_stage == game.getStages()){
+                        System.out.println("Stage done");
                         current_stage = 1;
-                        messageSender.convertAndSendToUser(game.getPlayer(game.getIndexOfName(message.getName())).getName(), "/reply", new ServerMessage("Quest", "Stage Done"));
                         game.drawStory();
+                        for(Player p : players){
+                            System.out.println(p.getName());
+                            messageSender.convertAndSendToUser(p.getName(), "/reply", new ServerMessage("Update", "Next Quest"));
+                        }
+                        //update shields
+                        for(String s : participants){
+                            game.getPlayer(game.getIndexOfName(s)).shields++;
+                        }
+                        participants.clear();
+                        challenge_played.clear();
+                        sponsored = false;
+                        players_prompted = 0;
+                        player_turn = (player_turn + 2) % game.players.size();
                         messageSender.convertAndSendToUser(game.getPlayer(player_turn).getName(), "/reply", new ServerMessage("Prompt", "Sponsor")); //TO-DO change content to quest name?
                     }
                     else{
@@ -100,7 +113,6 @@ public class DefaultController {
                 System.out.println("the quest is of size " + game.getQuest().size() + " and the number of stages is " + game.getStages());
                 messageSender.convertAndSendToUser(game.getPlayer(game.getIndexOfName(message.getName())).getName(), "/reply", new ServerMessage("Quest", "Complete"));
                 for(String s : participants){
-                    System.out.println(s);
                     challenge_played.add(false);
                     messageSender.convertAndSendToUser(game.getPlayer(game.getIndexOfName(s)).getName(), "/reply", new ServerMessage("Quest", "Stage"));
                 }
@@ -131,9 +143,7 @@ public class DefaultController {
             players_prompted = 0;
             if(!sponsored){
                 game.drawStory();
-                System.out.println(player_turn);
-                player_turn = player_turn + player_turn - 1 % game.getPlayers().size();
-                System.out.println("HERE");
+                player_turn = (player_turn + 2) % game.getPlayers().size();
                 messageSender.convertAndSendToUser(game.getPlayer(player_turn).getName(), "/reply", new ServerMessage("Prompt", "Sponsor")); //TO-DO change content to quest name?
             }
             else{

@@ -160,21 +160,21 @@ function connect() {
                     document.getElementById("challenge").style.display = 'none';
                     document.getElementById("submitChallenge").style.display = 'none';
                 }
-                else if(JSON.parse(message.body).content === "Wait"){
+                else if(JSON.parse(message.body).content === "Wait") {
                     clearPlayArea();
                     alert("Waiting for other players");
                     document.getElementById("challenge").style.display = 'none';
                     document.getElementById("submitChallenge").style.display = 'none';
                     unhighlightCards();
                 }
-                else if(JSON.parse(message.body).content === "Stage Done"){
-                    clearPlayArea();
-                    alert("Stage Done");
-                    document.getElementById("challenge").style.display = 'none';
-                    document.getElementById("submitChallenge").style.display = 'none';
-                    unhighlightCards();
-                }
-
+            }
+            else if(JSON.parse(message.body).messagetype === "Update"){
+                alert("Updating");
+                clearPlayArea();
+                document.getElementById("challenge").style.display = 'none';
+                document.getElementById("submitChallenge").style.display = 'none';
+                unhighlightCards();
+                refreshPage();
             }
         });
         stompClient.send("/app/gameStart",{},JSON.stringify({'name': userName, msg: "Start"})); //idk where to put this

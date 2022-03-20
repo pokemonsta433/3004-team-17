@@ -7,7 +7,7 @@ import java.util.Stack;
 public class Player {
     String name;
     ArrayList<Card> hand;
-    int shields;
+    public int shields;
     ArrayList<Card> allies;
     ArrayList<AdventureCard> stage;
 
