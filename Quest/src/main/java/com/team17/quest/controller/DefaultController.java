@@ -155,6 +155,9 @@ public class DefaultController {
             players_prompted = 0;
             if(!sponsored || participants.size() == 0){
                 game.drawStory();
+                for(Player p : players){
+                    messageSender.convertAndSendToUser(p.getName(), "/reply", new ServerMessage("Update", "Next Quest"));
+                }
                 participants.clear();
                 challenge_played.clear();
                 sponsored = false;
