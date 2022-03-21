@@ -2,6 +2,10 @@ var userName = null;
 var stompClient = null;
 var submittedStartGameForm = false;
 
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 function setConnected(connected) { //this is not required
     $("#connect").prop("disabled", connected);
     $("#disconnect").prop("disabled", !connected);
@@ -46,6 +50,16 @@ function refreshPage() {
     //window.location = window.location; // can't do this because it uses get requests :(
 }
 
+async function showSPrompt(){
+    await sleep(100);
+    document.getElementById("SponsorPrompt").style.display = 'block';
+}
+
+async function showPrompt(){
+    await sleep(100);
+    document.getElementById("NoSponsorPrompt").style.display = 'block';
+}
+
 function connect() {
     var socket = new SockJS('/gs-guide-websocket');
     stompClient = Stomp.over(socket);
@@ -81,10 +95,10 @@ function connect() {
         stompClient.subscribe("/user/" + userName + "/reply", function(message) {
             if(JSON.parse(message.body).messagetype === "Prompt") {
                 if(JSON.parse(message.body).content === "Sponsor"){
-                    document.getElementById("SponsorPrompt").style.display = 'block';
+                    showSPrompt();
                 }
                 else if(JSON.parse(message.body).content === "No Sponsor"){
-                    document.getElementById("NoSponsorPrompt").style.display = 'block';
+                    showPrompt();
                 }
             }
             else if(JSON.parse(message.body).messagetype === "Quest"){
@@ -169,15 +183,11 @@ function connect() {
                 }
             }
             else if(JSON.parse(message.body).messagetype === "Update"){
-                alert("Updating");
-                clearPlayArea();
-                document.getElementById("challenge").style.display = 'none';
-                document.getElementById("submitChallenge").style.display = 'none';
-                unhighlightCards();
+                console.log(document.getElementById("SponsorPrompt").style.display)
                 refreshPage();
             }
         });
-        stompClient.send("/app/gameStart",{},JSON.stringify({'name': userName, msg: "Start"})); //idk where to put this
+        stompClient.send("/app/gameStart",{},JSON.stringify({'name': userName, msg: "Start"}));
     });
 }
 
