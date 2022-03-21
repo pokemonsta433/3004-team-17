@@ -94,6 +94,14 @@ public class Game {
 
     public Card getCurrent_story(){ return current_story;}
 
+    public ArrayList<Card> getAdventure_discardPile() {
+        return adventure_discardPile;
+    }
+
+    public Stack<Card> getAdventure_deck() {
+        return adventure_deck;
+    }
+
     public void generateDecks(){
         story_deck = deckMaker.build("Story");
         adventure_deck = deckMaker.build("Adventure");
@@ -103,7 +111,6 @@ public class Game {
         Collections.shuffle(adventure_deck);
         Collections.shuffle(story_deck);
     }
-
 
     public void dealHands(){
         for(Player player: players){
@@ -140,21 +147,21 @@ public class Game {
         else{
             stages = 0;
             if(current_story instanceof ChivalrousDeedEventCard) {
-                ((ChivalrousDeedEventCard) current_story).eventStrategy(questParticipants);
+                current_story.eventStrategy(this);
             } else if(current_story instanceof CamelotEventCard) {
-                ((CamelotEventCard) current_story).eventStrategy(questParticipants, adventure_discardPile);
+                current_story.eventStrategy(this);
             } else if(current_story instanceof KingsCallToArmsEventCard) {
-                ((KingsCallToArmsEventCard) current_story).eventStrategy(questParticipants, adventure_discardPile);
+                current_story.eventStrategy(this);
             } else if(current_story instanceof KingsRecognitionEventCard) {
-                ((KingsRecognitionEventCard) current_story).eventStrategy(questParticipants, this.getCurrentPlayer(), getNextPlayer());
+                current_story.eventStrategy(this);
             } else if(current_story instanceof PlagueEventCard) {
-                ((PlagueEventCard) current_story).eventStrategy(questParticipants, this.getCurrentPlayer());
+                current_story.eventStrategy(this);
             }  else if(current_story instanceof PoxEventCard) {
-                ((PoxEventCard) current_story).eventStrategy(questParticipants, this.getCurrentPlayer());
+                current_story.eventStrategy(this);
             } else if(current_story instanceof ProsperityEventCard) {
-                ((ProsperityEventCard) current_story).eventStrategy(questParticipants, adventure_deck);
+                current_story.eventStrategy(this);
             } else if(current_story instanceof QueensFavorEventCard) {
-                ((QueensFavorEventCard) current_story).eventStrategy(questParticipants, adventure_deck);
+                current_story.eventStrategy(this);
             }
         }
     }

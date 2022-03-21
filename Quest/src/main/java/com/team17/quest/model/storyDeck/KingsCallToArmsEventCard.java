@@ -1,17 +1,21 @@
 package com.team17.quest.model.storyDeck;
 
 import com.team17.quest.model.Card;
+import com.team17.quest.model.Game;
 import com.team17.quest.model.Player;
+import com.team17.quest.model.StoryCard;
 
 import java.util.ArrayList;
 
-public class KingsCallToArmsEventCard extends EventCard {
+public class KingsCallToArmsEventCard extends StoryCard {
     public KingsCallToArmsEventCard(String n, int i) {
         super(n, i);
     }
 
     // The highest ranked players must place 1 weapon in the discard pile, if unable to do so, Foe cards must be discarded
-    public void eventStrategy(ArrayList<Player> playerList, ArrayList<Card> adventure_discardPile) {
+    public void eventStrategy(Game game) {
+        ArrayList<Player> playerList = game.getPlayers();
+        ArrayList<Card> adventure_discardPile = game.getAdventure_discardPile();
         int highestRank = 10000;
         // find player with the highest rank
         for (int i = 0; i < playerList.size(); i++) {
