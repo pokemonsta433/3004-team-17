@@ -63,16 +63,14 @@ public class DefaultController {
                 }
                 else{
                     if(current_stage == game.getStages()){
-                        System.out.println("Stage done");
                         current_stage = 1;
                         game.drawStory();
+                        for(String s : participants){
+                            game.getPlayer(game.getIndexOfName(s)).shields++;
+                        }
                         for(Player p : players){
                             System.out.println(p.getName());
                             messageSender.convertAndSendToUser(p.getName(), "/reply", new ServerMessage("Update", "Next Quest"));
-                        }
-                        //update shields
-                        for(String s : participants){
-                            game.getPlayer(game.getIndexOfName(s)).shields++;
                         }
                         participants.clear();
                         challenge_played.clear();
@@ -96,6 +94,20 @@ public class DefaultController {
                 challenge_played.remove(participants.indexOf(message.getName()));
                 participants.remove(message.getName());
                 messageSender.convertAndSendToUser(game.getPlayer(game.getIndexOfName(message.getName())).getName(), "/reply", new ServerMessage("Quest", "Lose"));
+                if(participants.size() == 0){
+                    game.getSponsor().shields++;
+                    current_stage = 1;
+                    game.drawStory();
+                    for(Player p : players){
+                        messageSender.convertAndSendToUser(p.getName(), "/reply", new ServerMessage("Update", "Next Quest"));
+                    }
+                    participants.clear();
+                    challenge_played.clear();
+                    sponsored = false;
+                    players_prompted = 0;
+                    player_turn = (player_turn + 2) % game.players.size();
+                    messageSender.convertAndSendToUser(game.getPlayer(player_turn).getName(), "/reply", new ServerMessage("Prompt", "Sponsor")); //TO-DO change content to quest name?
+                }
             }
         }
     }
@@ -141,8 +153,12 @@ public class DefaultController {
         players_prompted += 1;
         if(players_prompted >= game.getPlayers().size()){
             players_prompted = 0;
-            if(!sponsored){
+            if(!sponsored || participants.size() == 0){
                 game.drawStory();
+                participants.clear();
+                challenge_played.clear();
+                sponsored = false;
+                players_prompted = 0;
                 player_turn = (player_turn + 2) % game.getPlayers().size();
                 messageSender.convertAndSendToUser(game.getPlayer(player_turn).getName(), "/reply", new ServerMessage("Prompt", "Sponsor")); //TO-DO change content to quest name?
             }
