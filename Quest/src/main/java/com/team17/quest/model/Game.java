@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Stack;
 
 public class Game {
-    Stack<Card> adventure_deck;
+    public Stack<Card> adventure_deck;
     Stack<Card> story_deck;
     public ArrayList<Player> players;
     ArrayList<Card> adventure_discardPile;
@@ -19,7 +19,7 @@ public class Game {
     int currentPlayerIndex;
     ArrayList<Player> questParticipants;
     int stages = 0;
-    ArrayList<ArrayList<AdventureCard>> quest;
+    public ArrayList<ArrayList<AdventureCard>> quest;
 
 
 
@@ -159,6 +159,21 @@ public class Game {
         }
     }
 
+    public void discardStage(Player p){
+        for(Card c : p.stage){
+            adventure_discardPile.add(c);
+        }
+        p.stage.clear();
+    }
+
+    public void discardQuest(){
+        for(ArrayList<AdventureCard> stage : quest){
+            for(Card c : stage){
+                adventure_discardPile.add(c);
+            }
+        }
+        quest.clear();
+    }
     public int getStageValue(int i){
         int total = 0;
         for(AdventureCard c: quest.get(i-1)){

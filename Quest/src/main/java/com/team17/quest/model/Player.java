@@ -9,7 +9,7 @@ public class Player {
     ArrayList<Card> hand;
     public int shields;
     ArrayList<Card> allies;
-    ArrayList<AdventureCard> stage;
+    public ArrayList<AdventureCard> stage;
     int rank;
 
     public Player(){
@@ -90,6 +90,12 @@ public class Player {
         for(int i = 0; i < n; i++){
             hand.add(d.pop());
         }
+    }
+
+    public Card drawCard(Stack<Card> d){
+        Card c = d.pop();
+        hand.add(c);
+        return c;
     }
 
     public int getStageValue(String q){

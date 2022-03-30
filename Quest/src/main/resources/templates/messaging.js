@@ -148,7 +148,6 @@ function connect() {
                     highlightCards();
                 }
                 else if(JSON.parse(message.body).content === "Continue"){
-                    //refreshPage(); //this will refresh the card counts of other players <-- but it is async and then the rest won't work
                     clearPlayArea();
                     alert("NEXT STAGE");
                     //update stage count
@@ -157,7 +156,7 @@ function connect() {
                     newtext = oldText .replace(/(\d)/g, function(match, number) {
                         return parseInt(number)+1;
                     });
-
+                    stagecount.innerHTML = newtext;
                     //enable challenge button
                     document.getElementById("challenge").style = 'display: block';
                     document.getElementById("submitChallenge").style = 'display:  block';
@@ -165,7 +164,7 @@ function connect() {
                     //reset card highlighting
                     unhighlightCards();
                     highlightCards();
-                    stagecount.innerHTML = newtext;
+
                 }
                 else if(JSON.parse(message.body).content === "Lose"){
                     alert("YOU LOST");
