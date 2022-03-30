@@ -65,6 +65,9 @@ public class DefaultController {
                     }
                 }
                 game.discardQuest();
+                for(Player p : game.players){
+                    p.amours.clear();
+                }
                 game.drawStory();
                 for(Player p : players){
                     messageSender.convertAndSendToUser(p.getName(), "/reply", new ServerMessage("Update", "Next Quest"));
@@ -142,15 +145,12 @@ public class DefaultController {
 
     @MessageMapping("/prompt")
     public void prompt(ClientMessage message) throws Exception {
+        if(game.getPlayer(player_turn).foeCount() < game.getStages()){ //checks if has enough foes to make stage (later will change to foe + hasTest)
+            messageSender.convertAndSendToUser(game.getPlayer(player_turn).getName(), "/reply", new ServerMessage("Prompt", "Foe Issue"));
+        }
         if(message.getMsg().equals("Sponsor")){
-            if(game.getPlayer(player_turn).foeCount() < game.getStages()){ //checks if has enough foes to make stage (later will change to foe + hasTest)
-                messageSender.convertAndSendToUser(game.getPlayer(player_turn).getName(), "/reply", new ServerMessage("Prompt", "No Sponsor"));
-                return;
-            }
-            else{
-                sponsored = true;
-                game.setSponsor(message.getName());
-            }
+            sponsored = true;
+            game.setSponsor(message.getName());
         }
         else if(message.getMsg().equals("Participate")){
             participants.add(message.getName());

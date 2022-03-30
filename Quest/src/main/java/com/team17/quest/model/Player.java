@@ -8,8 +8,8 @@ public class Player {
     String name;
     ArrayList<Card> hand;
     public int shields;
-    ArrayList<Card> allies;
-    ArrayList<Card> amours;
+    ArrayList<AllyCard> allies;
+    public ArrayList<AmourCard> amours;
     public ArrayList<AdventureCard> stage;
     int rank;
 
@@ -75,17 +75,33 @@ public class Player {
     public void addStage(List<String> ids){
         for(Card c : hand){
             if(ids.contains(Integer.toString(c.id))){
-                stage.add((AdventureCard) c);
+                if(c instanceof AllyCard){
+                    allies.add((AllyCard) c);
+                }
+                else if(c instanceof AmourCard){
+                    amours.add((AmourCard) c);
+                }
+                else {
+                    stage.add((AdventureCard) c);
+                }
             }
         }
         for(Card c : stage){
             hand.remove(c);
         }
-        System.out.println("stage is " + stage);
+        for(Card c : allies){
+            if(hand.contains(c)){
+                hand.remove(c);
+            }
+        }
+        for(Card c : amours){
+            if(hand.contains(c)){
+                hand.remove(c);
+            }
+        }
     }
 
     public void drawCard(Stack<Card> d, int n){
-
             for(int i = 0; i < n; i++){
                 if(hand.size() < 12) {
                     hand.add(d.pop());
@@ -108,7 +124,7 @@ public class Player {
             if(c instanceof AllyCard){
                 if(c.name == "sir_tristan"){
                     for(Player p : ps){
-                        for(Card a : allies){
+                        for(Card a : p.allies){
                             if(a.name.equals("queen_iseult")){
                                 total += 10;
                                 break;

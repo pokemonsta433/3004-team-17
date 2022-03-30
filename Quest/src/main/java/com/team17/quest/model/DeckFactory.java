@@ -35,7 +35,8 @@ public class DeckFactory {
             {"sir_percival", "ally", "5", "20", "0", "search_for_the_holy_grail", "1"},
             {"sir_tristan", "ally", "10", "10", "0", "", "1"},
             {"king_pellinore", "ally", "10", "10", "0", "", "1"},
-            {"merlin", "ally", "0", "0", "0", "", "1"}
+            {"merlin", "ally", "0", "0", "0", "", "1"},
+            {"amour", "8"}
     };
 
     String[][] story_deck = {
@@ -91,6 +92,12 @@ public class DeckFactory {
             else if (strings[1].equals("ally")) {
                 for (int j = 0; j <= Integer.parseInt(strings[6]); j++) {
                     deck.add(new AllyCard(strings[0], i, Integer.parseInt(strings[2]), Integer.parseInt(strings[3]), Integer.parseInt(strings[4]), strings[5]));
+                    i++;
+                }
+            }
+            else if(strings[0].equals("amour")){
+                for (int j = 0; j <= Integer.parseInt(strings[1]); j++) {
+                    deck.add(new AmourCard(i));
                     i++;
                 }
             }

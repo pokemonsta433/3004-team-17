@@ -98,6 +98,9 @@ function connect() {
                 else if(JSON.parse(message.body).content === "No Sponsor"){
                     showPrompt();
                 }
+                else if(JSON.parse(message.body).content === "Foe Issue"){
+                    alert("Too few foes");
+                }
             }
             else if(JSON.parse(message.body).messagetype === "Quest"){
                 if(JSON.parse(message.body).content === "First"){
