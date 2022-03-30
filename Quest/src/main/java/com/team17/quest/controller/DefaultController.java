@@ -53,10 +53,10 @@ public class DefaultController {
             messageSender.convertAndSendToUser(game.getPlayer(game.getIndexOfName(n)).getName(), "/reply", new ServerMessage("Quest", "Wait"));
         }
         else{
-            if(current_stage == game.getStages()){
+            if(current_stage == game.getStages() || participants.size() == 0){
                 current_stage = 1;
                 for(String s : participants){
-                    game.getPlayer(game.getIndexOfName(s)).shields++;
+                    game.getPlayer(game.getIndexOfName(s)).shields += game.getStages();
                 }
                 for(ArrayList<AdventureCard> stage : game.quest){
                     Card c = game.getSponsor().drawCard(game.adventure_deck);
@@ -110,21 +110,7 @@ public class DefaultController {
                 challenge_played.remove(participants.indexOf(message.getName()));
                 participants.remove(message.getName());
                 messageSender.convertAndSendToUser(game.getPlayer(game.getIndexOfName(message.getName())).getName(), "/reply", new ServerMessage("Quest", "Lose"));
-                //questLogic(message.getName());
-                if(participants.size() == 0){
-                    game.getSponsor().shields++;
-                    current_stage = 1;
-                    game.drawStory();
-                    for(Player p : players){
-                        messageSender.convertAndSendToUser(p.getName(), "/reply", new ServerMessage("Update", "Next Quest"));
-                    }
-                    participants.clear();
-                    challenge_played.clear();
-                    sponsored = false;
-                    players_prompted = 0;
-                    player_turn = (player_turn + 2) % game.players.size();
-                    messageSender.convertAndSendToUser(game.getPlayer(player_turn).getName(), "/reply", new ServerMessage("Prompt", "Sponsor")); //TO-DO change content to quest name?
-                }
+                questLogic(message.getName());
             }
         }
     }

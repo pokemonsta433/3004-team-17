@@ -9,6 +9,7 @@ public class Player {
     ArrayList<Card> hand;
     public int shields;
     ArrayList<Card> allies;
+    ArrayList<Card> amours;
     public ArrayList<AdventureCard> stage;
     int rank;
 
@@ -17,6 +18,7 @@ public class Player {
         shields = 0;
         hand = new ArrayList<>();
         allies = new ArrayList<>();
+        amours = new ArrayList<>();
         stage = new ArrayList<>();
         rank = 0;
     }
@@ -83,8 +85,10 @@ public class Player {
     }
 
     public void drawCard(Stack<Card> d, int n){
-        for(int i = 0; i < n; i++){
-            hand.add(d.pop());
+        if(hand.size() > 12){
+            for(int i = 0; i < n; i++){
+                hand.add(d.pop());
+            }
         }
     }
 
