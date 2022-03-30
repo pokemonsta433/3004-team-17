@@ -9,12 +9,14 @@ public class DeckFactory {
     public DeckFactory(){}
 
     String[][] adventure_deck = {
+            //name, weapon, power, frequency
             {"excalibur", "weapon", "30", "2"},
             {"lance", "weapon", "20", "6"},
             {"battle-ax", "weapon", "15", "8"},
             {"sword", "weapon", "10", "16"},
             {"horse", "weapon", "10", "11"},
             {"dagger", "weapon", "5", "6"},
+            //name, foe, defaultpower, augmentedPower, RelevantQuests, frequency
             {"dragon", "foe", "50", "70", "defend_the_queens_honor,search_for_the_holy_grail,slay_the_dragon", "1"},
             {"giant", "foe", "40", "40", "defend_the_queens_honor,search_for_the_holy_grail", "2"},
             {"mordred", "foe", "30", "30", "defend_the_queens_honor,search_for_the_holy_grail", "4"},
@@ -26,6 +28,7 @@ public class DeckFactory {
             {"saxons", "foe", "10", "20", "defend_the_queens_honor,repel_saxon_raiders,search_for_the_holy_grail", "5"},
             {"boar", "foe", "5", "15", "boar_hunt,defend_the_queens_honor,search_for_the_holy_grail", "4"},
             {"thieves", "foe", "5", "5", "defend_the_queens_honor,search_for_the_holy_grail", "8"},
+            //name, ally, bp, bonusbp, bids, bonusquest, frequency
             {"king_arthur", "ally", "10", "10", "2", "", "1"},
             {"queen_guinevere", "ally", "0", "0", "3", "", "1"},
             {"sir_galahad", "ally", "15", "15", "0", "", "1"},
@@ -36,10 +39,16 @@ public class DeckFactory {
             {"sir_tristan", "ally", "10", "10", "0", "", "1"},
             {"king_pellinore", "ally", "10", "10", "0", "", "1"},
             {"merlin", "ally", "0", "0", "0", "", "1"},
-            {"amour", "8"}
+            {"amour", "8"},
+            //name, test, defaultMinBid, minBidForQuestingBeast, frequency
+            {"test_of_valor","test", "0", "0", "2"},
+            {"test_of_temptation","test", "0", "0", "2"},
+            {"test_of_morgan_le_fey","test", "3", "3", "2"},
+            {"test_of_the_questing_beast","test", "0","4", "2"},
     };
 
     String[][] story_deck = {
+            //name, stages, frequency
             {"search_for_the_holy_grail", "5", "1"},
             {"defend_the_queens_honor", "4", "1"},
             {"test_of_the_green_knight", "4", "1"},
@@ -53,6 +62,7 @@ public class DeckFactory {
     };
 
     String[][] event_story_deck = {
+            //name, frequency
             {"chivalrous_deed","1"},
             {"court_called_to_camelot","2"},
             {"king_s_call_to_arms","1"},
@@ -64,36 +74,42 @@ public class DeckFactory {
     };
 
     public Stack<Card> build(String type){
-        switch(type){
-            case "Adventure":
-                return populateAdventure();
-            case "Story":
-                return populateStory();
-        }
-        return null;
+        return switch (type) {
+            case "Adventure" -> populateAdventure();
+            case "Story" -> populateStory();
+            default -> null;
+        };
     }
 
     public Stack<Card> populateAdventure(){
         Stack<Card> deck = new Stack<>();
         int i = 0;
         for (String[] strings : adventure_deck) {
-            if (strings[1].equals("weapon")) {
-                for (int j = 0; j <= Integer.parseInt(strings[3]); j++) {
-                    deck.add(new WeaponCard(strings[0], i, Integer.parseInt(strings[2])));
-                    i++;
-                }
-            }
-            else if (strings[1].equals("foe")) {
-                for (int j = 0; j <= Integer.parseInt(strings[5]); j++) {
-                    deck.add(new FoeCard(strings[0], i, Integer.parseInt(strings[2]), Integer.parseInt(strings[3]), strings[4].split(",")));
-                    i++;
-                }
-            }
-            else if (strings[1].equals("ally")) {
-                for (int j = 0; j <= Integer.parseInt(strings[6]); j++) {
-                    deck.add(new AllyCard(strings[0], i, Integer.parseInt(strings[2]), Integer.parseInt(strings[3]), Integer.parseInt(strings[4]), strings[5]));
-                    i++;
-                }
+            switch (strings[1]) {
+                case "weapon":
+                    for (int j = 0; j <= Integer.parseInt(strings[3]); j++) {
+                        deck.add(new WeaponCard(strings[0], i, Integer.parseInt(strings[2])));
+                        i++;
+                    }
+                    break;
+                case "foe":
+                    for (int j = 0; j <= Integer.parseInt(strings[5]); j++) {
+                        deck.add(new FoeCard(strings[0], i, Integer.parseInt(strings[2]), Integer.parseInt(strings[3]), strings[4].split(",")));
+                        i++;
+                    }
+                    break;
+                case "test":
+                    for (int j = 0; j <= Integer.parseInt(strings[4]); j++) {
+                        deck.add(new TestCard(strings[0], i, Integer.parseInt(strings[2]), Integer.parseInt(strings[3])));
+                        i++;
+                    }
+                    break;
+                case "ally":
+                    for (int j = 0; j <= Integer.parseInt(strings[6]); j++) {
+                        deck.add(new AllyCard(strings[0], i, Integer.parseInt(strings[2]), Integer.parseInt(strings[3]), Integer.parseInt(strings[4]), strings[5]));
+                        i++;
+                    }
+                    break;
             }
             else if(strings[0].equals("amour")){
                 for (int j = 0; j <= Integer.parseInt(strings[1]); j++) {
