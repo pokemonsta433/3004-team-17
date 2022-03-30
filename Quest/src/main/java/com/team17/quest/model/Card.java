@@ -1,6 +1,8 @@
 package com.team17.quest.model;
 
-public abstract class Card {
+import com.team17.quest.model.storyDeck.EventCardInterface;
+
+public abstract class Card implements EventCardInterface {
     String name;
     int id;
     public Card(){
@@ -11,6 +13,12 @@ public abstract class Card {
         name = n;
         id = i;
     }
+
+    @Override
+    public void eventStrategy(Game game) {
+
+    }
+
     public String getName(){return name;}
 
     public boolean isFoe(){

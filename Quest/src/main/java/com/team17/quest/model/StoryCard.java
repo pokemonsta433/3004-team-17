@@ -6,4 +6,5 @@ public abstract class StoryCard extends Card {
     public StoryCard(String n, int i){
         super(n, i);
     }
+
 }
