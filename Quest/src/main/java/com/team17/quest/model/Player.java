@@ -85,23 +85,42 @@ public class Player {
     }
 
     public void drawCard(Stack<Card> d, int n){
-        if(hand.size() > 12){
+
             for(int i = 0; i < n; i++){
-                hand.add(d.pop());
+                if(hand.size() < 12) {
+                    hand.add(d.pop());
+                }
             }
-        }
     }
 
     public Card drawCard(Stack<Card> d){
-        Card c = d.pop();
-        hand.add(c);
-        return c;
+        if(hand.size() < 12){
+            Card c = d.pop();
+            hand.add(c);
+            return c;
+        }
+        return null;
     }
 
-    public int getStageValue(String q){
+    public int getStageValue(String q, ArrayList<Player> ps){
         int total = 0;
         for(AdventureCard c: stage){
-            total += c.getValue(q);
+            if(c instanceof AllyCard){
+                if(c.name == "sir_tristan"){
+                    for(Player p : ps){
+                        for(Card a : allies){
+                            if(a.name.equals("queen_iseult")){
+                                total += 10;
+                                break;
+                            }
+                        }
+                    }
+                }
+                total += c.getValue(q);
+            }
+            else{
+                total += c.getValue(q);
+            }
         }
         return total;
     }

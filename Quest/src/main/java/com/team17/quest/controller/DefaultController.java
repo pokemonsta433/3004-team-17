@@ -59,14 +59,13 @@ public class DefaultController {
                     game.getPlayer(game.getIndexOfName(s)).shields += game.getStages();
                 }
                 for(ArrayList<AdventureCard> stage : game.quest){
-                    Card c = game.getSponsor().drawCard(game.adventure_deck);
+                    game.getSponsor().drawCard(game.adventure_deck, 1);
                     for(Card x : stage){
-                        c = game.getSponsor().drawCard(game.adventure_deck);
+                        game.getSponsor().drawCard(game.adventure_deck, 1);
                     }
                 }
                 game.discardQuest();
                 game.drawStory();
-                //give sponsor correct # of cards
                 for(Player p : players){
                     messageSender.convertAndSendToUser(p.getName(), "/reply", new ServerMessage("Update", "Next Quest"));
                 }
@@ -102,7 +101,7 @@ public class DefaultController {
         }
         else{
             game.getPlayer(game.getIndexOfName(message.getName())).addStage(ids);
-            if(game.getPlayer(game.getIndexOfName(message.getName())).getStageValue(game.getCurrent_story().getName()) > game.getStageValue(current_stage)){
+            if(game.getPlayer(game.getIndexOfName(message.getName())).getStageValue(game.getCurrent_story().getName(), game.players) > game.getStageValue(current_stage)){
                 challenge_played.set(participants.indexOf(message.getName()), true);
                 questLogic(message.getName());
             }

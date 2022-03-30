@@ -7,11 +7,6 @@ public abstract class AdventureCard extends Card {
         battle_points = bp;
     }
 
-    public AdventureCard(){
-        super();
-        battle_points = 0;
-    }
-
     public int getValue(String q){
         return battle_points;
     }

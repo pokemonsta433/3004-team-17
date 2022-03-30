@@ -26,6 +26,16 @@ public class DeckFactory {
             {"saxons", "foe", "10", "20", "defend_the_queens_honor,repel_saxon_raiders,search_for_the_holy_grail", "5"},
             {"boar", "foe", "5", "15", "boar_hunt,defend_the_queens_honor,search_for_the_holy_grail", "4"},
             {"thieves", "foe", "5", "5", "defend_the_queens_honor,search_for_the_holy_grail", "8"},
+            {"king_arthur", "ally", "10", "10", "2", "", "1"},
+            {"queen_guinevere", "ally", "0", "0", "3", "", "1"},
+            {"sir_galahad", "ally", "15", "15", "0", "", "1"},
+            {"queen_iseult", "ally", "0", "0", "2", "", "1"},
+            {"sir_gawain", "ally", "10", "20", "0", "test_of_the_green_knight", "1"},
+            {"sir_lancelot", "ally", "15", "25", "0", "defend_the_queens_honor", "1"},
+            {"sir_percival", "ally", "5", "20", "0", "search_for_the_holy_grail", "1"},
+            {"sir_tristan", "ally", "10", "10", "0", "", "1"},
+            {"king_pellinore", "ally", "10", "10", "0", "", "1"},
+            {"merlin", "ally", "0", "0", "0", "", "1"}
     };
 
     String[][] story_deck = {
@@ -71,12 +81,20 @@ public class DeckFactory {
                     deck.add(new WeaponCard(strings[0], i, Integer.parseInt(strings[2])));
                     i++;
                 }
-            } else if (strings[1].equals("foe")) {
+            }
+            else if (strings[1].equals("foe")) {
                 for (int j = 0; j <= Integer.parseInt(strings[5]); j++) {
                     deck.add(new FoeCard(strings[0], i, Integer.parseInt(strings[2]), Integer.parseInt(strings[3]), strings[4].split(",")));
                     i++;
                 }
             }
+            else if (strings[1].equals("ally")) {
+                for (int j = 0; j <= Integer.parseInt(strings[6]); j++) {
+                    deck.add(new AllyCard(strings[0], i, Integer.parseInt(strings[2]), Integer.parseInt(strings[3]), Integer.parseInt(strings[4]), strings[5]));
+                    i++;
+                }
+            }
+
         }
         return deck;
     }
