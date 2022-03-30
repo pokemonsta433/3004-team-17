@@ -40,6 +40,13 @@ public class DefaultController {
     boolean sponsored = false;
     ArrayList<String> participants = new ArrayList<>();
     ArrayList<Boolean> challenge_played = new ArrayList<>();
+
+    //some bidding globals <-- If we had more time these would be a part of the models
+    int bids_recieved = 0;
+    int largest_bid = 0;
+    String best_bidder = "";
+
+
     @Autowired
     private SimpMessagingTemplate messageSender;
 
@@ -131,13 +138,19 @@ public class DefaultController {
             }
             else{
                 messageSender.convertAndSendToUser(game.getPlayer(game.getIndexOfName(message.getName())).getName(), "/reply", new ServerMessage("Quest", "Complete"));
-                for(String s: participants){
+                for(String s: participants) {
                     //send via DOM
                     Card c = game.getPlayer((game.getIndexOfName(s))).drawCard(game.adventure_deck);
                 }
-                for(String s : participants){
-                    challenge_played.add(false);
-                    messageSender.convertAndSendToUser(game.getPlayer(game.getIndexOfName(s)).getName(), "/reply", new ServerMessage("Quest", "Stage"));
+                if(true) { // TODO: actually this should be if the upcoming stage is a quest
+                    for (String s : participants) {
+                        challenge_played.add(false);
+                        messageSender.convertAndSendToUser(game.getPlayer(game.getIndexOfName(s)).getName(), "/reply", new ServerMessage("Quest", "Stage"));
+                    }
+                }
+                else{ //if we're looking at a test stage, let's send a message to the first bidder, asking for his bid!
+                    //TODO: Check for minimum bid, because that's what we'll be sending as the second "param" after BidRequest
+                    messageSender.convertAndSendToUser(participants.get(0), "/reply", new ServerMessage("Quest", "BidRequest " + 0));
                 }
             }
         }
@@ -146,10 +159,34 @@ public class DefaultController {
         }
     }
 
+    @MessageMapping("/bid")
+    public void bid(ClientMessage message) throws Exception {
+        bids_recieved += 1;
+        String[] card_ids = message.getMsg().split(",");
+        List<String> ids = Arrays.asList(card_ids);
+        int currentBid = ids.size();
+        if (currentBid > largest_bid) {
+            largest_bid = currentBid;
+            best_bidder = message.getName();
+        }
+        else messageSender.convertAndSendToUser(message.getName(), "/reply", new ServerMessage("Quest", "Bid Lost"));
+        if (bids_recieved >= participants.size()) { //in a quest, the participants array persists
+            bids_recieved = 0;
+                for (String p : participants) {
+                    if (p.equals(best_bidder))
+                        messageSender.convertAndSendToUser(p, "/reply", new ServerMessage("Quest", "Bid Won"));
+                    else
+                        messageSender.convertAndSendToUser(p, "/reply", new ServerMessage("Quest", "Bid Lost"));
+                }
+            } else { //ask the next player for their own bid
+                messageSender.convertAndSendToUser(participants.get(participants.indexOf(message.getName()) + 1), "/reply", new ServerMessage("Quest", "BidRequest " + largest_bid));
+            }
+        }
+
     @MessageMapping("/prompt")
     public void prompt(ClientMessage message) throws Exception {
         players_prompted += 1;
-        if(game.getPlayer(player_turn).foeCount() < game.getStages()){ //checks if has enough foes to make stage (later will change to foe + hasTest)
+        if((game.getPlayer(player_turn).foeCount() + game.getPlayer(player_turn).hasTest()) < game.getStages()){ //checks if has enough foes to make stage
             messageSender.convertAndSendToUser(game.getPlayer(player_turn).getName(), "/reply", new ServerMessage("Prompt", "Foe Issue"));
         }
         else if(message.getMsg().equals("Sponsor")){
@@ -171,7 +208,7 @@ public class DefaultController {
                 sponsored = false;
                 players_prompted = 0;
                 player_turn = (player_turn + 2) % game.getPlayers().size();
-                messageSender.convertAndSendToUser(game.getPlayer(player_turn).getName(), "/reply", new ServerMessage("Prompt", "Sponsor")); //TO-DO change content to quest name?
+                messageSender.convertAndSendToUser(game.getPlayer(player_turn).getName(), "/reply", new ServerMessage("Prompt", "Sponsor"));
             }
             else{
                 messageSender.convertAndSendToUser(game.getSponsor().getName(), "/reply", new ServerMessage("Quest", "First"));

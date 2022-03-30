@@ -67,6 +67,9 @@ public class Player {
                         weaponNames.add(c.name);
                     }
                 }
+                else if(c instanceof TestCard){
+                    return true; //for now we don't have to check for multiple tests due to front-end stopgaps
+                }
             }
         }
         return foe;
@@ -150,6 +153,16 @@ public class Player {
         }
         return i;
     }
+
+    public int hasTest(){
+       for (Card c : hand) {
+           if (c instanceof TestCard) {
+               return 1;
+           }
+       }
+       return 0;
+    }
+
     public ArrayList<Card> getHand(){
         return hand;
     }
