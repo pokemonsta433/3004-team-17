@@ -133,7 +133,8 @@
                 <p id="stageText">Please make stage 1</p>
             </div>
             <div id="submitChallenge" style="display: none">
-                <p id="challengeText">Challenge Stage 0</p>
+                <p id="challengeText">Challenge Stage</p>
+                <p th:text="${stage_number}"></p>
             </div>
             <input type="button" value="Challenge" id="challenge" onclick="challenge()" style="display: none">
             <input type="button" value="Play Cards" id="playCards" onclick="playCards()" style="display: none">
@@ -154,7 +155,9 @@
         </div>
 
         <ul id="discard" class="discard">
-
+            <li class="card" th:each="c: ${game.adventure_discardPile}">
+                <img th:src = "@{/card(cardName=${c.name})}">
+            </li>
         </ul>
     </body>
 </html>

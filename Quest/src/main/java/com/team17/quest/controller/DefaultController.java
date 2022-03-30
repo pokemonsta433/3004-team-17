@@ -86,6 +86,9 @@ public class DefaultController {
                     //send via DOM
                     Card c = game.getPlayer((game.getIndexOfName(s))).drawCard(game.adventure_deck);
                 }
+                for(Player p : players){
+                    messageSender.convertAndSendToUser(p.getName(), "/reply", new ServerMessage("Update", "Next Quest"));
+                }
                 for(String s : participants){
                     challenge_played.add(false);
                     messageSender.convertAndSendToUser(game.getPlayer(game.getIndexOfName(s)).getName(), "/reply", new ServerMessage("Quest", "Continue"));
@@ -145,17 +148,17 @@ public class DefaultController {
 
     @MessageMapping("/prompt")
     public void prompt(ClientMessage message) throws Exception {
+        players_prompted += 1;
         if(game.getPlayer(player_turn).foeCount() < game.getStages()){ //checks if has enough foes to make stage (later will change to foe + hasTest)
             messageSender.convertAndSendToUser(game.getPlayer(player_turn).getName(), "/reply", new ServerMessage("Prompt", "Foe Issue"));
         }
-        if(message.getMsg().equals("Sponsor")){
+        else if(message.getMsg().equals("Sponsor")){
             sponsored = true;
             game.setSponsor(message.getName());
         }
         else if(message.getMsg().equals("Participate")){
             participants.add(message.getName());
         }
-        players_prompted += 1;
         if(players_prompted >= game.getPlayers().size()){
             players_prompted = 0;
             if(!sponsored || participants.size() == 0){
@@ -235,6 +238,7 @@ public class DefaultController {
             game = new Game(players);
             game_started = true;
         }
+        model.addAttribute("stage_number", current_stage);
         model.addAttribute("game", game);
         model.addAttribute("i", game.getIndexOfName(playername));
         broadcastMessage("Start", "StartGame");
@@ -245,6 +249,7 @@ public class DefaultController {
     @GetMapping(value = "gameboard")
     public String observe(@RequestParam(name = "playername") String playername, Model model){
         model.addAttribute("game", game);
+        model.addAttribute("stage_number", current_stage);
         model.addAttribute("i", game.getIndexOfName(playername));
         return "GameBoard";
     }

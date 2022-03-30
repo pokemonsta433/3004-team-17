@@ -59,6 +59,23 @@ async function showPrompt(){
     document.getElementById("NoSponsorPrompt").style.display = 'block';
 }
 
+async function questcontinue(){
+    await sleep(100);
+
+
+    clearPlayArea();
+    alert("You have made it to the next stage!");
+    //update stage count
+    //enable challenge button
+    document.getElementById("challenge").style = 'display: block';
+    document.getElementById("submitChallenge").style = 'display:  block';
+
+    //reset card highlighting
+    unhighlightCards();
+    highlightCards();
+
+}
+
 function connect() {
     var socket = new SockJS('/gs-guide-websocket');
     stompClient = Stomp.over(socket);
@@ -149,23 +166,7 @@ function connect() {
                     highlightCards();
                 }
                 else if(JSON.parse(message.body).content === "Continue"){
-                    clearPlayArea();
-                    alert("You have made it to the next stage!");
-                    //update stage count
-                    let stagecount = document.getElementById("challengeText");
-                    let oldText = stagecount.innerHTML;
-                    newtext = oldText .replace(/(\d)/g, function(match, number) {
-                        return parseInt(number)+1;
-                    });
-                    stagecount.innerHTML = newtext;
-                    //enable challenge button
-                    document.getElementById("challenge").style = 'display: block';
-                    document.getElementById("submitChallenge").style = 'display:  block';
-
-                    //reset card highlighting
-                    unhighlightCards();
-                    highlightCards();
-
+                    questcontinue();
                 }
                 else if(JSON.parse(message.body).content === "Lose"){
                     alert("You lost the quest!");
@@ -183,7 +184,6 @@ function connect() {
                 }
             }
             else if(JSON.parse(message.body).messagetype === "Update"){
-                console.log(document.getElementById("SponsorPrompt").style.display)
                 refreshPage();
             }
         });
