@@ -243,6 +243,22 @@ function submitPrompt(e){
     stompClient.send("/app/prompt", {}, JSON.stringify({'name': userName, msg: e.className}));
 }
 function highlightCards() {
+
+    //highlight all allies no matter what
+    const handAllies = document.querySelectorAll('#hand .card.ally img')
+    handAllies.forEach(card => {
+        card.style.border = '.2em solid DeepSkyBlue';
+        card.style.borderRadius = '10%';
+        card.parentElement.onclick = function(){moveCard(card.parentElement)};
+    })
+
+
+    //TODO: if you are making a stage
+    //if you have a test queued then you most certainly cannot play it
+    const playedTest = document.querySelector('#played-list .card.test img');
+    if (playedTest != null){
+        return;
+    }
     const playedFoe = document.querySelector('#played-list .card.foe img');
 
     if (playedFoe === null){
@@ -250,6 +266,12 @@ function highlightCards() {
         const handFoes = document.querySelectorAll('#hand .card.foe img')
         handFoes.forEach(card => {
             card.style.border = '.2em solid orange';
+            card.style.borderRadius = '10%';
+            card.parentElement.onclick = function(){moveCard(card.parentElement)};
+        })
+        const handTests = document.querySelectorAll('#hand .card.test img')
+        handTests.forEach(card => {
+            card.style.border = '.2em solid green';
             card.style.borderRadius = '10%';
             card.parentElement.onclick = function(){moveCard(card.parentElement)};
         })
@@ -279,7 +301,9 @@ function highlightCards() {
 function clearPlayArea(){
     var cards = document.querySelectorAll('#played-list .card')
     cards.forEach(card => {
-        discard(card)
+        if (!card.classList.contains("ally")){
+            discard(card);
+        }
         //card.parentElement.removeChild(card);
     })
 }

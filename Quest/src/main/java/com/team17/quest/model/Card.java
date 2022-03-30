@@ -19,6 +19,18 @@ public abstract class Card implements EventCardInterface {
 
     }
 
+    public String classString(){
+        //cannot make it a switch??
+        if (this instanceof WeaponCard){
+            return "weapon";
+        } else if(this instanceof FoeCard){
+            return "foe";
+        } else if(this instanceof TestCard){
+            return "test";
+        } else if (this instanceof AllyCard){
+            return "ally";
+        } else return "amour";
+    }
     public String getName(){return name;}
 
     public boolean isFoe(){

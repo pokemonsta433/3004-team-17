@@ -139,7 +139,7 @@
             <input type="button" value="Play Cards" id="playCards" onclick="playCards()" style="display: none">
             <ul id="hand">
                 <li th:each="c: ${game.getPlayer(i).hand}">
-                <li class="card" th:classappend="${c.isFoe()} ? foe : weapon" th:each="c: ${game.getPlayer(i).hand}">
+                <li class="card" th:classappend="${c.classString()}" th:each="c: ${game.getPlayer(i).hand}">
                     <img th:src = "@{/card(cardName=${c.name})}" th:id="${c.id}" th:classappend="${c.name}">
                 </li>
         <!--        <li>-->
