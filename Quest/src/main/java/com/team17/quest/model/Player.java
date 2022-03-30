@@ -67,12 +67,7 @@ public class Player {
                 }
             }
         }
-        if(foe == false){
-            return false;
-        }
-        else{
-            return true;
-        }
+        return foe;
     }
 
     public void addStage(List<String> ids){
@@ -84,6 +79,7 @@ public class Player {
         for(Card c : stage){
             hand.remove(c);
         }
+        System.out.println("stage is " + stage);
     }
 
     public void drawCard(Stack<Card> d, int n){
