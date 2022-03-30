@@ -50,30 +50,26 @@ function refreshPage() {
 }
 
 async function showSPrompt(){
-    await sleep(100);
+    await sleep(200);
     document.getElementById("SponsorPrompt").style.display = 'block';
 }
 
 async function showPrompt(){
-    await sleep(100);
+    await sleep(200);
     document.getElementById("NoSponsorPrompt").style.display = 'block';
 }
 
 async function questcontinue(){
-    await sleep(100);
-
-
     clearPlayArea();
     alert("You have made it to the next stage!");
     //update stage count
     //enable challenge button
+    await sleep(200);
     document.getElementById("challenge").style = 'display: block';
     document.getElementById("submitChallenge").style = 'display:  block';
-
     //reset card highlighting
     unhighlightCards();
     highlightCards();
-
 }
 
 function connect() {

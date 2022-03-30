@@ -122,24 +122,25 @@ public class Player {
     }
 
     public int getStageValue(String q, ArrayList<Player> ps){
-        int total = 0;
+        int total = 5;
         for(AdventureCard c: stage){
-            if(c instanceof AllyCard){
-                if(c.name == "sir_tristan"){
-                    for(Player p : ps){
-                        for(Card a : p.allies){
-                            if(a.name.equals("queen_iseult")){
-                                total += 10;
-                                break;
-                            }
+            total += c.getValue(q);
+        }
+        for(AdventureCard c : allies){
+            if(c.name.equals("sir_tristan")){ //loop through to see if queen iseult is in play
+                for(Player p : ps){
+                    for(Card a : p.allies){
+                        if(a.name.equals("queen_iseult")){
+                            total += 10;
+                            break;
                         }
                     }
                 }
-                total += c.getValue(q);
             }
-            else{
-                total += c.getValue(q);
-            }
+            total += c.getValue(q);
+        }
+        for(AdventureCard c : amours){
+            total += c.getValue(q);
         }
         return total;
     }
