@@ -47,7 +47,6 @@ function refreshPage() {
             doc = parser.parseFromString(result, 'text/html');
             document.replaceChild( doc.documentElement, document.documentElement);
         })
-    //window.location = window.location; // can't do this because it uses get requests :(
 }
 
 async function showSPrompt(){
@@ -88,7 +87,6 @@ function connect() {
                 }
             }
             else if(JSON.parse(message.body).messagetype === "Validity"){
-                alert("Valid cards played: " + JSON.parse(message.body).content)
             }
         });
         if(userName === null){loadUsername();}
@@ -150,7 +148,7 @@ function connect() {
                 else if(JSON.parse(message.body).content === "Continue"){
                     //refreshPage(); //this will refresh the card counts of other players <-- but it is async and then the rest won't work
                     clearPlayArea();
-                    alert("NEXT STAGE");
+                    alert("You have made it to the next stage!");
                     //update stage count
                     let stagecount = document.getElementById("challengeText");
                     let oldText = stagecount.innerHTML;
@@ -168,7 +166,7 @@ function connect() {
                     stagecount.innerHTML = newtext;
                 }
                 else if(JSON.parse(message.body).content === "Lose"){
-                    alert("YOU LOST");
+                    alert("You lost the quest!");
                     clearPlayArea();
                     unhighlightCards();
                     document.getElementById("challenge").style.display = 'none';
