@@ -111,7 +111,7 @@ public class DeckFactory {
                     }
                     break;
             }
-            else if(strings[0].equals("amour")){
+            if(strings[0].equals("amour")){
                 for (int j = 0; j <= Integer.parseInt(strings[1]); j++) {
                     deck.add(new AmourCard(i));
                     i++;
