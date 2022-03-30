@@ -252,13 +252,17 @@ function highlightCards() {
         card.parentElement.onclick = function(){moveCard(card.parentElement)};
     })
 
+    let makingStage = (document.getElementById("playCards").style.display === 'block');
 
-    //TODO: if you are making a stage
-    //if you have a test queued then you most certainly cannot play it
-    const playedTest = document.querySelector('#played-list .card.test img');
-    if (playedTest != null){
-        return;
+    if(makingStage){
+        //if you have a test queued then you most certainly cannot play anything else
+        const playedTest = document.querySelector('#played-list .card.test img');
+        if (playedTest != null){
+            return;
+        }
+
     }
+
     const playedFoe = document.querySelector('#played-list .card.foe img');
 
     if (playedFoe === null){
@@ -269,12 +273,23 @@ function highlightCards() {
             card.style.borderRadius = '10%';
             card.parentElement.onclick = function(){moveCard(card.parentElement)};
         })
-        const handTests = document.querySelectorAll('#hand .card.test img')
-        handTests.forEach(card => {
-            card.style.border = '.2em solid green';
-            card.style.borderRadius = '10%';
-            card.parentElement.onclick = function(){moveCard(card.parentElement)};
-        })
+        if (makingStage){
+            const handTests = document.querySelectorAll('#hand .card.test img')
+            handTests.forEach(card => {
+                card.style.border = '.2em solid green';
+                card.style.borderRadius = '10%';
+                card.parentElement.onclick = function(){moveCard(card.parentElement)};
+            })
+        }
+        else{
+            const handAmours = document.querySelectorAll('#hand .card.amour img')
+            handAmours.forEach(card => {
+                card.style.border = '.2em solid HotPink';
+                card.style.borderRadius = '10%';
+                card.parentElement.onclick = function(){moveCard(card.parentElement)};
+            })
+
+        }
     }
     else{
         const playedWeapons = document.querySelectorAll('#played-list .card.weapon img');
@@ -303,6 +318,9 @@ function clearPlayArea(){
     cards.forEach(card => {
         if (!card.classList.contains("ally")){
             discard(card);
+        }
+        else{
+            discard(card); //TODO: Matt, when you make a div for ally cards to go in I would appreciate if you could put this card in the allies div :)
         }
         //card.parentElement.removeChild(card);
     })
