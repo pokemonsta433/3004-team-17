@@ -269,9 +269,14 @@ ul#horizontal-list li a{
     display: none;
 }
 
-#TournamentPrompt{
+#TournamentPrompt {
     display: none;
 }
+
+#EventPrompt {
+    display: none;
+}
+
 #SponsorPrompt .card:hover{
     width: 150px;
     height: 225px;
@@ -281,6 +286,14 @@ ul#horizontal-list li a{
 }
 
 #NoSponsorPrompt .card:hover{
+    width: 150px;
+    height: 225px;
+    border: 2px solid rgb(0, 125, 228);
+    z-index: 1;
+    transform: translateX(-25px) translateY(-75px); /* I was hoping this would not move the buttons down but it does TODO: make matt fix it :) */
+}
+
+#EventPrompt .card:hover{
     width: 150px;
     height: 225px;
     border: 2px solid rgb(0, 125, 228);
@@ -350,5 +363,9 @@ ul#horizontal-list li a{
 }
 
 #NoSponsorPrompt {
+    margin-left: 40%;
+}
+
+#EventPrompt  {
     margin-left: 40%;
 }

@@ -8,9 +8,9 @@ public class EventFactory {
             return new ChivalrousDeedEventCard(eventCardName, i);
         } else if (eventCardName.equalsIgnoreCase("court_called_to_camelot")) {
             return new CamelotEventCard(eventCardName, i);
-        } else if (eventCardName.equalsIgnoreCase("king_s_call_to_arms")) {
+        } else if (eventCardName.equalsIgnoreCase("kings_call_to_arms")) {
             return new KingsCallToArmsEventCard(eventCardName, i);
-        } else if (eventCardName.equalsIgnoreCase("king_s_recognition")) {
+        } else if (eventCardName.equalsIgnoreCase("kings_recognition")) {
             return new KingsRecognitionEventCard(eventCardName, i);
         } else if (eventCardName.equalsIgnoreCase("plague")) {
             return new PlagueEventCard(eventCardName, i);
@@ -18,7 +18,7 @@ public class EventFactory {
             return new PoxEventCard(eventCardName, i);
         } else if (eventCardName.equalsIgnoreCase("prosperity_throughout_the_realm")) {
             return new ProsperityEventCard(eventCardName, i);
-        } else if (eventCardName.equalsIgnoreCase("queen_s_favor")) {
+        } else if (eventCardName.equalsIgnoreCase("queens_favor")) {
             return new QueensFavorEventCard(eventCardName, i);
         }
         return null;

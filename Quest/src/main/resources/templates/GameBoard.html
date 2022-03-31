@@ -98,21 +98,24 @@
                 </div>
             </div>
 
+            <div id = "EventPrompt" style='position: absolute; left: 100px; top: 50px; border: solid black 1px; padding: 10px; background-color: rgb(200,100,100); text-align: justify; font-size: 12px; width: 135px;' >
+                <span class='new-quest-text'>A new Event!</span>
+                <p>What would you like to continue?</p>
+                <div class="card" style="margin-left: 20px">
+                    <img th:src="@{/card(cardName=${game.current_story.name})}">
+                </div>
+                <input class="EventCard"  type="button" value="Continue" onclick="submitPrompt(this)">
+            </div>
+
             <div id = "SponsorPrompt" style='position: absolute; left: 100px; top: 50px; border: solid black 1px; padding: 10px; background-color: rgb(200,100,100); text-align: justify; font-size: 12px; width: 135px;' >
                 <span class='new-quest-text'>A new quest is starting!</span>
                 <p>What would you like to do for the following quest?</p>
                 <div class="card" style="margin-left: 20px">
                     <img th:src="@{/card(cardName=${game.current_story.name})}">
                 </div>
-                <div th:if="${game.current_story.isEvent()}">
-                  <input class="EventCard" type="button" value="Continue" onclick="submitPrompt(this)">
-                </div>
-                <div th:unless="${game.current_story.isEvent()}">
-                  <input class="Sponsor"  type="button" value="Sponsor" onclick="submitPrompt(this)">
-                  <input class="Participate" type="button" value="Participate" onclick="submitPrompt(this)">
-                  <input class="Drop Out" type="button" value="Drop Out" onclick="submitPrompt(this)">
-                </div>
-
+                <input class="Sponsor"  type="button" value="Sponsor" onclick="submitPrompt(this)">
+                <input class="Participate" type="button" value="Participate" onclick="submitPrompt(this)">
+                <input class="Drop Out" type="button" value="Drop Out" onclick="submitPrompt(this)">
             </div>
 
             <div id = "NoSponsorPrompt" style='position: absolute; left: 100px; top: 50px; border: solid black 1px; padding: 10px; background-color: rgb(200,100,100); text-align: justify; font-size: 12px; width: 135px;' >
@@ -121,13 +124,8 @@
                 <div class="card" style="margin-left: 20px">
                     <img th:src="@{/card(cardName=${game.current_story.name})}">
                 </div>
-                <div th:if="${game.current_story.isEvent()}">
-                    <input class="EventCard" type="button" value="Continue" onclick="submitPrompt(this)">
-                </div>
-                <div th:unless="${game.current_story.isEvent()}">
-                    <input class="Participate" type="button" value="Participate" onclick="submitPrompt(this)">
-                    <input class="Drop Out" type="button" value="Drop Out" onclick="submitPrompt(this)">
-                </div>
+                <input class="Participate" type="button" value="Participate" onclick="submitPrompt(this)">
+                <input class="Drop Out" type="button" value="Drop Out" onclick="submitPrompt(this)">
             </div>
             <div id = "TournamentPrompt" style='position: absolute; left: 100px; top: 50px; border: solid black 1px; padding: 10px; background-color: dimgrey; text-align: justify; font-size: 12px; width: 135px;' >
                 <span class="new-quest-text">A new tournament is starting!</span>

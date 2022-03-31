@@ -69,12 +69,12 @@ public class DeckFactory {
             //name, frequency
             {"chivalrous_deed","1"},
             {"court_called_to_camelot","2"},
-            {"king_s_call_to_arms","1"},
-            {"king_s_recognition","2"},
+            {"kings_call_to_arms","1"},
+            {"kings_recognition","2"},
             {"plague","1"},
             {"pox","1"},
             {"prosperity_throughout_the_realm", "1"},
-            {"queen_s_favor", "2"}
+            {"queens_favor", "2"}
     };
 
     public Stack<Card> build(String type){
@@ -152,9 +152,9 @@ public class DeckFactory {
                     deck.add(eventFactory.getEventCard(strings[0], i));
                 } else if (strings[0].equals("court_called_to_camelot")) {
                     deck.add(eventFactory.getEventCard(strings[0], i));
-                } else if (strings[0].equals("king_s_call_to_arms")) {
+                } else if (strings[0].equals("kings_call_to_arms")) {
                     deck.add(eventFactory.getEventCard(strings[0], i));
-                } else if (strings[0].equals("king_s_recognition")) {
+                } else if (strings[0].equals("kings_recognition")) {
                     deck.add(eventFactory.getEventCard(strings[0], i));
                 } else if (strings[0].equals("plague")) {
                     deck.add(eventFactory.getEventCard(strings[0], i));
@@ -162,7 +162,7 @@ public class DeckFactory {
                     deck.add(eventFactory.getEventCard(strings[0], i));
                 } else if (strings[0].equals("prosperity_throughout_the_realm")) {
                     deck.add(eventFactory.getEventCard(strings[0], i));
-                } else if (strings[0].equals("queen_s_favor")) {
+                } else if (strings[0].equals("queens_favor")) {
                     deck.add(eventFactory.getEventCard(strings[0], i));
                 }
                 i++;

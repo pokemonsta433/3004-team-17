@@ -64,6 +64,10 @@ async function showTPrompt(){
     document.getElementById("TournamentPrompt").style.display = 'block';
 }
 
+async function showEventPrompt(){
+    await sleep(200);
+    document.getElementById("EventPrompt").style.display = 'block';
+}
 async function questcontinue(){
     clearPlayArea();
     alert("You have made it to the next stage!");
@@ -121,6 +125,9 @@ function connect() {
                 }
                 else if(JSON.parse(message.body).content === "Tournament"){
                     showTPrompt();
+                }
+                else if(JSON.parse(message.body).content === "EventCard"){
+                    showEventPrompt();
                 }
             }
             else if(JSON.parse(message.body).messagetype === "Tournament"){
@@ -271,6 +278,7 @@ function submitPrompt(e){
     document.getElementById("SponsorPrompt").style.display = 'none';
     document.getElementById("NoSponsorPrompt").style.display = 'none';
     document.getElementById("TournamentPrompt").style.display = 'none';
+    document.getElementById("EventPrompt").style.display = 'none';
     stompClient.send("/app/prompt", {}, JSON.stringify({'name': userName, msg: e.className}));
 }
 function highlightCards() {
