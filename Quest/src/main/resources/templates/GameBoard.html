@@ -150,12 +150,17 @@
                 <p id="challengeText">Challenge Stage</p>
                 <p th:text="${stage_number}"></p>
             </div>
+            <div id="submitBid" style="display: none">
+                <p id="bidText">Bid Stage</p>
+                <p th:text="${stage_number}"></p>
+            </div>
             <div id="tournamentText" style="display: none">
                 <p>Enter tournament</p>
             </div>
             <input type="button" value="Challenge" id="challenge" onclick="challenge()" style="display: none">
             <input type="button" value="Play Cards" id="playCards" onclick="playCards()" style="display: none">
             <input type="button" value="Enter Tournament" id="tournament" onclick="playTournament()" style="display: none">
+            <input type="button" value="Challenge" id="Bid" onclick="bidCards()" style="display: none">
             <ul id="hand">
                 <li th:each="c: ${game.getPlayer(i).hand}">
                 <li class="card" th:classappend="${c.classString()}" th:each="c: ${game.getPlayer(i).hand}">

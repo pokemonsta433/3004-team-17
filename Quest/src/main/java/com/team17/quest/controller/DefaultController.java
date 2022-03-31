@@ -58,7 +58,7 @@ public class DefaultController {
             messageSender.convertAndSendToUser(n, "/reply", new ServerMessage("Quest", "Wait"));
         }
         else{
-            if(current_stage == game.getStages() || participants.size() == 0){
+            if(current_stage == game.getStages() || participants.size() == 0){ // quest is over
                 current_stage = 1;
                 for(String s : participants){
                     game.getPlayer(game.getIndexOfName(s)).shields += game.getStages();
@@ -99,10 +99,26 @@ public class DefaultController {
                 for(Player p : players){
                     messageSender.convertAndSendToUser(p.getName(), "/reply", new ServerMessage("Update", "Next Quest"));
                 }
-                for(String s : participants){
-                    challenge_played.add(false);
-                    messageSender.convertAndSendToUser(s, "/reply", new ServerMessage("Quest", "Continue"));
+
+                boolean testIncoming = false;
+                ArrayList<AdventureCard> nextStage = game.quest.get(current_stage-1);
+                for(Card card : nextStage){
+                    if (card instanceof TestCard) {
+                        testIncoming = true;
+                        break;
+                    }
                 }
+                if(!testIncoming) {
+                    for(String s : participants) {
+                        challenge_played.add(false);
+                        messageSender.convertAndSendToUser(s, "/reply", new ServerMessage("Quest", "Continue"));
+                    }
+                }
+                else{ //if we're looking at a test stage, let's send a message to the first bidder, asking for his bid!
+                    //TODO: Check for minimum bid, because that's what we'll be sending as the second "param" after BidRequest
+                    messageSender.convertAndSendToUser(participants.get(0), "/reply", new ServerMessage("Quest", "BidRequest " + 0));
+                }
+
             }
         }
     }
@@ -188,7 +204,16 @@ public class DefaultController {
                 for(String s: participants) {
                     game.getPlayer((game.getIndexOfName(s))).drawCard(game.adventure_deck, 1);
                 }
-                if(true) { // TODO: actually this should be if the upcoming stage is a quest
+
+                boolean testIncoming = false;
+                ArrayList<AdventureCard> nextStage = game.quest.get(current_stage-1);
+                for(Card card : nextStage){
+                    if (card instanceof TestCard) {
+                        testIncoming = true;
+                        break;
+                    }
+                }
+                if(!testIncoming) { // TODO: actually this should be if the upcoming stage is a foe
                     for (String s : participants) {
                         challenge_played.add(false);
                         messageSender.convertAndSendToUser(s, "/reply", new ServerMessage("Quest", "Stage"));
@@ -205,7 +230,7 @@ public class DefaultController {
         }
     }
 
-    @MessageMapping("/bid")
+    @MessageMapping("/bidCards")
     public void bid(ClientMessage message) throws Exception {
         bids_recieved += 1;
         String[] card_ids = message.getMsg().split(",");
@@ -215,19 +240,80 @@ public class DefaultController {
             largest_bid = currentBid;
             best_bidder = message.getName();
         }
-        else messageSender.convertAndSendToUser(message.getName(), "/reply", new ServerMessage("Quest", "Bid Lost"));
+        else{
+            messageSender.convertAndSendToUser(message.getName(), "/reply", new ServerMessage("Quest", "Bid Lost"));
+            participants.remove(message.getName()); //you are no longer a participant
+        }
         if (bids_recieved >= participants.size()) { //in a quest, the participants array persists
             bids_recieved = 0;
-                for (String p : participants) {
-                    if (p.equals(best_bidder))
-                        messageSender.convertAndSendToUser(p, "/reply", new ServerMessage("Quest", "Bid Won"));
-                    else
-                        messageSender.convertAndSendToUser(p, "/reply", new ServerMessage("Quest", "Bid Lost"));
+            System.out.println("Telling participants about the won bid!");
+            for (String p : participants) {
+                if (p.equals(best_bidder)){
+                    messageSender.convertAndSendToUser(p, "/reply", new ServerMessage("Quest", "Bid Won"));
                 }
-            } else { //ask the next player for their own bid
-                messageSender.convertAndSendToUser(participants.get(participants.indexOf(message.getName()) + 1), "/reply", new ServerMessage("Quest", "BidRequest " + largest_bid));
+                else{
+                    messageSender.convertAndSendToUser(p, "/reply", new ServerMessage("Quest", "Bid Lost"));
+                }
             }
+
+            participants.set(0, best_bidder); //just put the best bidder in the first slot
+            participants.subList(1, participants.size()).clear(); //and get rid of everything else
+
+            System.out.println("participants is" + participants);
+
+            if(current_stage == game.getStages() || participants.get(0).equals("")){ // quest is over
+                System.out.println("quest has finished");
+                current_stage = 1;
+                for(String s : participants){
+                    game.getPlayer(game.getIndexOfName(s)).shields += game.getStages();
+                }
+                for(ArrayList<AdventureCard> stage : game.quest){
+                    game.getSponsor().drawCard(game.adventure_deck, 1);
+                    for(Card x : stage){
+                        game.getSponsor().drawCard(game.adventure_deck, 1);
+                    }
+                }
+                game.discardQuest();
+                for(Player p : game.players){
+                    p.amours.clear();
+                }
+                game.drawStory();
+                for(Player p : players){
+                    messageSender.convertAndSendToUser(p.getName(), "/reply", new ServerMessage("Update", "Next Quest"));
+                }
+                participants.clear();
+                challenge_played.clear();
+                sponsored = false;
+                players_prompted = 0;
+                player_turn = (player_turn + 2) % game.players.size();
+                if (game.getCurrent_story() instanceof QuestCard) {
+                    messageSender.convertAndSendToUser(game.getPlayer(player_turn).getName(), "/reply", new ServerMessage("Prompt", "Sponsor"));
+                } else if (game.getCurrent_story() instanceof TournamentCard) {
+                    messageSender.convertAndSendToUser(game.getPlayer(player_turn).getName(), "/reply", new ServerMessage("Prompt", "Tournament"));
+                }
+            }
+            else{
+                System.out.println("quest isn't over!");
+                current_stage++;
+                challenge_played.clear();
+                for(String s: participants){
+                    game.getPlayer((game.getIndexOfName(s))).drawCard(game.adventure_deck, 1);
+                }
+                for(Player p : players){
+                    messageSender.convertAndSendToUser(p.getName(), "/reply", new ServerMessage("Update", "Next Quest"));
+                }
+                for(String s : participants) {
+                    challenge_played.add(false);
+                    messageSender.convertAndSendToUser(s, "/reply", new ServerMessage("Quest", "Continue"));
+                }
+            }
+
+
+
+        } else { //ask the next player for their own bid
+            messageSender.convertAndSendToUser(participants.get(participants.indexOf(message.getName()) + 1), "/reply", new ServerMessage("Quest", "BidRequest " + largest_bid));
         }
+    }
 
     @MessageMapping("/prompt")
     public void prompt(ClientMessage message) throws Exception {
