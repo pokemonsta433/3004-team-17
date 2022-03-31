@@ -227,8 +227,10 @@ public class DefaultController {
     @MessageMapping("/prompt")
     public void prompt(ClientMessage message) throws Exception {
         players_prompted += 1;
-        if(message.getMsg().equals("Tournament")) {
-            participants.add(message.getName());
+        if(message.getMsg().equals("Tournament") || message.getMsg().equals("DropTourney")) {
+            if(message.getMsg().equals("Tournament")){
+                participants.add(message.getName());
+            }
             if (players_prompted >= game.getPlayers().size()) {
                 players_prompted = 0;
                 if (participants.size() == 0) {
@@ -259,7 +261,6 @@ public class DefaultController {
                 player_turn = player_turn % game.getPlayers().size();
                 messageSender.convertAndSendToUser(game.getPlayer(player_turn).getName(), "/reply", new ServerMessage("Prompt", "Tournament"));
             }
-
         }
         else{
             if((game.getPlayer(player_turn).foeCount() + game.getPlayer(player_turn).hasTest()) < game.getStages()){ //checks if has enough foes to make stage
