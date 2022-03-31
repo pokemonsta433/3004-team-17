@@ -125,13 +125,19 @@
                     <input class="EventCard" type="button" value="Continue" onclick="submitPrompt(this)">
                 </div>
                 <div th:unless="${game.current_story.isEvent()}">
-                  <input class="Participate" type="button" value="Participate" onclick="submitPrompt(this)">
-                  <input class="Drop Out" type="button" value="Drop Out" onclick="submitPrompt(this)">
+                    <input class="Participate" type="button" value="Participate" onclick="submitPrompt(this)">
+                    <input class="Drop Out" type="button" value="Drop Out" onclick="submitPrompt(this)">
                 </div>
             </div>
-
-
-
+            <div id = "TournamentPrompt" style='position: absolute; left: 100px; top: 50px; border: solid black 1px; padding: 10px; background-color: dimgrey; text-align: justify; font-size: 12px; width: 135px;' >
+                <span class="new-quest-text">A new tournament is starting!</span>
+                <p>What would you like to do for the following tournament?</p>
+                <div class="card" style="margin-left: 20px">
+                    <img th:src="@{/card(cardName=${game.current_story.name})}">
+                </div>
+                <input class="Tournament" type="button" value="Enter" onclick="submitPrompt(this)">
+                <input class="Drop Out" type="button" value="Drop Out" onclick="submitPrompt(this)">
+            </div>
             <div class="quad">
                 <ul id="played-list">
                 </ul>
@@ -146,8 +152,12 @@
                 <p id="challengeText">Challenge Stage</p>
                 <p th:text="${stage_number}"></p>
             </div>
+            <div id="tournamentText" style="display: none">
+                <p>Enter tournament</p>
+            </div>
             <input type="button" value="Challenge" id="challenge" onclick="challenge()" style="display: none">
             <input type="button" value="Play Cards" id="playCards" onclick="playCards()" style="display: none">
+            <input type="button" value="Enter Tournament" id="tournament" onclick="playTournament()" style="display: none">
             <ul id="hand">
                 <li th:each="c: ${game.getPlayer(i).hand}">
                 <li class="card" th:classappend="${c.classString()}" th:each="c: ${game.getPlayer(i).hand}">

@@ -269,6 +269,9 @@ ul#horizontal-list li a{
     display: none;
 }
 
+#TournamentPrompt{
+    display: none;
+}
 #SponsorPrompt .card:hover{
     width: 150px;
     height: 225px;

@@ -59,6 +59,11 @@ async function showPrompt(){
     document.getElementById("NoSponsorPrompt").style.display = 'block';
 }
 
+async function showTPrompt(){
+    await sleep(200);
+    document.getElementById("TournamentPrompt").style.display = 'block';
+}
+
 async function questcontinue(){
     clearPlayArea();
     alert("You have made it to the next stage!");
@@ -113,6 +118,24 @@ function connect() {
                 }
                 else if(JSON.parse(message.body).content === "Foe Issue"){
                     alert("Too few foes");
+                }
+                else if(JSON.parse(message.body).content === "Tournament"){
+                    showTPrompt();
+                }
+            }
+            else if(JSON.parse(message.body).messagetype === "Tournament"){
+                if(JSON.parse(message.body).content === "Participate"){
+
+                    document.getElementById("tournament").style.display = 'block';
+                    document.getElementById("tournamentText").style.display = 'block';
+                    highlightCards();
+                }
+                else if(JSON.parse(message.body).content === "Wait") {
+                    clearPlayArea();
+                    alert("Waiting for other players");
+                    document.getElementById("tournament").style.display = 'none';
+                    document.getElementById("tournamentText").style.display = 'none';
+                    unhighlightCards();
                 }
             }
             else if(JSON.parse(message.body).messagetype === "Quest"){
@@ -206,6 +229,17 @@ function challenge(){
     console.log(message)
     stompClient.send("/app/challenge", {}, JSON.stringify({'name': userName, msg: message}))
 }
+
+function playTournament(){
+    var cards = document.querySelectorAll('#played-list .card img')
+    var message = ""
+    cards.forEach(card => {
+        message += (card.id + ",");
+    })
+    console.log(message)
+    stompClient.send("/app/tournament", {}, JSON.stringify({'name': userName, msg: message}))
+}
+
 function playCards(){
     var cards = document.querySelectorAll('#played-list .card img')
     var message = ""
@@ -236,6 +270,7 @@ function moveCard(e){
 function submitPrompt(e){
     document.getElementById("SponsorPrompt").style.display = 'none';
     document.getElementById("NoSponsorPrompt").style.display = 'none';
+    document.getElementById("TournamentPrompt").style.display = 'none';
     stompClient.send("/app/prompt", {}, JSON.stringify({'name': userName, msg: e.className}));
 }
 function highlightCards() {

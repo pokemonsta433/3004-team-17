@@ -58,7 +58,11 @@ public class DeckFactory {
             {"vanquish_king_arthurs_enemies", "3", "2"},
             {"slay_the_dragon", "3", "1"},
             {"boar_hunt", "2", "2"},
-            {"repel_saxon_raiders", "2", "2"}
+            {"repel_saxon_raiders", "2", "2"},
+            {"tournament","at_camelot", "3", "1"},
+            {"tournament","at_orkney", "2", "1"},
+            {"tournament","at_tintagel", "1", "1"},
+            {"tournament","at_york", "0", "1"},
     };
 
     String[][] event_story_deck = {
@@ -127,9 +131,15 @@ public class DeckFactory {
         int i = 0;
         // quest cards in adventure deck
         for(String[] strings : story_deck){
-            for(int j = 0; j <= Integer.parseInt(strings[2]); j++){
-                deck.add(new QuestCard(strings[0], i, Integer.parseInt(strings[1])));
+            if(strings[0].equals("tournament")){
+                deck.add(new TournamentCard(strings[1], i, Integer.parseInt(strings[2])));
                 i++;
+            }
+            else{
+                for(int j = 0; j <= Integer.parseInt(strings[2]); j++){
+                    deck.add(new QuestCard(strings[0], i, Integer.parseInt(strings[1])));
+                    i++;
+                }
             }
         }
         // event cards for story deck
