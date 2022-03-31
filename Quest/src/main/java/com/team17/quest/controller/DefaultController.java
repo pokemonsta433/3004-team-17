@@ -1,10 +1,7 @@
 package com.team17.quest.controller;
 
 import com.team17.quest.message.ClientMessage;
-import com.team17.quest.model.AdventureCard;
-import com.team17.quest.model.Card;
-import com.team17.quest.model.Game;
-import com.team17.quest.model.Player;
+import com.team17.quest.model.*;
 import com.team17.quest.message.ServerMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -57,7 +54,7 @@ public class DefaultController {
     public void questLogic(String n){
         game.discardStage(game.getPlayer(game.getIndexOfName(n)));
         if(challenge_played.contains(false)){
-            messageSender.convertAndSendToUser(game.getPlayer(game.getIndexOfName(n)).getName(), "/reply", new ServerMessage("Quest", "Wait"));
+            messageSender.convertAndSendToUser(n, "/reply", new ServerMessage("Quest", "Wait"));
         }
         else{
             if(current_stage == game.getStages() || participants.size() == 0){
@@ -84,22 +81,62 @@ public class DefaultController {
                 sponsored = false;
                 players_prompted = 0;
                 player_turn = (player_turn + 2) % game.players.size();
-                messageSender.convertAndSendToUser(game.getPlayer(player_turn).getName(), "/reply", new ServerMessage("Prompt", "Sponsor")); //TO-DO change content to quest name?
+                if (game.getCurrent_story() instanceof QuestCard) {
+                    messageSender.convertAndSendToUser(game.getPlayer(player_turn).getName(), "/reply", new ServerMessage("Prompt", "Sponsor"));
+                } else if (game.getCurrent_story() instanceof TournamentCard) {
+                    messageSender.convertAndSendToUser(game.getPlayer(player_turn).getName(), "/reply", new ServerMessage("Prompt", "Tournament"));
+                }
             }
             else{
                 current_stage++;
                 challenge_played.clear();
                 for(String s: participants){
-                    //send via DOM
-                    Card c = game.getPlayer((game.getIndexOfName(s))).drawCard(game.adventure_deck);
+                    game.getPlayer((game.getIndexOfName(s))).drawCard(game.adventure_deck, 1);
                 }
                 for(Player p : players){
                     messageSender.convertAndSendToUser(p.getName(), "/reply", new ServerMessage("Update", "Next Quest"));
                 }
                 for(String s : participants){
                     challenge_played.add(false);
-                    messageSender.convertAndSendToUser(game.getPlayer(game.getIndexOfName(s)).getName(), "/reply", new ServerMessage("Quest", "Continue"));
+                    messageSender.convertAndSendToUser(s, "/reply", new ServerMessage("Quest", "Continue"));
                 }
+            }
+        }
+    }
+
+    public void tournamentLogic(String n){
+        if(challenge_played.contains(false)){
+            messageSender.convertAndSendToUser(n, "/reply", new ServerMessage("Tournament", "Wait"));
+        }
+        else{
+            int max = 0;
+            for(String s : participants){
+                if(game.getPlayer(game.getIndexOfName(s)).getStageValue(game.getCurrent_story().getName(), game.players) > max){
+                    max = game.getPlayer(game.getIndexOfName(s)).getStageValue(game.getCurrent_story().getName(), game.players);
+                }
+            }
+            for(String s : participants){
+                if(game.getPlayer(game.getIndexOfName(s)).getStageValue(game.getCurrent_story().getName(), game.players) == max){
+                    game.getPlayer(game.getIndexOfName(s)).shields += participants.size();
+                    TournamentCard t = (TournamentCard) game.getCurrent_story();
+                    game.getPlayer(game.getIndexOfName(s)).shields += t.bonus_shields;
+                }
+            }
+            for(Player p : game.players){
+                p.amours.clear();
+            }
+            game.drawStory();
+            for(Player p : players){
+                messageSender.convertAndSendToUser(p.getName(), "/reply", new ServerMessage("Update", "Next Quest"));
+            }
+            participants.clear();
+            challenge_played.clear();
+            players_prompted = 0;
+            player_turn = (player_turn + 2) % game.players.size();
+            if (game.getCurrent_story() instanceof QuestCard) {
+                messageSender.convertAndSendToUser(game.getPlayer(player_turn).getName(), "/reply", new ServerMessage("Prompt", "Sponsor"));
+            } else if (game.getCurrent_story() instanceof TournamentCard) {
+                messageSender.convertAndSendToUser(game.getPlayer(player_turn).getName(), "/reply", new ServerMessage("Prompt", "Tournament"));
             }
         }
     }
@@ -108,24 +145,29 @@ public class DefaultController {
     public void challenge(ClientMessage message) throws Exception{
         String[] split = message.getMsg().split(",");
         List<String> ids = Arrays.asList(split);
-        boolean valid = game.getPlayer(game.getIndexOfName(message.getName())).validPlay(ids);
-        if(!valid){
-            messageSender.convertAndSendToUser(game.getPlayer(game.getIndexOfName(message.getName())).getName(), "/reply", new ServerMessage("Quest", "Invalid"));
+        game.getPlayer(game.getIndexOfName(message.getName())).addStage(ids);
+        if(game.getPlayer(game.getIndexOfName(message.getName())).getStageValue(game.getCurrent_story().getName(), game.players) > game.getStageValue(current_stage)){
+            challenge_played.set(participants.indexOf(message.getName()), true);
+            questLogic(message.getName());
         }
         else{
-            game.getPlayer(game.getIndexOfName(message.getName())).addStage(ids);
-            if(game.getPlayer(game.getIndexOfName(message.getName())).getStageValue(game.getCurrent_story().getName(), game.players) > game.getStageValue(current_stage)){
-                challenge_played.set(participants.indexOf(message.getName()), true);
-                questLogic(message.getName());
-            }
-            else{
-                challenge_played.remove(participants.indexOf(message.getName()));
-                participants.remove(message.getName());
-                messageSender.convertAndSendToUser(game.getPlayer(game.getIndexOfName(message.getName())).getName(), "/reply", new ServerMessage("Quest", "Lose"));
-                questLogic(message.getName());
-            }
+            challenge_played.remove(participants.indexOf(message.getName()));
+            participants.remove(message.getName());
+            messageSender.convertAndSendToUser(message.getName(), "/reply", new ServerMessage("Quest", "Lose"));
+            questLogic(message.getName());
         }
     }
+
+    @MessageMapping("/tournament")
+    public void tournament(ClientMessage message) throws Exception{
+        String[] split = message.getMsg().split(",");
+        List<String> ids = Arrays.asList(split);
+        System.out.println(ids);
+        game.getPlayer(game.getIndexOfName(message.getName())).addStage(ids);
+        challenge_played.set(participants.indexOf(message.getName()), true);
+        tournamentLogic(message.getName());
+    }
+
     @MessageMapping("/playCards")
     public void answer(ClientMessage message) throws Exception {
         String[] split = message.getMsg().split(",");
@@ -139,13 +181,12 @@ public class DefaultController {
             else{
                 messageSender.convertAndSendToUser(game.getPlayer(game.getIndexOfName(message.getName())).getName(), "/reply", new ServerMessage("Quest", "Complete"));
                 for(String s: participants) {
-                    //send via DOM
-                    Card c = game.getPlayer((game.getIndexOfName(s))).drawCard(game.adventure_deck);
+                    game.getPlayer((game.getIndexOfName(s))).drawCard(game.adventure_deck, 1);
                 }
                 if(true) { // TODO: actually this should be if the upcoming stage is a quest
                     for (String s : participants) {
                         challenge_played.add(false);
-                        messageSender.convertAndSendToUser(game.getPlayer(game.getIndexOfName(s)).getName(), "/reply", new ServerMessage("Quest", "Stage"));
+                        messageSender.convertAndSendToUser(s, "/reply", new ServerMessage("Quest", "Stage"));
                     }
                 }
                 else{ //if we're looking at a test stage, let's send a message to the first bidder, asking for his bid!
@@ -186,50 +227,97 @@ public class DefaultController {
     @MessageMapping("/prompt")
     public void prompt(ClientMessage message) throws Exception {
         players_prompted += 1;
-        if((game.getPlayer(player_turn).foeCount() + game.getPlayer(player_turn).hasTest()) < game.getStages()){ //checks if has enough foes to make stage
-            messageSender.convertAndSendToUser(game.getPlayer(player_turn).getName(), "/reply", new ServerMessage("Prompt", "Foe Issue"));
-        }
-        else if(message.getMsg().equals("Sponsor")){
-            sponsored = true;
-            game.setSponsor(message.getName());
-        }
-        else if(message.getMsg().equals("Participate")){
+        if(message.getMsg().equals("Tournament")) {
             participants.add(message.getName());
-        }
-        if(players_prompted >= game.getPlayers().size()){
-            players_prompted = 0;
-            if(!sponsored || participants.size() == 0){
-                game.drawStory();
-                for(Player p : players){
-                    messageSender.convertAndSendToUser(p.getName(), "/reply", new ServerMessage("Update", "Next Quest"));
-                }
-                participants.clear();
-                challenge_played.clear();
-                sponsored = false;
+            if (players_prompted >= game.getPlayers().size()) {
                 players_prompted = 0;
-                player_turn = (player_turn + 2) % game.getPlayers().size();
-                messageSender.convertAndSendToUser(game.getPlayer(player_turn).getName(), "/reply", new ServerMessage("Prompt", "Sponsor"));
+                if (participants.size() == 0) {
+                    game.drawStory();
+                    for (Player p : players) {
+                        messageSender.convertAndSendToUser(p.getName(), "/reply", new ServerMessage("Update", "Next Story"));
+                    }
+                    participants.clear();
+                    challenge_played.clear();
+                    sponsored = false;
+                    player_turn = (player_turn + 2) % game.getPlayers().size();
+                    //add tourney if
+                    if (game.getCurrent_story() instanceof QuestCard) {
+                        messageSender.convertAndSendToUser(game.getPlayer(player_turn).getName(), "/reply", new ServerMessage("Prompt", "Sponsor"));
+                    } else if (game.getCurrent_story() instanceof TournamentCard) {
+                        messageSender.convertAndSendToUser(game.getPlayer(player_turn).getName(), "/reply", new ServerMessage("Prompt", "Tournament"));
+                    }
+                }
+                else{
+                    for(String s: participants){
+                        challenge_played.add(false);
+                        messageSender.convertAndSendToUser(s, "/reply", new ServerMessage("Tournament", "Participate"));
+                    }
+                }
             }
             else{
-                messageSender.convertAndSendToUser(game.getSponsor().getName(), "/reply", new ServerMessage("Quest", "First"));
+                player_turn += 1;
+                player_turn = player_turn % game.getPlayers().size();
+                messageSender.convertAndSendToUser(game.getPlayer(player_turn).getName(), "/reply", new ServerMessage("Prompt", "Tournament"));
             }
+
         }
         else{
-            player_turn += 1;
-            player_turn = player_turn % game.getPlayers().size();
-            if(sponsored){
-                messageSender.convertAndSendToUser(game.getPlayer(player_turn).getName(), "/reply", new ServerMessage("Prompt", "No Sponsor"));
+            if((game.getPlayer(player_turn).foeCount() + game.getPlayer(player_turn).hasTest()) < game.getStages()){ //checks if has enough foes to make stage
+                messageSender.convertAndSendToUser(game.getPlayer(player_turn).getName(), "/reply", new ServerMessage("Prompt", "Foe Issue"));
+            }
+            else if(message.getMsg().equals("Sponsor")){
+                sponsored = true;
+                game.setSponsor(message.getName());
+            }
+            else if(message.getMsg().equals("Participate")){
+                participants.add(message.getName());
+            }
+            if(players_prompted >= game.getPlayers().size()){
+                players_prompted = 0;
+                if(!sponsored || participants.size() == 0){
+                    game.drawStory();
+                    for(Player p : players){
+                        messageSender.convertAndSendToUser(p.getName(), "/reply", new ServerMessage("Update", "Next Story"));
+                    }
+                    participants.clear();
+                    challenge_played.clear();
+                    sponsored = false;
+                    player_turn = (player_turn + 2) % game.getPlayers().size();
+                    if (game.getCurrent_story() instanceof QuestCard) {
+                        messageSender.convertAndSendToUser(game.getPlayer(player_turn).getName(), "/reply", new ServerMessage("Prompt", "Sponsor"));
+                    } else if (game.getCurrent_story() instanceof TournamentCard) {
+                        messageSender.convertAndSendToUser(game.getPlayer(player_turn).getName(), "/reply", new ServerMessage("Prompt", "Tournament"));
+                    }
+                }
+                else{
+                    messageSender.convertAndSendToUser(game.getSponsor().getName(), "/reply", new ServerMessage("Quest", "First"));
+                }
             }
             else{
-                messageSender.convertAndSendToUser(game.getPlayer(player_turn).getName(), "/reply", new ServerMessage("Prompt", "Sponsor"));
+                player_turn += 1;
+                player_turn = player_turn % game.getPlayers().size();
+                if(sponsored){
+                    messageSender.convertAndSendToUser(game.getPlayer(player_turn).getName(), "/reply", new ServerMessage("Prompt", "No Sponsor"));
+                }
+                else{
+                    messageSender.convertAndSendToUser(game.getPlayer(player_turn).getName(), "/reply", new ServerMessage("Prompt", "Sponsor"));
+                }
             }
         }
     }
 
     @MessageMapping("/gameStart")
     public void gameStart(ClientMessage message) throws Exception {
-        messageSender.convertAndSendToUser(game.getPlayer(player_turn).getName(), "/reply", new ServerMessage("Prompt", "Sponsor")); //TO-DO change content to quest name?
+        if(game_started){
+            if(game.getCurrent_story() instanceof QuestCard){
+                messageSender.convertAndSendToUser(game.getPlayer(player_turn).getName(), "/reply", new ServerMessage("Prompt", "Sponsor"));
+            }
+            else if(game.getCurrent_story() instanceof TournamentCard){
+                messageSender.convertAndSendToUser(game.getPlayer(player_turn).getName(), "/reply", new ServerMessage("Prompt", "Tournament"));
+            }
+        }
     }
+
 
     @GetMapping(value = "/")
     public String index(){
