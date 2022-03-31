@@ -6,7 +6,7 @@ import com.team17.quest.model.StoryCard;
 
 import java.util.ArrayList;
 
-public class ChivalrousDeedEventCard extends StoryCard {
+public class ChivalrousDeedEventCard extends EventCard {
 
     public ChivalrousDeedEventCard(String n, int i) {
         super(n, i);

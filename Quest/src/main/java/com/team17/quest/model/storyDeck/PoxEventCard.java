@@ -6,7 +6,7 @@ import com.team17.quest.model.StoryCard;
 
 import java.util.ArrayList;
 
-public class PoxEventCard extends StoryCard {
+public class PoxEventCard extends EventCard {
     public PoxEventCard(String n, int i) {
         super(n, i);
     }

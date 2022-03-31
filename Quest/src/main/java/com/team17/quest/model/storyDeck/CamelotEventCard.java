@@ -7,7 +7,7 @@ import com.team17.quest.model.StoryCard;
 
 import java.util.ArrayList;
 
-public class CamelotEventCard extends StoryCard {
+public class CamelotEventCard extends EventCard {
     public CamelotEventCard(String n, int i) {
         super(n, i);
     }

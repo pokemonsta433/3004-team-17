@@ -146,22 +146,10 @@ public class Game {
         }
         else{
             stages = 0;
-            if(current_story instanceof ChivalrousDeedEventCard) {
+            if(current_story.isEvent()) {
+                System.out.println("Handle eventStrategy. EventCard: " + current_story.getName());
                 current_story.eventStrategy(this);
-            } else if(current_story instanceof CamelotEventCard) {
-                current_story.eventStrategy(this);
-            } else if(current_story instanceof KingsCallToArmsEventCard) {
-                current_story.eventStrategy(this);
-            } else if(current_story instanceof KingsRecognitionEventCard) {
-                current_story.eventStrategy(this);
-            } else if(current_story instanceof PlagueEventCard) {
-                current_story.eventStrategy(this);
-            }  else if(current_story instanceof PoxEventCard) {
-                current_story.eventStrategy(this);
-            } else if(current_story instanceof ProsperityEventCard) {
-                current_story.eventStrategy(this);
-            } else if(current_story instanceof QueensFavorEventCard) {
-                current_story.eventStrategy(this);
+
             }
         }
     }
@@ -181,6 +169,11 @@ public class Game {
         }
         quest.clear();
     }
+
+    public void discardEvent() {
+
+    }
+
     public int getStageValue(int i){
         int total = 0;
         for(AdventureCard c: quest.get(i-1)){

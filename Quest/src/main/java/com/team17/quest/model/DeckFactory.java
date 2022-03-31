@@ -134,28 +134,30 @@ public class DeckFactory {
         }
         // event cards for story deck
         // TODO uncomment when other thing is ready
-/*        for (String[] strings : event_story_deck) {
+        EventFactory eventFactory = new EventFactory();
+
+        for (String[] strings : event_story_deck) {
             for (int j = 0; j <= Integer.parseInt(strings[1]); j++) {
                 if (strings[0].equals("chivalrous_deed")) {
-                    deck.add(new ChivalrousDeedEventCard(strings[0], i));
-                } else if  (strings[0].equals("court_called_to_camelot")) {
-                    deck.add(new CamelotEventCard(strings[0], i));
-                } else if  (strings[0].equals("king_s_call_to_arms")) {
-                    deck.add(new KingsCallToArmsEventCard(strings[0], i));
-                } else if  (strings[0].equals("king_s_recognition")) {
-                    deck.add(new KingsRecognitionEventCard(strings[0], i));
-                } else if  (strings[0].equals("plague")) {
-                    deck.add(new PlagueEventCard(strings[0], i));
-                } else if  (strings[0].equals("pox")) {
-                    deck.add(new PoxEventCard(strings[0], i));
-                } else if  (strings[0].equals("prosperity_throughout_the_realm")) {
-                    deck.add(new ProsperityEventCard(strings[0], i));
-                } else if  (strings[0].equals("queen_s_favor")) {
-                    deck.add(new QueensFavorEventCard(strings[0], i));
+                    deck.add(eventFactory.getEventCard(strings[0], i));
+                } else if (strings[0].equals("court_called_to_camelot")) {
+                    deck.add(eventFactory.getEventCard(strings[0], i));
+                } else if (strings[0].equals("king_s_call_to_arms")) {
+                    deck.add(eventFactory.getEventCard(strings[0], i));
+                } else if (strings[0].equals("king_s_recognition")) {
+                    deck.add(eventFactory.getEventCard(strings[0], i));
+                } else if (strings[0].equals("plague")) {
+                    deck.add(eventFactory.getEventCard(strings[0], i));
+                } else if (strings[0].equals("pox")) {
+                    deck.add(eventFactory.getEventCard(strings[0], i));
+                } else if (strings[0].equals("prosperity_throughout_the_realm")) {
+                    deck.add(eventFactory.getEventCard(strings[0], i));
+                } else if (strings[0].equals("queen_s_favor")) {
+                    deck.add(eventFactory.getEventCard(strings[0], i));
                 }
                 i++;
             }
-        }*/
+        }
         return deck;
     }
 }

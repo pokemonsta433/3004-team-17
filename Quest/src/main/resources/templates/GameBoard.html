@@ -104,9 +104,15 @@
                 <div class="card" style="margin-left: 20px">
                     <img th:src="@{/card(cardName=${game.current_story.name})}">
                 </div>
-                <input class="Sponsor" type="button" value="Sponsor" onclick="submitPrompt(this)">
-                <input class="Participate" type="button" value="Participate" onclick="submitPrompt(this)">
-                <input class="Drop Out" type="button" value="Drop Out" onclick="submitPrompt(this)">
+                <div th:if="${game.current_story.isEvent()}">
+                  <input class="EventCard" type="button" value="Continue" onclick="submitPrompt(this)">
+                </div>
+                <div th:unless="${game.current_story.isEvent()}">
+                  <input class="Sponsor"  type="button" value="Sponsor" onclick="submitPrompt(this)">
+                  <input class="Participate" type="button" value="Participate" onclick="submitPrompt(this)">
+                  <input class="Drop Out" type="button" value="Drop Out" onclick="submitPrompt(this)">
+                </div>
+
             </div>
 
             <div id = "NoSponsorPrompt" style='position: absolute; left: 100px; top: 50px; border: solid black 1px; padding: 10px; background-color: rgb(200,100,100); text-align: justify; font-size: 12px; width: 135px;' >
@@ -115,9 +121,16 @@
                 <div class="card" style="margin-left: 20px">
                     <img th:src="@{/card(cardName=${game.current_story.name})}">
                 </div>
-                <input class="Participate" type="button" value="Participate" onclick="submitPrompt(this)">
-                <input class="Drop Out" type="button" value="Drop Out" onclick="submitPrompt(this)">
+                <div th:if="${game.current_story.isEvent()}">
+                    <input class="EventCard" type="button" value="Continue" onclick="submitPrompt(this)">
+                </div>
+                <div th:unless="${game.current_story.isEvent()}">
+                  <input class="Participate" type="button" value="Participate" onclick="submitPrompt(this)">
+                  <input class="Drop Out" type="button" value="Drop Out" onclick="submitPrompt(this)">
+                </div>
             </div>
+
+
 
             <div class="quad">
                 <ul id="played-list">

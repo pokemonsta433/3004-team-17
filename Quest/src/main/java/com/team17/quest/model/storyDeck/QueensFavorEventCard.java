@@ -8,7 +8,7 @@ import com.team17.quest.model.StoryCard;
 import java.util.ArrayList;
 import java.util.Stack;
 
-public class QueensFavorEventCard extends StoryCard {
+public class QueensFavorEventCard extends EventCard {
     public QueensFavorEventCard(String n, int i) {
         super(n, i);
     }

@@ -1,5 +1,6 @@
 package com.team17.quest.model;
 
+import com.team17.quest.model.storyDeck.EventCard;
 import com.team17.quest.model.storyDeck.EventCardInterface;
 
 public abstract class Card implements EventCardInterface {
@@ -41,8 +42,9 @@ public abstract class Card implements EventCardInterface {
         return this instanceof WeaponCard;
     }
 
+    public boolean isEvent() { return this instanceof EventCard; }
     public boolean isAlly(){
-        return false;
+        return this instanceof AllyCard;
     }
 
     public int getId(){return id;}

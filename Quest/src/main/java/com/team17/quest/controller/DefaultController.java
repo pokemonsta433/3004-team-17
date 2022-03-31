@@ -196,6 +196,12 @@ public class DefaultController {
         else if(message.getMsg().equals("Participate")){
             participants.add(message.getName());
         }
+        else if(message.getMsg().equals("EventCard")){
+            //participants.add(message.getName());
+            for(Player p : players){
+                messageSender.convertAndSendToUser(p.getName(), "/reply", new ServerMessage("Update", "Next Quest"));
+            }
+        }
         if(players_prompted >= game.getPlayers().size()){
             players_prompted = 0;
             if(!sponsored || participants.size() == 0){

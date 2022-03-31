@@ -7,7 +7,7 @@ import com.team17.quest.model.StoryCard;
 
 import java.util.ArrayList;
 
-public class KingsCallToArmsEventCard extends StoryCard {
+public class KingsCallToArmsEventCard extends EventCard {
     public KingsCallToArmsEventCard(String n, int i) {
         super(n, i);
     }

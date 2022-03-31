@@ -6,7 +6,7 @@ import com.team17.quest.model.StoryCard;
 
 import java.util.ArrayList;
 
-public class PlagueEventCard extends StoryCard {
+public class PlagueEventCard extends EventCard {
     public PlagueEventCard(String n, int i) {
         super(n, i);
     }

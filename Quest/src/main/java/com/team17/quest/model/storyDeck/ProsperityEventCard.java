@@ -8,7 +8,7 @@ import com.team17.quest.model.StoryCard;
 import java.util.ArrayList;
 import java.util.Stack;
 
-public class ProsperityEventCard extends StoryCard {
+public class ProsperityEventCard extends EventCard {
     public ProsperityEventCard(String n, int i) {
         super(n, i);
     }
@@ -18,6 +18,8 @@ public class ProsperityEventCard extends StoryCard {
         ArrayList<Player> playerList = game.getPlayers();
         Stack<Card> adventure_deck = game.getAdventure_deck();
         for (int i = 0; i < playerList.size(); i++) {
+            System.out.println("Handle ProsperityEventCard. draw 2 cards: for player" + playerList.get(i).getName());
+
             playerList.get(i).drawCard(adventure_deck, 2);
         }
     }
