@@ -13,19 +13,19 @@ public class QueensFavorEventCard extends EventCard {
         super(n, i);
     }
 
-    // Players with both lowest rank and least amount of shields, receives 3 shields
+    // The lowest ranked players (least shields) immediately receives 2 Adventure cards
     public void eventStrategy(Game game) {
         ArrayList<Player> playerList = game.getPlayers();
         Stack<Card> adventure_deck = game.getAdventure_deck();
-        int lowestRank = 10000;
-        // find player with the lowest rank
+        int leastShields = 10000;
+        // find player with the least shields
         for (int i = 0; i < playerList.size(); i++) {
-            if (playerList.get(i).getRank() < lowestRank) {
-                lowestRank = playerList.get(i).getRank();
+            if (playerList.get(i).getShields() < leastShields) {
+                leastShields = playerList.get(i).getShields();
             }
         }
         for (int i = 0; i < playerList.size(); i++) {
-            if (playerList.get(i).getRank() == lowestRank) {
+            if (playerList.get(i).getShields() == leastShields) {
                 playerList.get(i).drawCard(adventure_deck, 2);
             }
         }

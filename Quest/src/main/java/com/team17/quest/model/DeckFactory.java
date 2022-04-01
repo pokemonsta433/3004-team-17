@@ -148,23 +148,7 @@ public class DeckFactory {
 
         for (String[] strings : event_story_deck) {
             for (int j = 0; j <= Integer.parseInt(strings[1]); j++) {
-                if (strings[0].equals("chivalrous_deed")) {
-                    deck.add(eventFactory.getEventCard(strings[0], i));
-                } else if (strings[0].equals("court_called_to_camelot")) {
-                    deck.add(eventFactory.getEventCard(strings[0], i));
-                } else if (strings[0].equals("kings_call_to_arms")) {
-                    deck.add(eventFactory.getEventCard(strings[0], i));
-                } else if (strings[0].equals("kings_recognition")) {
-                    deck.add(eventFactory.getEventCard(strings[0], i));
-                } else if (strings[0].equals("plague")) {
-                    deck.add(eventFactory.getEventCard(strings[0], i));
-                } else if (strings[0].equals("pox")) {
-                    deck.add(eventFactory.getEventCard(strings[0], i));
-                } else if (strings[0].equals("prosperity_throughout_the_realm")) {
-                    deck.add(eventFactory.getEventCard(strings[0], i));
-                } else if (strings[0].equals("queens_favor")) {
-                    deck.add(eventFactory.getEventCard(strings[0], i));
-                }
+                deck.add(eventFactory.getEventCard(strings[0], i));
                 i++;
             }
         }

@@ -1,5 +1,6 @@
 package com.team17.quest.model;
 
+import com.team17.quest.message.ServerMessage;
 import com.team17.quest.model.storyDeck.*;
 
 import java.util.ArrayList;
@@ -145,11 +146,19 @@ public class Game {
             stages = card.stages;
         }
         else{
-            stages = 0;
+            //stages = 0;
             if(current_story.isEvent()) {
+                for(Player p : players){
+                    System.out.println("Before event: player: " + p.getName() +
+                            ", number of cards: " + p.getHand().size() +
+                            ", shields: " + p.getShields());
+                }
                 System.out.println("Handle eventStrategy. EventCard: " + current_story.getName());
                 current_story.eventStrategy(this);
-
+                for(Player p : players){
+                    System.out.println("After event: player: " + p.getName() +
+                            ", number of cards: " + p.getHand().size() + ", shields: " + p.getShields());
+                }
             }
         }
     }
