@@ -180,6 +180,22 @@ function connect() {
                     unhighlightCards(); //TODO: we should make a re-highlight function that does all this
                     highlightCards();
                 }
+
+                else if(JSON.parse(message.body).content === "Bid Won"){
+                    alert("you win the bid and continue the quest alone")
+                    //increase stage count
+                    let stagecount = document.getElementById("stageText");
+                    let oldText = stagecount.innerHTML;
+                    newtext = oldText .replace(/(\d)/g, function(match, number) {
+                        return parseInt(number)+1;
+                    });
+                    stagecount.innerHTML = newtext
+
+                    clearPlayArea();
+                    unhighlightCards();
+                    //no need to highlight cards again, we will get a "next quest" to do that
+                }
+
                 else if(JSON.parse(message.body).content === "Invalid"){
                     //do nothing?
                     alert("Invalid stage");
@@ -209,8 +225,22 @@ function connect() {
                 else if(JSON.parse(message.body).content === "Continue"){
                     questcontinue();
                 }
+                else if(JSON.parse(message.body).content.split(" ")[0] === "BidRequest"){
+                    alert("A test has been started! Please bid a minimum of " + JSON.parse(message.body).content.split(" ")[1] + " cards!")
+                    unhighlightCards();
+                    biddingHighlight();
+                    document.getElementById("Bid").style.display = 'block';
+                    document.getElementById("submitBid").style.display = 'block';
+                }
                 else if(JSON.parse(message.body).content === "Lose"){
                     alert("You lost the quest!");
+                    clearPlayArea();
+                    unhighlightCards();
+                    document.getElementById("challenge").style.display = 'none';
+                    document.getElementById("submitChallenge").style.display = 'none';
+                }
+                else if(JSON.parse(message.body).content === "Bid Lost"){
+                    alert("You lost the bid!");
                     clearPlayArea();
                     unhighlightCards();
                     document.getElementById("challenge").style.display = 'none';
@@ -289,6 +319,15 @@ function moveCard(e){
     highlightCards();
 }
 
+function addCardToBid(e){
+    let list1 = document.getElementById("hand");
+    // let list2 = document.getElementById("played-list");
+    let list2 = document.getElementById("played-list");
+    let moveTo = e.parentElement === list1 ? list2 : list1;
+    //if (moveTo == list1 && list2.className === 'discard') return;
+    moveTo.appendChild(e);
+}
+
 function submitPrompt(e){
     document.getElementById("SponsorPrompt").style.display = 'none';
     document.getElementById("NoSponsorPrompt").style.display = 'none';
@@ -365,6 +404,27 @@ function highlightCards() {
         })
     }
 
+}
+function biddingHighlight() {
+    //highlight all cards for bidding
+    const handCards = document.querySelectorAll('#hand .card img')
+    handCards.forEach(card => {
+        card.style.border = '.2em solid Red';
+        card.style.borderRadius = '10%';
+        card.parentElement.onclick = function () {
+            addCardToBid(card.parentElement)
+        };
+    })
+}
+
+function bidCards(){
+    var cards = document.querySelectorAll('#played-list .card img')
+    var message = ""
+    cards.forEach(card => {
+        message += (card.id + ",");
+    })
+    console.log(message)
+    stompClient.send("/app/bidCards", {}, JSON.stringify({'name': userName, msg: message}))
 }
 
 function clearPlayArea(){

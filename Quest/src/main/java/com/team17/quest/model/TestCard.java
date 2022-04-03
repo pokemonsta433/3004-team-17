@@ -11,4 +11,12 @@ public class TestCard extends AdventureCard {
         minimumBid = minBid;
         augmentedMinBid = bonus;
     }
+
+    public int getMinimumBid() {
+        return minimumBid;
+    }
+
+    public int getAugmentedMinBid() {
+        return augmentedMinBid;
+    }
 }
