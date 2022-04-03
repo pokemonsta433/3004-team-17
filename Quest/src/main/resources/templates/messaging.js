@@ -211,7 +211,7 @@ function connect() {
                     questcontinue();
                 }
                 else if(JSON.parse(message.body).content.split(" ")[0] === "BidRequest"){
-                    alert("A test has been started! Please bid a minimum of 3 cards!")
+                    alert("A test has been started! Please bid a minimum of " + JSON.parse(message.body).content.split(" ")[1] + " cards!")
                     unhighlightCards();
                     biddingHighlight();
                     document.getElementById("Bid").style.display = 'block';

@@ -70,7 +70,7 @@ public class DeckFactory {
             {"chivalrous_deed","1"},
             {"court_called_to_camelot","2"},
             {"kings_call_to_arms","1"},
-            {"kings_recognition","2"},
+            //{"kings_recognition","2"}, TODO: add this one back in when it doesn't cause errors :)
             {"plague","1"},
             {"pox","1"},
             {"prosperity_throughout_the_realm", "1"},

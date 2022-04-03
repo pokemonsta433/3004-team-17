@@ -75,6 +75,22 @@ public class Player {
         return foe;
     }
 
+    public void addToBid(List<String> ids){
+        for(Card c : hand){
+            if(ids.contains(Integer.toString(c.id))){
+                stage.add((AdventureCard) c);
+            }
+        }
+        for(Card c : stage){
+            hand.remove(c);
+        }
+    }
+
+    public void returnToHand(){
+        hand.addAll(stage);
+        stage.clear();
+    }
+
     public void addStage(List<String> ids){
         for(Card c : hand){
             if(ids.contains(Integer.toString(c.id))){
@@ -105,11 +121,11 @@ public class Player {
     }
 
     public void drawCard(Stack<Card> d, int n){
-            for(int i = 0; i < n; i++){
-                if(hand.size() < 12) {
-                    hand.add(d.pop());
-                }
+        for(int i = 0; i < n; i++){
+            if(hand.size() < 12) {
+                hand.add(d.pop());
             }
+        }
     }
 
     public Card drawCard(Stack<Card> d){
@@ -156,12 +172,12 @@ public class Player {
     }
 
     public int hasTest(){
-       for (Card c : hand) {
-           if (c instanceof TestCard) {
-               return 1;
-           }
-       }
-       return 0;
+        for (Card c : hand) {
+            if (c instanceof TestCard) {
+                return 1;
+            }
+        }
+        return 0;
     }
 
     public ArrayList<Card> getHand(){

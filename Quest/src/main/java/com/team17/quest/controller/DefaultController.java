@@ -100,14 +100,23 @@ public class DefaultController {
                     messageSender.convertAndSendToUser(p.getName(), "/reply", new ServerMessage("Update", "Next Quest"));
                 }
 
+                int min_bid = 0; //I couldn't be arsed to make this into a function with like 3 params... so it just goes here
                 boolean testIncoming = false;
                 ArrayList<AdventureCard> nextStage = game.quest.get(current_stage-1);
                 for(Card card : nextStage){
                     if (card instanceof TestCard) {
                         testIncoming = true;
+                        if (game.getCurrent_story().getName().equals("search_for_the_questing_beast")){
+                            min_bid = ((TestCard) card).getAugmentedMinBid(); // augmented min bid only for search-quest-beast
+                        }
+                        else{
+                            min_bid = ((TestCard) card).getMinimumBid();
+                        }
+                        largest_bid = (min_bid-1); //don't *really* need the min_bid param can just set it to largest bid
                         break;
                     }
                 }
+
                 if(!testIncoming) {
                     for(String s : participants) {
                         challenge_played.add(false);
@@ -115,8 +124,10 @@ public class DefaultController {
                     }
                 }
                 else{ //if we're looking at a test stage, let's send a message to the first bidder, asking for his bid!
-                    //TODO: Check for minimum bid, because that's what we'll be sending as the second "param" after BidRequest
-                    messageSender.convertAndSendToUser(participants.get(0), "/reply", new ServerMessage("Quest", "BidRequest " + 0));
+                    if(participants.size() == 1 && min_bid < 3){
+                        min_bid = 3;
+                    }
+                    messageSender.convertAndSendToUser(participants.get(0), "/reply", new ServerMessage("Quest", "BidRequest " + min_bid));
                 }
 
             }
@@ -205,23 +216,33 @@ public class DefaultController {
                     game.getPlayer((game.getIndexOfName(s))).drawCard(game.adventure_deck, 1);
                 }
 
+                int min_bid = 0;
                 boolean testIncoming = false;
                 ArrayList<AdventureCard> nextStage = game.quest.get(current_stage-1);
                 for(Card card : nextStage){
                     if (card instanceof TestCard) {
                         testIncoming = true;
+                        if (game.getCurrent_story().getName().equals("search_for_the_questing_beast")){
+                            min_bid = ((TestCard) card).getAugmentedMinBid(); // augmented min bid only for search-quest-beast
+                        }
+                        else{
+                            min_bid = ((TestCard) card).getMinimumBid();
+                        }
+                        largest_bid = (min_bid-1);
                         break;
                     }
                 }
-                if(!testIncoming) { // TODO: actually this should be if the upcoming stage is a foe
+                if(!testIncoming) { // if upcoming stage is a foe
                     for (String s : participants) {
                         challenge_played.add(false);
                         messageSender.convertAndSendToUser(s, "/reply", new ServerMessage("Quest", "Stage"));
                     }
                 }
                 else{ //if we're looking at a test stage, let's send a message to the first bidder, asking for his bid!
-                    //TODO: Check for minimum bid, because that's what we'll be sending as the second "param" after BidRequest
-                    messageSender.convertAndSendToUser(participants.get(0), "/reply", new ServerMessage("Quest", "BidRequest " + 0));
+                    if(participants.size() == 1 && min_bid < 3){
+                        min_bid = 3;
+                    }
+                    messageSender.convertAndSendToUser(participants.get(0), "/reply", new ServerMessage("Quest", "BidRequest " + min_bid));
                 }
             }
         }
@@ -231,7 +252,7 @@ public class DefaultController {
     }
 
     @MessageMapping("/bidCards")
-    public void bid(ClientMessage message) throws Exception {
+    public void bid(ClientMessage message){
         bids_recieved += 1;
         String[] card_ids = message.getMsg().split(",");
         List<String> ids = Arrays.asList(card_ids);
@@ -239,6 +260,7 @@ public class DefaultController {
         if (currentBid > largest_bid) {
             largest_bid = currentBid;
             best_bidder = message.getName();
+            game.getPlayer(game.getIndexOfName(message.getName())).addToBid(ids);
         }
         else{
             messageSender.convertAndSendToUser(message.getName(), "/reply", new ServerMessage("Quest", "Bid Lost"));
@@ -249,14 +271,17 @@ public class DefaultController {
             System.out.println("Telling participants about the won bid!");
             for (String p : participants) {
                 if (p.equals(best_bidder)){
+                    game.getPlayer(game.getIndexOfName(p)).stage.clear(); //get rid of their cards!
                     messageSender.convertAndSendToUser(p, "/reply", new ServerMessage("Quest", "Bid Won"));
                 }
                 else{
+                    game.getPlayer(game.getIndexOfName(p)).returnToHand(); //they don't lose the cards they bid!
                     messageSender.convertAndSendToUser(p, "/reply", new ServerMessage("Quest", "Bid Lost"));
                 }
             }
 
             participants.set(0, best_bidder); //just put the best bidder in the first slot
+
             participants.subList(1, participants.size()).clear(); //and get rid of everything else
 
             System.out.println("participants is" + participants);
@@ -308,10 +333,8 @@ public class DefaultController {
                 }
             }
 
-
-
         } else { //ask the next player for their own bid
-            messageSender.convertAndSendToUser(participants.get(participants.indexOf(message.getName()) + 1), "/reply", new ServerMessage("Quest", "BidRequest " + largest_bid));
+            messageSender.convertAndSendToUser(participants.get(participants.indexOf(message.getName()) + 1), "/reply", new ServerMessage("Quest", "BidRequest " + (largest_bid +1)));
         }
     }
 
