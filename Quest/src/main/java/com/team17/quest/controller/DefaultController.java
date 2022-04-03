@@ -119,11 +119,10 @@ public class DefaultController {
                         else{
                             min_bid = ((TestCard) card).getMinimumBid();
                         }
-                        largest_bid = (min_bid-1); //don't *really* need the min_bid param can just set it to largest bid
+                        largest_bid = (min_bid - 1); //don't *really* need the min_bid param can just set it to largest bid
                         break;
                     }
                 }
-
                 if(!testIncoming) {
                     for(String s : participants) {
                         challenge_played.add(false);
@@ -132,7 +131,9 @@ public class DefaultController {
                 }
                 else{ //if we're looking at a test stage, let's send a message to the first bidder, asking for his bid!
                     if(participants.size() == 1 && min_bid < 3){
+                        System.out.println("ackgnowledging that min bid is actually 3!");
                         min_bid = 3;
+                        largest_bid = 2;
                     }
                     messageSender.convertAndSendToUser(participants.get(0), "/reply", new ServerMessage("Quest", "BidRequest " + min_bid));
                 }
@@ -234,7 +235,9 @@ public class DefaultController {
                 }
                 else{ //if we're looking at a test stage, let's send a message to the first bidder, asking for his bid!
                     if(participants.size() == 1 && min_bid < 3){
+                        System.out.println("ackgnowledging that there is only one player so min bid is 3");
                         min_bid = 3;
+                        largest_bid = 2;
                     }
                     messageSender.convertAndSendToUser(participants.get(0), "/reply", new ServerMessage("Quest", "BidRequest " + min_bid));
                 }
@@ -252,6 +255,7 @@ public class DefaultController {
         List<String> ids = Arrays.asList(card_ids);
         int currentBid = ids.size();
         if (currentBid > largest_bid) {
+            System.out.println("the new bid of size " + currentBid + "is bigger than the current largest of " + largest_bid);
             largest_bid = currentBid;
             best_bidder = message.getName();
             game.getPlayer(game.getIndexOfName(message.getName())).addToBid(ids);
