@@ -38,7 +38,6 @@ public class DeckFactory {
             {"sir_percival", "ally", "5", "20", "0", "search_for_the_holy_grail", "1"},
             {"sir_tristan", "ally", "10", "10", "0", "", "1"},
             {"king_pellinore", "ally", "10", "10", "0", "", "1"},
-            {"merlin", "ally", "0", "0", "0", "", "1"},
             {"amour", "8"},
             //name, test, defaultMinBid, minBidForQuestingBeast, frequency
             {"test_of_valor","test", "0", "0", "2"},
@@ -70,7 +69,7 @@ public class DeckFactory {
             {"chivalrous_deed","1"},
             {"court_called_to_camelot","2"},
             {"kings_call_to_arms","1"},
-            {"kings_recognition","2"},
+            //{"kings_recognition","2"},
             {"plague","1"},
             {"pox","1"},
             {"prosperity_throughout_the_realm", "1"},

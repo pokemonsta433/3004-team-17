@@ -49,6 +49,17 @@ function refreshPage() {
         })
 }
 
+function loadGameOver(){
+    fetch('http://localhost:8080/gameOver', {
+        method: "GET"
+    }).then (response => response.text())
+        .then(result => {
+            let parser = new DOMParser();
+            doc = parser.parseFromString(result, 'text/html');
+            document.replaceChild( doc.documentElement, document.documentElement);
+        })
+}
+
 async function showSPrompt(){
     await sleep(200);
     document.getElementById("SponsorPrompt").style.display = 'block';
@@ -113,6 +124,10 @@ function connect() {
         });
         if(userName === null){loadUsername();}
         stompClient.subscribe("/user/" + userName + "/reply", function(message) {
+            if(JSON.parse(message.body).messagetype === "Win"){
+                loadGameOver();
+                alert(JSON.parse(message.body).content);
+            }
             if(JSON.parse(message.body).messagetype === "Prompt") {
                 if(JSON.parse(message.body).content === "Sponsor"){
                     showSPrompt();
