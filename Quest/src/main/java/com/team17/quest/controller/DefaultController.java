@@ -149,6 +149,12 @@ public class DefaultController {
                         min_bid = 3;
                         largest_bid = 2;
                     }
+                    try{
+                        Thread.sleep(2000); //sleep for 2 seconds, so we don't send this before they've fetched.
+                    }catch (InterruptedException e){ //unfortunately sleeping always throws this exception
+                        e.printStackTrace();
+                    }
+
                     messageSender.convertAndSendToUser(participants.get(0), "/reply", new ServerMessage("Quest", "BidRequest " + min_bid));
                 }
 
@@ -284,8 +290,33 @@ public class DefaultController {
     public void bid(ClientMessage message){
         bids_recieved += 1;
         String[] card_ids = message.getMsg().split(",");
+        List<AllyCard> player_allies = game.getPlayer(game.getIndexOfName(message.getName())).getAllies();
         List<String> ids = Arrays.asList(card_ids);
-        int currentBid = ids.size();
+
+        int allyBonus = 0; //number of bonus bids granted by allies
+        for(AllyCard card : player_allies){
+            allyBonus += card.getBids();
+            if (card.getName().equals("king_pellinore")){ // this is actually the best place for him
+                if(game.getCurrent_story().getName().equals("search_for_the_questing_beast")){
+                    allyBonus += 4;
+                }
+            }
+
+            if (card.getName().equals("queen_iseult")) {
+                boolean tristan_is_in_play = false; // she should have been a class that overrides AllyCard.getBids()
+                for(Player player : players){  // unfortunately, this was easier to rush out at the last second
+                    for(Card c : player.getAllies()){
+                        if (c.getName().equals("sir_tristan")) {
+                            tristan_is_in_play = true;
+                            break;
+                        }
+                    }
+                }
+                if (tristan_is_in_play) allyBonus += 2; //her other 2 bids were already added earlier. What a mess!
+            }
+        }
+
+        int currentBid = ids.size() + allyBonus;
         if (currentBid > largest_bid) {
             System.out.println("the new bid of size " + currentBid + "is bigger than the current largest of " + largest_bid);
             largest_bid = currentBid;
@@ -310,9 +341,10 @@ public class DefaultController {
                 }
             }
 
-            participants.set(0, best_bidder); //just put the best bidder in the first slot
-
-            participants.subList(1, participants.size()).clear(); //and get rid of everything else
+            if (participants.size() > 0){ //we don't have to empty an empty participants array
+                participants.set(0, best_bidder); //just put the best bidder in the first slot
+                participants.subList(1, participants.size()).clear(); //and get rid of everything else
+            }
 
             System.out.println("participants is" + participants);
 

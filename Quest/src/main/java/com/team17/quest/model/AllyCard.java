@@ -22,4 +22,8 @@ public class AllyCard extends AdventureCard{
             return battle_points;
         }
     }
+
+    public int getBids() {
+        return bids;
+    }
 }

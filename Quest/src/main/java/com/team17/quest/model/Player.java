@@ -184,6 +184,10 @@ public class Player {
         return hand;
     }
 
+    public ArrayList<AllyCard> getAllies() {
+        return allies;
+    }
+
     public int getShields(){ return shields; }
 
     public void setShields(int shields) {

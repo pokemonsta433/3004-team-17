@@ -425,6 +425,10 @@ function bidCards(){
     })
     console.log(message)
     stompClient.send("/app/bidCards", {}, JSON.stringify({'name': userName, msg: message}))
+
+    unhighlightCards();
+    document.getElementById("Bid").style.display = 'none';
+    document.getElementById("submitBid").style.display = 'none';
 }
 
 function clearPlayArea(){
