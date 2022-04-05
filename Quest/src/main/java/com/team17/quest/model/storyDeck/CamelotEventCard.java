@@ -17,11 +17,9 @@ public class CamelotEventCard extends EventCard {
         ArrayList<Player> playerList = game.getPlayers();
         ArrayList<Card> adventure_discardPile = game.getAdventure_discardPile();
         for (int i = 0; i < playerList.size(); i++) {
-            for (int j = playerList.get(i).getHand().size() - 1; j >= 0; j--) {
-                if (playerList.get(i).getHand().get(j).isAlly()) {
-                    adventure_discardPile.add(playerList.get(i).getHand().get(j));
-                    playerList.get(i).getHand().remove(j);
-                }
+            for (int j = playerList.get(i).getAllies().size() - 1; j >= 0; j--) {
+                adventure_discardPile.add(playerList.get(i).getAllies().get(j));
+                playerList.get(i).getAllies().remove(j);
             }
         }
     }
