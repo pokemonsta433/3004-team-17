@@ -56,7 +56,7 @@ public class DefaultController {
     public String checkWin(){
         String w = "";
         for(Player p : players){
-            if(p.shields >= 2){
+            if(p.shields >= 5){
                 w += p.getName();
                 w += " ";
             }
