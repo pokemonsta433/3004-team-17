@@ -303,8 +303,8 @@ ul#horizontal-list li a{
 
 .discard {
     position: fixed;
-    top: 100px;
-    left: 100px;
+    bottom: 30px;
+    left: 30px;
 }
 
 .discard .card {
