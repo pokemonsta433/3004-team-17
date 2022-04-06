@@ -53,8 +53,27 @@ public class DefaultController {
                 new ServerMessage(messagetype, HtmlUtils.htmlEscape(message)));
     }
 
+    public String checkWin(){
+        String w = "";
+        for(Player p : players){
+            if(p.shields >= 2){
+                w += p.getName();
+                w += " ";
+            }
+        }
+        System.out.println(w);
+        return w;
+    }
+
     public void drawNewStory(){
         game.drawStory();
+        String w = checkWin();
+        if(w.length() > 0){
+            for(Player p: players){
+                messageSender.convertAndSendToUser(p.getName(), "/reply", new ServerMessage("Win", w));
+            }
+            return;
+        }
         for (Player p : players) {
             messageSender.convertAndSendToUser(p.getName(), "/reply", new ServerMessage("Update", "Next Story"));
         }
@@ -62,18 +81,14 @@ public class DefaultController {
         challenge_played.clear();
         sponsored = false;
         player_turn = (player_turn + 2) % game.getPlayers().size();
+        game.setCurrentPlayer(player_turn);
         if (game.getCurrent_story() instanceof QuestCard) {
             messageSender.convertAndSendToUser(game.getPlayer(player_turn).getName(), "/reply", new ServerMessage("Prompt", "Sponsor"));
-        } else if (game.getCurrent_story() instanceof TournamentCard) {
+        }
+        else if (game.getCurrent_story() instanceof TournamentCard) {
             messageSender.convertAndSendToUser(game.getPlayer(player_turn).getName(), "/reply", new ServerMessage("Prompt", "Tournament"));
-        } else if (game.getCurrent_story() instanceof EventCard) {
-            String w = checkWin();
-            if(w.length() > 0){
-                for(Player p: players){
-                    messageSender.convertAndSendToUser(p.getName(), "/reply", new ServerMessage("Win", w));
-                }
-                return;
-            }
+        }
+        else{
             for(Player p: players){
                 messageSender.convertAndSendToUser(p.getName(), "/reply", new ServerMessage("Prompt", "EventCard"));
             }
@@ -90,13 +105,6 @@ public class DefaultController {
                 current_stage = 1;
                 for(String s : participants){
                     game.getPlayer(game.getIndexOfName(s)).shields += game.getStages();
-                }
-                String w = checkWin();
-                if(w.length() > 0){
-                    for(Player p: players){
-                        messageSender.convertAndSendToUser(p.getName(), "/reply", new ServerMessage("Win", w));
-                    }
-                    return;
                 }
                 for(ArrayList<AdventureCard> stage : game.quest){
                     game.getSponsor().drawCard(game.adventure_deck, 1);
@@ -162,17 +170,6 @@ public class DefaultController {
         }
     }
 
-    public String checkWin(){
-        String w = "";
-        for(Player p : players){
-            if(p.shields >= 5){
-                w += p.getName();
-                w += " ";
-            }
-        }
-        return w;
-    }
-
     public void tournamentLogic(String n){
         if(challenge_played.contains(false)){
             messageSender.convertAndSendToUser(n, "/reply", new ServerMessage("Tournament", "Wait"));
@@ -189,13 +186,6 @@ public class DefaultController {
                     game.getPlayer(game.getIndexOfName(s)).shields += participants.size();
                     TournamentCard t = (TournamentCard) game.getCurrent_story();
                     game.getPlayer(game.getIndexOfName(s)).shields += t.bonus_shields;
-                    String w = checkWin();
-                    if(w.length() > 0){
-                        for(Player p: players){
-                            messageSender.convertAndSendToUser(p.getName(), "/reply", new ServerMessage("Win", w));
-                        }
-                        return;
-                    }
                 }
             }
             for(Player p : game.players){
@@ -475,7 +465,8 @@ public class DefaultController {
             }
             else if(game.getCurrent_story() instanceof TournamentCard){
                 messageSender.convertAndSendToUser(game.getPlayer(player_turn).getName(), "/reply", new ServerMessage("Prompt", "Tournament"));
-            } else if (game.getCurrent_story() instanceof EventCard) {
+            }
+            else{
                 for(Player p: players){
                     messageSender.convertAndSendToUser(p.getName(), "/reply", new ServerMessage("Prompt", "EventCard"));
                 }
@@ -546,10 +537,16 @@ public class DefaultController {
 
     @GetMapping(value = "gameOver")
     public String gameOver(Model model){
+        return "redirect:/gameEnd";
+    }
+
+    @GetMapping(value = "/gameEnd")
+    public String gameEnd(Model model){
         String w = checkWin();
         model.addAttribute("winners", w);
         return "GameOver";
     }
+
     @GetMapping(value = "/templates/Global.css")
     public String globalCSS(Model model){
         model.addAttribute("css", "True");

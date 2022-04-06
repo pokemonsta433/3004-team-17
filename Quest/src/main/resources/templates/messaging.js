@@ -125,8 +125,8 @@ function connect() {
         if(userName === null){loadUsername();}
         stompClient.subscribe("/user/" + userName + "/reply", function(message) {
             if(JSON.parse(message.body).messagetype === "Win"){
+                console.log("Game Over");
                 loadGameOver();
-                alert(JSON.parse(message.body).content);
             }
             if(JSON.parse(message.body).messagetype === "Prompt") {
                 if(JSON.parse(message.body).content === "Sponsor"){
