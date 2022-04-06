@@ -178,7 +178,7 @@
             </div>
         </div>
 
-        <ul id="discard" class="discard">
+        <ul id="discard" onclick="openDiscard()" class="discard">
             <li class="card" th:each="c: ${game.adventure_discardPile}">
                 <img th:src = "@{/card(cardName=${c.name})}">
             </li>

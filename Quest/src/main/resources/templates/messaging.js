@@ -457,31 +457,27 @@ function unhighlightCards() {
     })
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+function openDiscard() {
     let discard = document.querySelector('#discard');
 
-    function openDiscard() {
-        let selection = document.createElement('div');
-        selection.id = 'selection';
+    let selection = document.createElement('div');
+    selection.id = 'selection';
 
-        let button = document.createElement('button');
-        button.onclick = function() {
-            discard.className = 'discard'
-            discard.addEventListener('click', openDiscard);
-            document.querySelector('body').appendChild(discard);
-            selection.remove();
-        }
-        selection.appendChild(button);
-
-        discard.className = '';
-        discard.removeEventListener('click', openDiscard);
-        selection.appendChild(discard);
-
-        document.querySelector('body').appendChild(selection);
+    let button = document.createElement('button');
+    button.onclick = function() {
+        discard.className = 'discard'
+        discard.onclick = openDiscard;
+        document.querySelector('body').appendChild(discard);
+        selection.remove();
     }
+    selection.appendChild(button);
 
-    discard.addEventListener('click', openDiscard);
-});
+    discard.className = '';
+    discard.onclick = '';
+    selection.appendChild(discard);
+
+    document.querySelector('body').appendChild(selection);
+}
 
 /*
 * --------------------------------------
