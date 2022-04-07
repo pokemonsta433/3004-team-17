@@ -315,6 +315,20 @@ ul#horizontal-list li a{
     display: block;
 }
 
+.allies {
+    position: fixed;
+    top: 30px;
+    left: 30px;
+}
+
+.allies .card {
+    display: none;
+}
+
+.allies .card:last-child {
+    display: block;
+}
+
 #selection {
     position: fixed;
     top: 0;

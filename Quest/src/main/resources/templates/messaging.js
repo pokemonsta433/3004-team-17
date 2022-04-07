@@ -431,6 +431,12 @@ function bidCards(){
     document.getElementById("submitBid").style.display = 'none';
 }
 
+function addAlly(e){
+    let allies = document.getElementById("allies");
+    allies.appendChild(e);
+    e.onclick = function (){}
+}
+
 function clearPlayArea(){
     var cards = document.querySelectorAll('#played-list .card')
     cards.forEach(card => {
@@ -438,7 +444,7 @@ function clearPlayArea(){
             discard(card);
         }
         else{
-            discard(card); //TODO: Matt, when you make a div for ally cards to go in I would appreciate if you could put this card in the allies div :)
+            addAlly(card); //TODO: Matt, when you make a div for ally cards to go in I would appreciate if you could put this card in the allies div :)
         }
         //card.parentElement.removeChild(card);
     })
@@ -475,6 +481,29 @@ function openDiscard() {
     discard.className = '';
     discard.onclick = '';
     selection.appendChild(discard);
+
+    document.querySelector('body').appendChild(selection);
+}
+
+function openAllies() {
+    let allies = document.querySelector('#allies');
+
+    let selection = document.createElement('div');
+    selection.id = 'selection';
+
+    let button = document.createElement('button');
+    button.onclick = function() {
+        allies.className = 'allies'
+        allies.onclick = openAllies;
+        document.querySelector('body').appendChild(allies);
+        selection.remove();
+    }
+    selection.appendChild(button);
+
+    allies.className = '';
+    allies.onclick = '';
+    allies.onclick = '';
+    selection.appendChild(allies);
 
     document.querySelector('body').appendChild(selection);
 }
