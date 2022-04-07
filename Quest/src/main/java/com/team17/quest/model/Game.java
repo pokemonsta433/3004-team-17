@@ -126,11 +126,21 @@ public class Game {
         ArrayList<AdventureCard> stage = new ArrayList<>();
         for(Card c : p.hand){
             if(ids.contains(Integer.toString(c.id))){
-                stage.add((AdventureCard) c);
+                if(c instanceof AllyCard){
+                    p.allies.add((AllyCard) c);
+                }
+                else{
+                    stage.add((AdventureCard) c);
+                }
             }
         }
         for(Card c : stage){
             p.hand.remove(c);
+        }
+        for(Card c : p.allies){
+            if(p.hand.contains(c)){
+                p.hand.remove(c);
+            }
         }
         quest.add(stage);
     }
