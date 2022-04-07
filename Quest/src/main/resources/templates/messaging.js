@@ -485,23 +485,24 @@ function openDiscard() {
     document.querySelector('body').appendChild(selection);
 }
 
-function openAllies() {
-    let allies = document.querySelector('#allies');
-
+function openAllies(allies) {
     let selection = document.createElement('div');
     selection.id = 'selection';
 
+    function paramlessOpen() { openAllies(allies); };
+
+    let className = allies.className;
+    let parent = allies.parentElement;
     let button = document.createElement('button');
     button.onclick = function() {
-        allies.className = 'allies'
-        allies.onclick = openAllies;
-        document.querySelector('body').appendChild(allies);
+        allies.className = className;
+        allies.onclick = paramlessOpen;
+        parent.appendChild(allies);
         selection.remove();
     }
     selection.appendChild(button);
 
     allies.className = '';
-    allies.onclick = '';
     allies.onclick = '';
     selection.appendChild(allies);
 

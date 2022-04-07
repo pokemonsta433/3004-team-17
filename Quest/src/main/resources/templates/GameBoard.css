@@ -329,6 +329,18 @@ ul#horizontal-list li a{
     display: block;
 }
 
+.other-allies {
+    display: flex;
+}
+
+.other-allies .card {
+    display: none;
+}
+
+.other-allies .card:last-child {
+    display: block;
+}
+
 #selection {
     position: fixed;
     top: 0;
