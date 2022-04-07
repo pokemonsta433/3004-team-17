@@ -52,6 +52,9 @@
                         <li class="card" th:each="c: ${game.getPlayer((i + game.players.size()/2) % game.players.size()).allies}">
                             <img th:src="@{/card(cardName=${c.name})}">
                         </li>
+                        <li class="card" th:each="c: ${game.getPlayer((i + game.players.size()/2) % game.players.size()).amours}">
+                            <img th:src="@{/card(cardName=${c.name})}">
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -93,11 +96,17 @@
                         <li class="card" th:each="c: ${game.getPlayer((i + 1) % game.players.size()).allies}">
                             <img th:src="@{/card(cardName=${c.name})}">
                         </li>
+                        <li class="card" th:each="c: ${game.getPlayer((i + 1) % game.players.size()).amours}">
+                            <img th:src="@{/card(cardName=${c.name})}">
+                        </li>
                     </ul>
                 </div>
                 <div class="columnRight" >
                     <ul id="p4allies" onclick="openAllies(this)" class="other-allies" style="justify-content: right;">
                         <li class="card" th:each="c: ${game.getPlayer((i + game.players.size() - 1) % game.players.size()).allies}">
+                            <img th:src="@{/card(cardName=${c.name})}">
+                        </li>
+                        <li class="card" th:each="c: ${game.getPlayer((i + game.players.size() - 1) % game.players.size()).amours}">
                             <img th:src="@{/card(cardName=${c.name})}">
                         </li>
                     </ul>
@@ -192,6 +201,9 @@
 
         <ul id="allies" onclick="openAllies(this)" class="allies">
             <li class="card" th:each="c: ${game.getPlayer(i).allies}">
+                <img th:src="@{/card(cardName=${c.name})}">
+            </li>
+            <li class="card" th:each="c: ${game.getPlayer(i).amours}">
                 <img th:src="@{/card(cardName=${c.name})}">
             </li>
         </ul>
