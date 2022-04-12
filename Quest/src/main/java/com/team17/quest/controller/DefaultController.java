@@ -396,7 +396,7 @@ public class DefaultController {
         if(message.getMsg().equals("EventCard")){
             if (players_prompted >= game.getPlayers().size()) {
                 players_prompted = 0;
-                player_turn = (player_turn + 2) % game.players.size();
+                player_turn -= 1;
                 drawNewStory();
             }
         }
