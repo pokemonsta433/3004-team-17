@@ -154,7 +154,6 @@ public class riggedDeckFactory {
         Card card1 = deck.pop();
         deck.add(eventFactory.getEventCard(event_story_deck[2][0], i));
         deck.add(card1);
-        deck.add(card1);
         System.out.println(deck);
 
         return deck;
