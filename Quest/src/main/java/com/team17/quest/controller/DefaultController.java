@@ -518,12 +518,12 @@ public class DefaultController {
         if(!game_started){
             game = new Game(players);
             game_started = true;
+            game.drawStory();
         }
         model.addAttribute("stage_number", current_stage);
         model.addAttribute("game", game);
         model.addAttribute("i", game.getIndexOfName(playername));
         broadcastMessage("Start", "StartGame");
-        game.drawStory();
         return "GameBoard";
     }
 
