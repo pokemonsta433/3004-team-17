@@ -14,7 +14,7 @@ public class Game {
     public ArrayList<Player> players;
     ArrayList<Card> adventure_discardPile;
     ArrayList<Card> story_discardPile;
-    DeckFactory deckMaker;
+    riggedDeckFactory deckMaker;
     Card current_story;
     Player sponsor;
     int currentPlayerIndex;
@@ -30,7 +30,7 @@ public class Game {
         story_deck = new Stack<>();
         adventure_discardPile = new ArrayList<>();
         story_discardPile = new ArrayList<>();
-        deckMaker = new DeckFactory();
+        deckMaker = new riggedDeckFactory();
         quest = new ArrayList<>();
         playGame();
     }
@@ -104,13 +104,16 @@ public class Game {
     }
 
     public void generateDecks(){
+        System.out.println("DOING THE GENERATION OF DECKS");
         story_deck = deckMaker.build("Story");
         adventure_deck = deckMaker.build("Adventure");
+        System.out.println("DECK IS EQUAL TO " + story_deck);
     }
 
     public void shuffleDecks(){
+        //hah shuffling is for losers :)
         Collections.shuffle(adventure_deck);
-        Collections.shuffle(story_deck);
+        //Collections.shuffle(story_deck);
     }
 
     public void dealHands(){
