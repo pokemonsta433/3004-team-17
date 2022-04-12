@@ -263,7 +263,7 @@ public class DefaultController {
                 }
                 else{ //if we're looking at a test stage, let's send a message to the first bidder, asking for his bid!
                     if(participants.size() == 1 && min_bid < 3){
-                        System.out.println("ackgnowledging that there is only one player so min bid is 3");
+                        System.out.println("acknowledging that there is only one player so min bid is 3");
                         min_bid = 3;
                         largest_bid = 2;
                     }
@@ -396,7 +396,7 @@ public class DefaultController {
         if(message.getMsg().equals("EventCard")){
             if (players_prompted >= game.getPlayers().size()) {
                 players_prompted = 0;
-                player_turn += 1;
+                player_turn = (player_turn + 2) % game.players.size();
                 drawNewStory();
             }
         }
