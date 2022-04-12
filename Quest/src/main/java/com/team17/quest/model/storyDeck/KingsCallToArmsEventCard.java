@@ -36,11 +36,16 @@ public class KingsCallToArmsEventCard extends EventCard {
                     }
                 }
                 // no weapons found; Foe cards must be discarded
+                int foeCount = 0;
                 if (!weaponCardFlag) {
                     for (int j = playerList.get(i).getHand().size() - 1; j >= 0; j--)  {
                         if (playerList.get(i).getHand().get(j).isFoe()) {
                             adventure_discardPile.add(playerList.get(i).getHand().get(j));
                             playerList.get(i).getHand().remove(j);
+                            foeCount++;
+                            if(foeCount >= 2){
+                                break;
+                            }
                         }
                     }
                 }
